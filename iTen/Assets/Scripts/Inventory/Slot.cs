@@ -7,7 +7,7 @@ public class Slot : MonoBehaviour
 {
     public Image itemImage;
     public TextMeshProUGUI itemCountText;
-    public Item currentItem;
+    public ItemData currentItem;
     private int itemCount;
     public bool HasItem => currentItem != null;
     public int ItemCount => itemCount;
@@ -17,10 +17,10 @@ public class Slot : MonoBehaviour
         UpdateUI();
     }
 
-    public void AddItem(Item item)
+    public void AddItem(ItemData itemData, int amount)
     {
-        currentItem = item;
-        itemCount = item.Amount;
+        currentItem = itemData;
+        itemCount = amount;
         UpdateUI();
     }
 
@@ -49,7 +49,7 @@ public class Slot : MonoBehaviour
         UpdateUI();
     }
 
-    public bool HasSameItem(Item item) => currentItem != null && currentItem.itemName == item.itemName;
+    public bool HasSameItem(ItemData itemData) => currentItem != null && currentItem.itemName == itemData.itemName;
 
     public void Highlight(bool isSelected)
     {
@@ -64,7 +64,7 @@ public class Slot : MonoBehaviour
             itemImage.enabled = true;
             itemImage.color = Color.white;
 
-            itemCountText.text = itemCount > 1 ? itemCount.ToString() : "";
+            itemCountText.text = itemCount > 1 ? itemCount.ToString() : "1";
             itemCountText.enabled = true;
 
         }

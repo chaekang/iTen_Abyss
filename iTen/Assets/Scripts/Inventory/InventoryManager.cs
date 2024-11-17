@@ -1,7 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -37,8 +36,9 @@ public class InventoryManager : MonoBehaviour
                 }
             }
 
-            if (Input.GetMouseButtonDown(0) && selectedSlotIndex >= 0)
+            if (Input.GetMouseButtonDown(1) && selectedSlotIndex >= 0)
             {
+                DropItem(selectedSlotIndex);
                 UseItem(selectedSlotIndex);
             }
         }
@@ -99,7 +99,7 @@ public class InventoryManager : MonoBehaviour
         Debug.DrawRay(ray.origin, ray.direction * pickupRange, Color.red, 0.5f);
         if (Physics.Raycast(ray, out RaycastHit hit, pickupRange, itemLayer))
         {
-            Item item = hit.collider.GetComponent<Item>();
+            ItemObject item = hit.collider.GetComponent<ItemObject>();
             if (item != null)
             {
                 AddItemToInventory(item);
@@ -108,13 +108,20 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    private void AddItemToInventory(Item newItem)
+    private void AddItemToInventory(ItemObject newItem)
     {
+        ItemData itemData = newItem.itemData;
+        if (newItem == null)
+        {
+            Debug.Log("newItem is null");
+            return;
+        }
+
         foreach (Slot slot in slots)
         {
-            if (slot.HasSameItem(newItem))
+            if (slot.HasSameItem(itemData))
             {
-                slot.IncreaseItemCount(newItem.Amount);
+                slot.IncreaseItemCount(newItem.amount);
                 return;
             }
         }
@@ -123,9 +130,20 @@ public class InventoryManager : MonoBehaviour
         {
             if (!slot.HasItem)
             {
-                slot.AddItem(newItem);
+                slot.AddItem(itemData, newItem.amount);
                 return;
             }
+        }
+    }
+
+    private void DropItem(int index)
+    {
+        Slot slot = slots[index];
+        if (slot.HasItem)
+        {
+            Vector3 dropPosition = player.position + player.forward * 3f;
+
+            Instantiate(slot.currentItem.prefab, dropPosition, Quaternion.identity);
         }
     }
 }
