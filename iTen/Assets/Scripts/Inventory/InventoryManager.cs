@@ -97,23 +97,23 @@ public class InventoryManager : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
         Debug.DrawRay(ray.origin, ray.direction * pickupRange, Color.red, 0.5f);
+        
         if (Physics.Raycast(ray, out RaycastHit hit, pickupRange, itemLayer))
         {
             ItemObject item = hit.collider.GetComponent<ItemObject>();
             if (item != null)
             {
-                AddItemToInventory(item);
+                AddItemToInventory(item.itemData, item.amount);
                 Destroy(item.gameObject);
             }
         }
     }
 
-    private void AddItemToInventory(ItemObject newItem)
+    private void AddItemToInventory(ItemData itemData, int amount)
     {
-        ItemData itemData = newItem.itemData;
-        if (newItem == null)
+        if (itemData == null)
         {
-            Debug.Log("newItem is null");
+            Debug.Log("itemdata prefab is null");
             return;
         }
 
@@ -121,7 +121,7 @@ public class InventoryManager : MonoBehaviour
         {
             if (slot.HasSameItem(itemData))
             {
-                slot.IncreaseItemCount(newItem.amount);
+                slot.IncreaseItemCount(amount);
                 return;
             }
         }
@@ -130,7 +130,7 @@ public class InventoryManager : MonoBehaviour
         {
             if (!slot.HasItem)
             {
-                slot.AddItem(itemData, newItem.amount);
+                slot.AddItem(itemData, amount);
                 return;
             }
         }
@@ -143,7 +143,14 @@ public class InventoryManager : MonoBehaviour
         {
             Vector3 dropPosition = player.position + player.forward * 3f;
 
-            Instantiate(slot.currentItem.prefab, dropPosition, Quaternion.identity);
+            GameObject droppedItem = Instantiate(slot.currentItem.prefab, dropPosition, Quaternion.identity);
+
+            ItemObject itemObject = droppedItem.GetComponent<ItemObject>();
+            if (itemObject != null)
+            {
+                itemObject.amount = slot.ItemCount;
+                itemObject.OnDrop();
+            }
         }
     }
 }

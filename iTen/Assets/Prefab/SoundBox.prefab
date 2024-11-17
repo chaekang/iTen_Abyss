@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8182472891652645120}
   - component: {fileID: 2503747510805077260}
   - component: {fileID: 7061724618192208961}
-  - component: {fileID: 8275346308625971892}
+  - component: {fileID: 1271354134090998931}
   m_Layer: 8
   m_Name: SoundBox
   m_TagString: Untagged
@@ -108,7 +108,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8275346308625971892
+--- !u!114 &1271354134090998931
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -117,8 +117,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 7946714892169882372}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77ad488a3422b174fad6e9a6d93eb942, type: 3}
+  m_Script: {fileID: 11500000, guid: e583442b11a4dc64cb5e0efcc242caec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemData: {fileID: 11400000, guid: 17334d6d62bf5ba43b413465add0f037, type: 2}
   amount: 1
+  player: {fileID: 0}
