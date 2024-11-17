@@ -12,6 +12,7 @@ public class InventoryManager : MonoBehaviour
     public float pickupRange = 2f;
     private bool isInventoryOpen = false;
     private int selectedSlotIndex = -1;
+    public LayerMask itemLayer = 8;
 
     private void Start()
     {
@@ -42,6 +43,7 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
+        // .아이템 줍기
         if (Input.GetMouseButtonDown(1))
         {
             TryPickupItem();
@@ -93,15 +95,15 @@ public class InventoryManager : MonoBehaviour
 
     private void TryPickupItem()
     {
-        Collider[] itemsInRange = Physics.OverlapSphere(player.position, pickupRange);
-        foreach (Collider col in itemsInRange)
+        Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
+        Debug.DrawRay(ray.origin, ray.direction * pickupRange, Color.red, 0.5f);
+        if (Physics.Raycast(ray, out RaycastHit hit, pickupRange, itemLayer))
         {
-            Item item = col.GetComponent<Item>();
+            Item item = hit.collider.GetComponent<Item>();
             if (item != null)
             {
                 AddItemToInventory(item);
                 Destroy(item.gameObject);
-                break;
             }
         }
     }
