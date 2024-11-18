@@ -38,7 +38,14 @@ public class Slot : MonoBehaviour
         if (itemCount > 0)
         {
             itemCount--;
-            UpdateUI();
+            if (itemCount == 0)
+            {
+                ClearSlot();
+            }
+            else
+            {
+                UpdateUI();
+            }
         }
     }
 

@@ -1,0 +1,31 @@
+fileFormatVersion: 2
+guid: 0ee4a72e5efbd40a5a9c8f84ae08ee24
+AudioImporter:
+  externalObjects: {}
+  serializedVersion: 7
+  defaultSettings:
+    serializedVersion: 2
+    loadType: 0
+    sampleRateSetting: 0
+    sampleRateOverride: 44100
+    compressionFormat: 1
+    quality: 1
+    conversionMode: 0
+    preloadAudioData: 0
+  platformSettingOverrides: {}
+  forceToMono: 0
+  normalize: 1
+  loadInBackground: 0
+  ambisonic: 0
+  3D: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 270044
+  packageName: Classical Music Box - Collection
+  packageVersion: 1.1
+  assetPath: Assets/Gregor Quendel - Classical Music Box Collection - Vol. 1 - 1.1
+    Update/Bach - Invention No. 13 - BWV 784 - Arranged for Music Box.wav
+  uploadId: 637667

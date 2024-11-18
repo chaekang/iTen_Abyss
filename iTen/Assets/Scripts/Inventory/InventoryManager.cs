@@ -39,7 +39,7 @@ public class InventoryManager : MonoBehaviour
             if (Input.GetMouseButtonDown(1) && selectedSlotIndex >= 0)
             {
                 DropItem(selectedSlotIndex);
-                UseItem(selectedSlotIndex);
+                //UseItem(selectedSlotIndex);
             }
         }
 
@@ -47,6 +47,10 @@ public class InventoryManager : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             TryPickupItem();
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            ItemObject.CheckAndInteract();
         }
     }
 
@@ -103,18 +107,33 @@ public class InventoryManager : MonoBehaviour
             ItemObject item = hit.collider.GetComponent<ItemObject>();
             if (item != null)
             {
-                AddItemToInventory(item.itemData, item.amount);
-                Destroy(item.gameObject);
+                if (item is SoundBox soundBox && soundBox.IsDropped)
+                {
+                    Debug.Log("Cannot pick up a dropped SoundBox.");
+                    return;
+                }
+
+                Debug.Log($"Picking up item: {item.name}");
+                bool isAdded = AddItemToInventory(item.itemData, item.amount);
+                if (isAdded)
+                {
+                    Destroy(item.gameObject);
+                    Debug.Log($"{item.name} has been destroyed.");
+                }
+                else
+                {
+                    Debug.Log("Failed to add item to inventory");
+                }
             }
         }
     }
 
-    private void AddItemToInventory(ItemData itemData, int amount)
+    private bool AddItemToInventory(ItemData itemData, int amount)
     {
         if (itemData == null)
         {
             Debug.Log("itemdata prefab is null");
-            return;
+            return false;
         }
 
         foreach (Slot slot in slots)
@@ -122,7 +141,7 @@ public class InventoryManager : MonoBehaviour
             if (slot.HasSameItem(itemData))
             {
                 slot.IncreaseItemCount(amount);
-                return;
+                return true;
             }
         }
 
@@ -131,9 +150,10 @@ public class InventoryManager : MonoBehaviour
             if (!slot.HasItem)
             {
                 slot.AddItem(itemData, amount);
-                return;
+                return true;
             }
         }
+        return false;
     }
 
     private void DropItem(int index)
@@ -152,5 +172,6 @@ public class InventoryManager : MonoBehaviour
                 itemObject.OnDrop();
             }
         }
+        slot.UseItem();
     }
 }
