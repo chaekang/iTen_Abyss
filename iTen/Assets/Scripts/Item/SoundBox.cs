@@ -7,6 +7,7 @@ public class SoundBox : ItemObject
     private AudioSource audioSource;
     private bool isDropped = false;
     public bool IsDropped => isDropped;
+    public float soundRange = 30f;
 
     private void Awake()
     {
@@ -47,7 +48,12 @@ public class SoundBox : ItemObject
         if (clip != null)
         {
             audioSource.Play();
-            Invoke(nameof(StopAudioAndDestroy), 10f);
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.EmitSound(transform.position, soundRange);
+                SoundManager.Instance.RegisterSoundPosition(transform.position);
+            }
+            Invoke(nameof(StopAudio), 10f);
         }
         else
         {
@@ -55,9 +61,9 @@ public class SoundBox : ItemObject
         }
     }
 
-    private void StopAudioAndDestroy()
+    private void StopAudio()
     {
         audioSource.Stop();
-        Destroy(gameObject);
+        SoundManager.Instance?.ClearSoundPositions();
     }
 }

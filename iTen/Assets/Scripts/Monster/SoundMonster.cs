@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public enum MonsterState
 {
@@ -15,10 +16,45 @@ public class SoundMonster : MonoBehaviour
     private Animator animator;
     private MonsterState currentState;
 
+    private NavMeshAgent agent;
+    private List<Vector3> heardSounds = new List<Vector3>();
+    private bool isChasing = false;
+
     private void Start()
     {
+        agent = GetComponent<NavMeshAgent>();
+
         animator = GetComponent<Animator>();
         SetWalkingState(0); // Walking
+    }
+
+    public void OnSoundHeard(Vector3 soundPos)
+    {
+        heardSounds.Add(soundPos);
+        UpdateClosestSound();
+    }
+
+    private void UpdateClosestSound()
+    {
+        if (heardSounds.Count > 0)
+        {
+            Vector3 closestSound = heardSounds[0];
+            float closestDistance = Vector3.Distance(transform.position, closestSound);
+
+            foreach (var sound in heardSounds)
+            {
+                float distance = Vector3.Distance(transform.position, sound);
+                if (distance < closestDistance)
+                {
+                    closestSound = sound;
+                    closestDistance = distance;
+                }
+            }
+
+            agent.SetDestination(closestSound);
+            isChasing = true;
+            heardSounds.Clear();
+        }
     }
 
     public void SetWalkingState(int walkingState)
@@ -74,6 +110,15 @@ public class SoundMonster : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.D))
         {
             TriggerWatch(); // Watch
+        }
+
+        if (isChasing)
+        {
+            Debug.Log("Monster is chasing");
+            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+            {
+                isChasing = false;
+            }
         }
     }
 }
