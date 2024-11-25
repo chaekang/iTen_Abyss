@@ -41,10 +41,9 @@ public class SoundBox : ItemObject
     public override void OnInteract()
     {
         Debug.Log("music box interact");
-        //transform.position = Vector3.forward * Time.deltaTime;
         if (SoundManager.Instance != null)
         {
-            SoundManager.Instance.PlaySound(transform.position, soundRange, "SoundBoxClip");
+            SoundManager.Instance.PlaySound(transform, soundRange, "SoundBoxClip");
         }
     }
 }

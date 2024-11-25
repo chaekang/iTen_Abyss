@@ -12,6 +12,9 @@ public class SoundManager : MonoBehaviour
     public LayerMask mosterLayer;
     private List<Vector3> soundPos = new List<Vector3>();
 
+    private bool isFollowing = false;
+    private Transform followTarget;
+
     private void Awake()
     {
         if (Instance == null)
@@ -38,20 +41,22 @@ public class SoundManager : MonoBehaviour
     }
 
     // À½¾Ç Àç»ý
-    public void PlaySound(Vector3 position, float range, string clipKey)
+    public void PlaySound(Transform target, float range, string clipKey)
     {
         if (soundClips.ContainsKey(clipKey))
         {
             AudioClip clip = soundClips[clipKey];
             audioSource.clip = clip;
-            audioSource.transform.position = position;
             audioSource.spatialBlend = 1.0f;
             audioSource.minDistance = range;
             audioSource.maxDistance = range * 2;
             audioSource.Play();
 
-            RegisterSoundPosition(position);
-            EmitSound(position, range);
+            followTarget = target;
+            isFollowing = true;
+
+            RegisterSoundPosition(target.position);
+            StartCoroutine(EmitSoundContinuously(range));
             Invoke(nameof(StopSound), 10f);
         }
         else
@@ -63,6 +68,8 @@ public class SoundManager : MonoBehaviour
     public void StopSound()
     {
         audioSource.Stop();
+        isFollowing = false;
+        followTarget = null;
     }
 
     public void EmitSound(Vector3 pos, float range)
@@ -79,10 +86,20 @@ public class SoundManager : MonoBehaviour
                     SoundMonster soundMonster = monster.GetComponent<SoundMonster>();
                     if (soundMonster != null)
                     {
+                        Debug.Log("EmitSound");
                         soundMonster.OnSoundHeard(pos);
                     }
                 }
             }
+        }
+    }
+
+    private IEnumerator EmitSoundContinuously(float range)
+    {
+        while (isFollowing&& followTarget != null)
+        {
+            EmitSound(followTarget.position, range);
+            yield return new WaitForSeconds(0.2f);
         }
     }
 
@@ -100,8 +117,11 @@ public class SoundManager : MonoBehaviour
         soundPos.Add(pos);
     }
 
-    public void ClearSoundPositions()
+    private void Update()
     {
-        soundPos.Clear();
+        if (isFollowing && followTarget != null)
+        {
+            audioSource.transform.position = followTarget.position;
+        }
     }
 }

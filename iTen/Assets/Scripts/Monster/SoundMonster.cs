@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -17,7 +16,7 @@ public class SoundMonster : MonoBehaviour
     private MonsterState currentState;
 
     private NavMeshAgent agent;
-    private List<Vector3> heardSounds = new List<Vector3>();
+    private Vector3? currentTarget;
     private bool isChasing = false;
 
     private void Start()
@@ -30,31 +29,48 @@ public class SoundMonster : MonoBehaviour
 
     public void OnSoundHeard(Vector3 soundPos)
     {
-        heardSounds.Add(soundPos);
-        UpdateClosestSound();
+        currentTarget = soundPos;
+
+        if (!isChasing)
+        {
+            StartChasing();
+        }
     }
 
-    private void UpdateClosestSound()
+    private void StartChasing()
     {
-        if (heardSounds.Count > 0)
+        if (currentTarget.HasValue)
         {
-            Vector3 closestSound = heardSounds[0];
-            float closestDistance = Vector3.Distance(transform.position, closestSound);
+            agent.SetDestination(currentTarget.Value);
+            isChasing = true;
+            currentState = MonsterState.Run;
+            animator.SetInteger("isWalking", 1);
+            StartCoroutine(UpdateChasingTarget());
+        }
+    }
 
-            foreach (var sound in heardSounds)
+    private IEnumerator UpdateChasingTarget()
+    {
+        while (isChasing)
+        {
+            if (currentTarget.HasValue)
             {
-                float distance = Vector3.Distance(transform.position, sound);
-                if (distance < closestDistance)
+                agent.SetDestination(currentTarget.Value);
+
+                if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
                 {
-                    closestSound = sound;
-                    closestDistance = distance;
+                    StopChasing();
                 }
             }
-
-            agent.SetDestination(closestSound);
-            isChasing = true;
-            heardSounds.Clear();
+            yield return new WaitForSeconds(0.2f);
         }
+    }
+
+    private void StopChasing()
+    {
+        isChasing = false;
+        currentTarget = null;
+        SetWalkingState(0);
     }
 
     public void SetWalkingState(int walkingState)
@@ -112,13 +128,9 @@ public class SoundMonster : MonoBehaviour
             TriggerWatch(); // Watch
         }
 
-        if (isChasing)
+        if (isChasing && currentTarget.HasValue)
         {
-            Debug.Log("Monster is chasing");
-            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
-            {
-                isChasing = false;
-            }
+            Debug.Log($"Monster is chasing target at {currentTarget.Value}");
         }
     }
 }
