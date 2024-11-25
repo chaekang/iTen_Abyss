@@ -3,8 +3,6 @@ using UnityEngine;
 public class SoundBox : ItemObject
 {
     private Transform player;
-    public AudioClip clip;
-    private AudioSource audioSource;
     private bool isDropped = false;
     public bool IsDropped => isDropped;
     public float soundRange = 30f;
@@ -16,8 +14,6 @@ public class SoundBox : ItemObject
         {
             player = playerObject.transform;
         }
-        audioSource=gameObject.AddComponent<AudioSource>();
-        audioSource.clip = clip;
     }
 
     public override void OnDrop()
@@ -45,25 +41,10 @@ public class SoundBox : ItemObject
     public override void OnInteract()
     {
         Debug.Log("music box interact");
-        if (clip != null)
+        //transform.position = Vector3.forward * Time.deltaTime;
+        if (SoundManager.Instance != null)
         {
-            audioSource.Play();
-            if (SoundManager.Instance != null)
-            {
-                SoundManager.Instance.EmitSound(transform.position, soundRange);
-                SoundManager.Instance.RegisterSoundPosition(transform.position);
-            }
-            Invoke(nameof(StopAudio), 10f);
+            SoundManager.Instance.PlaySound(transform.position, soundRange, "SoundBoxClip");
         }
-        else
-        {
-            Debug.Log("Clip is null");
-        }
-    }
-
-    private void StopAudio()
-    {
-        audioSource.Stop();
-        SoundManager.Instance?.ClearSoundPositions();
     }
 }
