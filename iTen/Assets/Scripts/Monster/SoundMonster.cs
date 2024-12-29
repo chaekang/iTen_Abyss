@@ -19,12 +19,16 @@ public class SoundMonster : MonoBehaviour
     private Vector3? currentTarget;
     private bool isChasing = false;
 
+    private float wanderTimer = 0f;
+    private float wanderInterval = 20f; // 랜덤으로 걷는 간격
+
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-
         animator = GetComponent<Animator>();
-        SetWalkingState(0); // Walking
+
+        SetWalkingState(0); // Idle 초기 상태
+        StartCoroutine(WanderRandomly());
     }
 
     public void OnSoundHeard(Vector3 soundPos)
@@ -45,6 +49,7 @@ public class SoundMonster : MonoBehaviour
             isChasing = true;
             currentState = MonsterState.Run;
             animator.SetInteger("isWalking", 1);
+            StopCoroutine(WanderRandomly());
             StartCoroutine(UpdateChasingTarget());
         }
     }
@@ -71,6 +76,7 @@ public class SoundMonster : MonoBehaviour
         isChasing = false;
         currentTarget = null;
         SetWalkingState(0);
+        StartCoroutine(WanderRandomly());
     }
 
     public void SetWalkingState(int walkingState)
@@ -79,7 +85,6 @@ public class SoundMonster : MonoBehaviour
 
         if (walkingState == 1 && currentState != MonsterState.Run)
         {
-            // 뛰기 전에 Idle을 잠시 거쳐 가도록 설정
             StartCoroutine(SwitchToRunAfterIdle());
         }
         else if (walkingState == 0)
@@ -95,6 +100,29 @@ public class SoundMonster : MonoBehaviour
         yield return new WaitForSeconds(0.2f); // 잠시 멈춘 후
         animator.SetInteger("isWalking", 1);   // Run 상태로 전환
         currentState = MonsterState.Run;
+    }
+
+    private IEnumerator WanderRandomly()
+    {
+        while (!isChasing) // 추적 중이 아닐 때만 랜덤 걷기 수행
+        {
+            wanderTimer += Time.deltaTime;
+            if (wanderTimer >= wanderInterval)
+            {
+                Vector3 randomDirection = Random.insideUnitSphere * 30f; // 랜덤 방향 설정
+                randomDirection += transform.position;
+
+                if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, 10f, NavMesh.AllAreas))
+                {
+                    agent.SetDestination(hit.position);
+                    animator.SetInteger("isWalking", 1); // 걷는 애니메이션 활성화
+                    currentState = MonsterState.Walk;
+                }
+
+                wanderTimer = 0f;
+            }
+            yield return null;
+        }
     }
 
     public void TriggerAttack()
