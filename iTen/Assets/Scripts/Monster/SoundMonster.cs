@@ -12,15 +12,19 @@ public enum MonsterState
 
 public class SoundMonster : MonoBehaviour
 {
+    private float detectionRadius = 5f;
+    public LayerMask playerLayer;
+
     private Animator animator;
     private MonsterState currentState;
 
     private NavMeshAgent agent;
     private Vector3? currentTarget;
     private bool isChasing = false;
+    private bool isAttacking = false;
+    private bool isDetect = false;
 
-    private float wanderTimer = 0f;
-    private float wanderInterval = 20f; // 랜덤으로 걷는 간격
+    private Transform detectedPlayer;
 
     private void Start()
     {
@@ -104,56 +108,141 @@ public class SoundMonster : MonoBehaviour
 
     private IEnumerator WanderRandomly()
     {
-        while (!isChasing) // 추적 중이 아닐 때만 랜덤 걷기 수행
+        while (!isChasing)
         {
-            wanderTimer += Time.deltaTime;
-            if (wanderTimer >= wanderInterval)
+            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
             {
-                Vector3 randomDirection = Random.insideUnitSphere * 30f; // 랜덤 방향 설정
+                Vector3 randomDirection = Random.insideUnitSphere * 50f;
                 randomDirection += transform.position;
 
                 if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, 10f, NavMesh.AllAreas))
                 {
                     agent.SetDestination(hit.position);
-                    animator.SetInteger("isWalking", 1); // 걷는 애니메이션 활성화
-                    currentState = MonsterState.Walk;
+                    SetWalkingState(0);
                 }
-
-                wanderTimer = 0f;
+                else
+                {
+                    TriggerWatch();
+                }
             }
+
             yield return null;
+        }
+    }
+
+    private IEnumerator HandlePostAttack()
+    {
+        Debug.Log("HandlePostAttack");
+        yield return new WaitForSeconds(2.1f);
+
+        detectedPlayer = null;
+        isAttacking = false;
+        agent.isStopped = false;
+
+        TriggerWatch();
+        StartCoroutine(DetectionCoolTime());
+
+        if (!isChasing)
+        {
+            StartCoroutine(WanderRandomly());
         }
     }
 
     public void TriggerAttack()
     {
+        if (isAttacking || detectedPlayer == null)
+        {
+            return;
+        }
+
+        isAttacking = true;
+        Debug.Log("TriggerAttack");
+
+        Vector3 directionToPlayer = (detectedPlayer.position - transform.position).normalized;
+        directionToPlayer.y = 0;
+        transform.rotation = Quaternion.LookRotation(directionToPlayer);
+
+        agent.isStopped = true;
+
         animator.SetTrigger("isAttack");
         currentState = MonsterState.Attack;
+
+        StartCoroutine(HandlePostAttack());
     }
+
 
     public void TriggerWatch()
     {
+        if (isAttacking || currentState == MonsterState.Watch)
+        {
+            return;
+        }
+
+        agent.isStopped = true;
         animator.SetTrigger("isWatching");
         currentState = MonsterState.Watch;
+        StartCoroutine (HandlePostWatch());
+    }
+
+    private IEnumerator HandlePostWatch()
+    {
+        yield return new WaitForSeconds(3.1f);
+
+        agent.isStopped = false;
+
+        if (!isChasing && !isAttacking)
+        {
+            StartCoroutine(WanderRandomly());
+        }
+    }
+
+    private IEnumerator DetectionCoolTime()
+    {
+        isDetect = true;
+        yield return new WaitForSeconds(10f);
+        isDetect = false;
+    }
+
+    private void DetectPlayer()
+    {
+        if (isDetect || isAttacking)
+        {
+            Debug.Log("Pass Detecting");
+            return;
+        }
+
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, playerLayer);
+
+        if (hitColliders.Length > 0)
+        {
+            detectedPlayer = hitColliders[0].transform;
+            if (!isAttacking)
+            {
+                TriggerAttack();
+            }
+        }
+        else
+        {
+            detectedPlayer = null;
+            if (!isChasing)
+            {
+                TriggerWatch();
+            }
+        }
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W))
+        DetectPlayer();
+
+        if (detectedPlayer != null && !isAttacking)
         {
-            SetWalkingState(0); // Walking
-        }
-        else if (Input.GetKeyDown(KeyCode.A))
-        {
-            SetWalkingState(1); // Running
-        }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            TriggerAttack(); // Attack
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            TriggerWatch(); // Watch
+            agent.SetDestination(detectedPlayer.position);
+
+            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+            {
+                TriggerAttack();
+            }
         }
 
         if (isChasing && currentTarget.HasValue)
