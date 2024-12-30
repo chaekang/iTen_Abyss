@@ -1,0 +1,426 @@
+fileFormatVersion: 2
+guid: e673ad51acb60a64784c89167af902fc
+timeCreated: 1498212824
+licenseType: Store
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: Abdomen
+    100002: Bone002
+    100004: Bone003
+    100006: Bone004
+    100008: Bone005
+    100010: Bone006
+    100012: Bone007
+    100014: Bone010
+    100016: Bone011
+    100018: Bone012
+    100020: Bone013
+    100022: Bone014
+    100024: Bone015
+    100026: Bone018
+    100028: Bone019
+    100030: Bone020
+    100032: Bone021
+    100034: Bone022
+    100036: Bone023
+    100038: Bone026
+    100040: Bone027
+    100042: Bone028
+    100044: Bone029
+    100046: Bone030
+    100048: Bone031
+    100050: Bone034
+    100052: Bone035
+    100054: Bone036
+    100056: Bone037
+    100058: Bone038
+    100060: Bone041
+    100062: Bone042
+    100064: Bone049
+    100066: Bone050
+    100068: Bone051
+    100070: Bone052
+    100072: Bone053
+    100074: Bone054
+    100076: Bone055
+    100078: Bone057
+    100080: Bone058
+    100082: Bone059
+    100084: Bone060
+    100086: Bone061
+    100088: Bone062
+    100090: Bone064
+    100092: Bone065
+    100094: Bone066
+    100096: Bone067
+    100098: Bone068
+    100100: Bone069
+    100102: Bone071
+    100104: Bone072
+    100106: Bone073
+    100108: Bone074
+    100110: Bone075
+    100112: Bone076
+    100114: Bone078
+    100116: Bone079
+    100118: Bone080
+    100120: Bone081
+    100122: Bone082
+    100124: Bone083
+    100126: Cephalothorax
+    100128: Chelicera_L
+    100130: Chelicera_R
+    100132: Coxaback_L
+    100134: Coxaback_R
+    100136: Coxafore_L
+    100138: Coxafore_R
+    100140: Coxahalfback_L
+    100142: Coxahalfback_R
+    100144: Coxahalffore_L
+    100146: Coxahalffore_R
+    100148: Pedipalp_L
+    100150: Pedipalp_R
+    100152: Point001
+    100154: Root
+    100156: Spider
+    100158: //RootNode
+    100160: spider_Main_ctrl
+    400000: Abdomen
+    400002: Bone002
+    400004: Bone003
+    400006: Bone004
+    400008: Bone005
+    400010: Bone006
+    400012: Bone007
+    400014: Bone010
+    400016: Bone011
+    400018: Bone012
+    400020: Bone013
+    400022: Bone014
+    400024: Bone015
+    400026: Bone018
+    400028: Bone019
+    400030: Bone020
+    400032: Bone021
+    400034: Bone022
+    400036: Bone023
+    400038: Bone026
+    400040: Bone027
+    400042: Bone028
+    400044: Bone029
+    400046: Bone030
+    400048: Bone031
+    400050: Bone034
+    400052: Bone035
+    400054: Bone036
+    400056: Bone037
+    400058: Bone038
+    400060: Bone041
+    400062: Bone042
+    400064: Bone049
+    400066: Bone050
+    400068: Bone051
+    400070: Bone052
+    400072: Bone053
+    400074: Bone054
+    400076: Bone055
+    400078: Bone057
+    400080: Bone058
+    400082: Bone059
+    400084: Bone060
+    400086: Bone061
+    400088: Bone062
+    400090: Bone064
+    400092: Bone065
+    400094: Bone066
+    400096: Bone067
+    400098: Bone068
+    400100: Bone069
+    400102: Bone071
+    400104: Bone072
+    400106: Bone073
+    400108: Bone074
+    400110: Bone075
+    400112: Bone076
+    400114: Bone078
+    400116: Bone079
+    400118: Bone080
+    400120: Bone081
+    400122: Bone082
+    400124: Bone083
+    400126: Cephalothorax
+    400128: Chelicera_L
+    400130: Chelicera_R
+    400132: Coxaback_L
+    400134: Coxaback_R
+    400136: Coxafore_L
+    400138: Coxafore_R
+    400140: Coxahalfback_L
+    400142: Coxahalfback_R
+    400144: Coxahalffore_L
+    400146: Coxahalffore_R
+    400148: Pedipalp_L
+    400150: Pedipalp_R
+    400152: Point001
+    400154: Root
+    400156: Spider
+    400158: //RootNode
+    400160: spider_Main_ctrl
+    4300000: Spider
+    7400000: turnleft
+    9500000: //RootNode
+    13700000: Spider
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: turnleft
+      takeName: Take 001
+      firstFrame: 184
+      lastFrame: 214
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Point001
+        weight: 1
+      - path: Spider
+        weight: 1
+      - path: spider_Main_ctrl
+        weight: 1
+      - path: spider_Main_ctrl/Root
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Abdomen
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Chelicera_L
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Chelicera_L/Bone049
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Chelicera_L/Bone049/Bone050
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Chelicera_R
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Chelicera_R/Bone041
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Chelicera_R/Bone041/Bone042
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxaback_L
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxaback_L/Bone078
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxaback_L/Bone078/Bone079
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxaback_L/Bone078/Bone079/Bone080
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxaback_L/Bone078/Bone079/Bone080/Bone081
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxaback_L/Bone078/Bone079/Bone080/Bone081/Bone082
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxaback_L/Bone078/Bone079/Bone080/Bone081/Bone082/Bone083
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxaback_R
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxaback_R/Bone002
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxaback_R/Bone002/Bone003
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxaback_R/Bone002/Bone003/Bone004
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxaback_R/Bone002/Bone003/Bone004/Bone005
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxaback_R/Bone002/Bone003/Bone004/Bone005/Bone006
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxaback_R/Bone002/Bone003/Bone004/Bone005/Bone006/Bone007
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxafore_L
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxafore_L/Bone057
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxafore_L/Bone057/Bone058
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxafore_L/Bone057/Bone058/Bone059
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxafore_L/Bone057/Bone058/Bone059/Bone060
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxafore_L/Bone057/Bone058/Bone059/Bone060/Bone061
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxafore_L/Bone057/Bone058/Bone059/Bone060/Bone061/Bone062
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxafore_R
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxafore_R/Bone026
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxafore_R/Bone026/Bone027
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxafore_R/Bone026/Bone027/Bone028
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxafore_R/Bone026/Bone027/Bone028/Bone029
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxafore_R/Bone026/Bone027/Bone028/Bone029/Bone030
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxafore_R/Bone026/Bone027/Bone028/Bone029/Bone030/Bone031
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalfback_L
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalfback_L/Bone071
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalfback_L/Bone071/Bone072
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalfback_L/Bone071/Bone072/Bone073
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalfback_L/Bone071/Bone072/Bone073/Bone074
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalfback_L/Bone071/Bone072/Bone073/Bone074/Bone075
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalfback_L/Bone071/Bone072/Bone073/Bone074/Bone075/Bone076
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalfback_R
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalfback_R/Bone010
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalfback_R/Bone010/Bone011
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalfback_R/Bone010/Bone011/Bone012
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalfback_R/Bone010/Bone011/Bone012/Bone013
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalfback_R/Bone010/Bone011/Bone012/Bone013/Bone014
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalfback_R/Bone010/Bone011/Bone012/Bone013/Bone014/Bone015
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalffore_L
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalffore_L/Bone064
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalffore_L/Bone064/Bone065
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalffore_L/Bone064/Bone065/Bone066
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalffore_L/Bone064/Bone065/Bone066/Bone067
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalffore_L/Bone064/Bone065/Bone066/Bone067/Bone068
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalffore_L/Bone064/Bone065/Bone066/Bone067/Bone068/Bone069
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalffore_R
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalffore_R/Bone018
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalffore_R/Bone018/Bone019
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalffore_R/Bone018/Bone019/Bone020
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalffore_R/Bone018/Bone019/Bone020/Bone021
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalffore_R/Bone018/Bone019/Bone020/Bone021/Bone022
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Coxahalffore_R/Bone018/Bone019/Bone020/Bone021/Bone022/Bone023
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Pedipalp_L
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Pedipalp_L/Bone051
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Pedipalp_L/Bone051/Bone052
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Pedipalp_L/Bone051/Bone052/Bone053
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Pedipalp_L/Bone051/Bone052/Bone053/Bone054
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Pedipalp_L/Bone051/Bone052/Bone053/Bone054/Bone055
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Pedipalp_R
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Pedipalp_R/Bone034
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Pedipalp_R/Bone034/Bone035
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Pedipalp_R/Bone034/Bone035/Bone036
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Pedipalp_R/Bone034/Bone035/Bone036/Bone037
+        weight: 1
+      - path: spider_Main_ctrl/Root/Cephalothorax/Pedipalp_R/Bone034/Bone035/Bone036/Bone037/Bone038
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: spider_Main_ctrl
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 29330
+  packageName: Wolf Spider Animated
+  packageVersion: 5.3.8p2
+  assetPath: Assets/Spider/Animations/spider@turnleft.FBX
+  uploadId: 230464
