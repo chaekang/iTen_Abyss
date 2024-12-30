@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 368f3713b0b46d64b8c51d1895698c73
+timeCreated: 1498163991
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 29330
+  packageName: Wolf Spider Animated
+  packageVersion: 5.3.8p2
+  assetPath: Assets/Spider/Materials/Skybox.mat
+  uploadId: 230464

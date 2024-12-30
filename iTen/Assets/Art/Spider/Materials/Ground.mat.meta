@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 28960d391903acd49a76febc96c194d3
+timeCreated: 1497906985
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 29330
+  packageName: Wolf Spider Animated
+  packageVersion: 5.3.8p2
+  assetPath: Assets/Spider/Materials/Ground.mat
+  uploadId: 230464
