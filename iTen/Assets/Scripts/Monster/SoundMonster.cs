@@ -5,9 +5,9 @@ using UnityEngine.AI;
 
 public enum MonsterState
 {
-    Watch,
-    Walk,
-    Run,
+    Idle,
+    Patrol,
+    Chase,
     Attack
 }
 
@@ -52,7 +52,7 @@ public class SoundMonster : MonoBehaviour
         {
             agent.SetDestination(currentTarget.Value);
             isChasing = true;
-            currentState = MonsterState.Run;
+            currentState = MonsterState.Chase;
             animator.SetInteger("isWalking", 1);
             StopCoroutine(WanderRandomly());
             StartCoroutine(UpdateChasingTarget());
@@ -88,23 +88,23 @@ public class SoundMonster : MonoBehaviour
     {
         animator.SetInteger("isWalking", walkingState);
 
-        if (walkingState == 1 && currentState != MonsterState.Run)
+        if (walkingState == 1 && currentState != MonsterState.Chase)
         {
             StartCoroutine(SwitchToRunAfterIdle());
         }
         else if (walkingState == 0)
         {
-            currentState = MonsterState.Walk;
+            currentState = MonsterState.Patrol;
         }
     }
 
     private IEnumerator SwitchToRunAfterIdle()
     {
-        currentState = MonsterState.Watch;
-        animator.SetInteger("isWalking", 0); // 잠시 Idle 상태 유지
+        currentState = MonsterState.Idle;
+        animator.SetInteger("isWalking", 0);   // 잠시 Idle 상태 유지
         yield return new WaitForSeconds(0.2f); // 잠시 멈춘 후
         animator.SetInteger("isWalking", 1);   // Run 상태로 전환
-        currentState = MonsterState.Run;
+        currentState = MonsterState.Chase;
     }
 
     private IEnumerator WanderRandomly()
@@ -180,14 +180,14 @@ public class SoundMonster : MonoBehaviour
 
     public void TriggerWatch()
     {
-        if (isAttacking || currentState == MonsterState.Watch)
+        if (isAttacking || currentState == MonsterState.Idle)
         {
             return;
         }
 
         agent.isStopped = true;
         animator.SetTrigger("isWatching");
-        currentState = MonsterState.Watch;
+        currentState = MonsterState.Idle;
         StartCoroutine (HandlePostWatch());
     }
 
