@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2079333321425528251}
   - component: {fileID: 6521591638165099210}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HP_Grating_Corridor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24,6 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1698022050746334977}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -34,7 +35,6 @@ Transform:
   - {fileID: 6817493758851730482}
   - {fileID: 3958080079564781742}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!205 &6521591638165099210
 LODGroup:
@@ -72,7 +72,7 @@ GameObject:
   - component: {fileID: 1668912631527507073}
   - component: {fileID: 1474384117358490782}
   - component: {fileID: 4711721332029769555}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HP_Grating_Door_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,13 +86,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6563532825605269297}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.00000011920929, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3958080079564781742}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1474384117358490782
 MeshFilter:
@@ -119,6 +119,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -155,7 +157,7 @@ GameObject:
   - component: {fileID: 5318183943977670708}
   - component: {fileID: 4413800140653154741}
   - component: {fileID: 9098127227545586814}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HP_Grating_Corridor_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -169,13 +171,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6614551401209361178}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2079333321425528251}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4413800140653154741
 MeshFilter:
@@ -202,6 +204,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -241,7 +245,7 @@ GameObject:
   - component: {fileID: 1564631474448252217}
   - component: {fileID: 8828377966838215440}
   - component: {fileID: 9002046458359914944}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HP_Grating_Door_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -255,6 +259,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8357499936681460000}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.041747093, y: 0.070877604, z: 1.8808383}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -262,7 +267,6 @@ Transform:
   m_Children:
   - {fileID: 1668912631527507073}
   m_Father: {fileID: 2079333321425528251}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3237996217729180499
 MeshFilter:
@@ -289,6 +293,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -322,9 +328,17 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8357499936681460000}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 0.054233965, y: 2.1522732, z: 1.2956074}
   m_Center: {x: 0.017363792, y: 1.0769689, z: -0.63783926}
 --- !u!114 &8828377966838215440
@@ -350,9 +364,17 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8357499936681460000}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 1
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 1.8773746, y: 2.1522732, z: 1.8397179}
   m_Center: {x: 0.006931305, y: 1.0769689, z: -0.62429154}
 --- !u!1 &8683000555418344775
@@ -365,7 +387,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6954513578774034575}
   - component: {fileID: 6113783936682233528}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HP_Grating_Corridor_Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -379,13 +401,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8683000555418344775}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2079333321425528251}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &6113783936682233528
 MeshCollider:
@@ -395,9 +417,17 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8683000555418344775}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 4
+  serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5542537308688514687, guid: f539d4a5efeae174bad064d58c73f9f3, type: 3}
@@ -412,7 +442,7 @@ GameObject:
   - component: {fileID: 6817493758851730482}
   - component: {fileID: 5512653925207768888}
   - component: {fileID: 666910099520961878}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HP_Grating_Corridor_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -426,13 +456,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9126141979470572591}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2079333321425528251}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5512653925207768888
 MeshFilter:
@@ -459,6 +489,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

@@ -45,6 +45,7 @@ public class SoundManager : MonoBehaviour
     {
         if (soundClips.ContainsKey(clipKey))
         {
+            Debug.Log("PlaySound");
             AudioClip clip = soundClips[clipKey];
             audioSource.clip = clip;
             audioSource.spatialBlend = 1.0f;
@@ -78,25 +79,20 @@ public class SoundManager : MonoBehaviour
 
         foreach (Collider monster in hitMonsters)
         {
-            RaycastHit hit;
-            if (Physics.Linecast(pos, monster.transform.position, out hit))
+            SoundMonster soundMonster = monster.GetComponent<SoundMonster>();
+            if (soundMonster != null)
             {
-                if (hit.collider.CompareTag("Monster"))
-                {
-                    SoundMonster soundMonster = monster.GetComponent<SoundMonster>();
-                    if (soundMonster != null)
-                    {
-                        Debug.Log("EmitSound");
-                        soundMonster.OnSoundHeard(pos);
-                    }
-                }
+                Debug.Log("EmitSound triggered.");
+                soundMonster.OnSoundHeard(pos);
             }
         }
     }
 
+
+
     private IEnumerator EmitSoundContinuously(float range)
     {
-        while (isFollowing&& followTarget != null)
+        while (isFollowing && followTarget != null)
         {
             EmitSound(followTarget.position, range);
             yield return new WaitForSeconds(0.2f);
@@ -108,12 +104,13 @@ public class SoundManager : MonoBehaviour
         Gizmos.color = Color.green;
         foreach (var pos in soundPos)
         {
-            Gizmos.DrawWireSphere(pos, 30f);
+            Gizmos.DrawWireSphere(pos, 1000f);
         }
     }
 
     public void RegisterSoundPosition(Vector3 pos)
     {
+        Debug.Log("RegisterSoundPos");
         soundPos.Add(pos);
     }
 

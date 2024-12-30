@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2746487057267261196}
   - component: {fileID: 7091390653663299015}
   - component: {fileID: 8334301073732915496}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HP_Corridor_Door_01_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 156719427551064230}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.000000009536743, y: 0, z: -0.00000030517577}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1696251902864373953}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7091390653663299015
 MeshFilter:
@@ -58,6 +58,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -96,7 +98,7 @@ GameObject:
   - component: {fileID: 3926167484108675450}
   - component: {fileID: 4417857080936677407}
   - component: {fileID: 2478002554343632776}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HP_Corridor_Door_01_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -110,6 +112,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1328230886043543112}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.10327721, y: 0.021359503, z: -3.1902847}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -118,7 +121,6 @@ Transform:
   - {fileID: 886581303427667360}
   - {fileID: 2746487057267261196}
   m_Father: {fileID: 8705721045761378364}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3926167484108675450
 MeshFilter:
@@ -145,6 +147,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -179,9 +183,17 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1328230886043543112}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 0.2221982, y: 2.3693242, z: 1.2000024}
   m_Center: {x: 0.01881554, y: 1.1846621, z: 0.6000012}
 --- !u!1 &3143573736095466344
@@ -195,7 +207,7 @@ GameObject:
   - component: {fileID: 886581303427667360}
   - component: {fileID: 5926626400798183004}
   - component: {fileID: 3200470276590598027}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HP_Corridor_Door_01_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -209,13 +221,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3143573736095466344}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.000000009536743, y: 0, z: -0.00000030517577}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1696251902864373953}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5926626400798183004
 MeshFilter:
@@ -242,6 +254,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -279,7 +293,7 @@ GameObject:
   - component: {fileID: 7989619236912488099}
   - component: {fileID: 6414707241125861490}
   - component: {fileID: 8251367401678285707}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HP_Corridor_Door_02_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,13 +307,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4746950793838803621}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.000000009536743, y: 0, z: -0.000000076293944}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8286783784315315467}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6414707241125861490
 MeshFilter:
@@ -326,6 +340,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -366,7 +382,7 @@ GameObject:
   - component: {fileID: 7672465645122195832}
   - component: {fileID: 6563687984714152619}
   - component: {fileID: 1925498310012499496}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HP_Corridor_Door_02_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -380,6 +396,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6263633768007829386}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.10327721, y: 0.021359503, z: -0.7995453}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -388,7 +405,6 @@ Transform:
   - {fileID: 7989619236912488099}
   - {fileID: 3418542687144270367}
   m_Father: {fileID: 8705721045761378364}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3189504020204838575
 MeshFilter:
@@ -415,6 +431,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -449,9 +467,17 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6263633768007829386}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 0.07073212, y: 2.3693242, z: 1.2000024}
   m_Center: {x: 0.016508102, y: 1.1846621, z: -0.6000012}
 --- !u!65 &6563687984714152619
@@ -462,9 +488,17 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6263633768007829386}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 1
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 2.4872608, y: 2.3693242, z: 1.6542912}
   m_Center: {x: 0.035487175, y: 1.1846621, z: -0.5084162}
 --- !u!114 &1925498310012499496
@@ -492,7 +526,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4248367896231329097}
   - component: {fileID: 3398207260957369597}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HP_Corridor_Double_Door_Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -506,13 +540,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7455481913982803427}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8705721045761378364}
-  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &3398207260957369597
 MeshCollider:
@@ -522,9 +556,17 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7455481913982803427}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 4
+  serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 6169185527648667866, guid: edcf9989444b7ff4e80f5d51a3fe5ad9, type: 3}
@@ -539,7 +581,7 @@ GameObject:
   - component: {fileID: 1882503766814123674}
   - component: {fileID: 7469126049193376277}
   - component: {fileID: 4814416423746051797}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HP_Corridor_Double_Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -553,13 +595,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7830638514224885794}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8705721045761378364}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7469126049193376277
 MeshFilter:
@@ -586,6 +628,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -624,7 +668,7 @@ GameObject:
   - component: {fileID: 3418542687144270367}
   - component: {fileID: 7138905012138704543}
   - component: {fileID: 1414795974602351417}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HP_Corridor_Door_02_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -638,13 +682,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8150614603549989012}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.000000009536743, y: 0, z: -0.000000076293944}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8286783784315315467}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7138905012138704543
 MeshFilter:
@@ -671,6 +715,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -707,7 +753,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8705721045761378364}
   - component: {fileID: 4506678826158358349}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HP_Corridor_Double_Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -721,6 +767,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8330321780854985350}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -731,7 +778,6 @@ Transform:
   - {fileID: 1882503766814123674}
   - {fileID: 4248367896231329097}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!205 &4506678826158358349
 LODGroup:

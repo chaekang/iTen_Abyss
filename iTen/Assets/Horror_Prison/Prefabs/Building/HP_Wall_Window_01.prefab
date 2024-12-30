@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4470304690871611186}
   - component: {fileID: 5694824861563027289}
   - component: {fileID: 5484449393821510317}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HP_Wall_Window_01_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,13 +26,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2231231108368214088}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3343653451044702599}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4470304690871611186
 MeshFilter:
@@ -59,6 +59,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -94,9 +96,17 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2231231108368214088}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 0
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 0.5000013, y: 4, z: 4}
   m_Center: {x: -0.24999934, y: 2, z: -2}
 --- !u!1 &2678757451820897085
@@ -109,7 +119,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3343653451044702599}
   - component: {fileID: 7511182501588106998}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HP_Wall_Window_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,6 +133,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2678757451820897085}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -132,7 +143,6 @@ Transform:
   - {fileID: 3127248574333519537}
   - {fileID: 5615461694166628670}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!205 &7511182501588106998
 LODGroup:
@@ -170,7 +180,7 @@ GameObject:
   - component: {fileID: 4088728059907435828}
   - component: {fileID: 3007728530706010460}
   - component: {fileID: 3374174496026359969}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HP_Wall_Window_01_Glass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -184,13 +194,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7401554873189821982}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3343653451044702599}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3007728530706010460
 MeshFilter:
@@ -217,6 +227,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -253,7 +265,7 @@ GameObject:
   - component: {fileID: 5615461694166628670}
   - component: {fileID: 5005124016087049769}
   - component: {fileID: 5521597132174134895}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HP_Wall_Window_01_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -267,13 +279,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8532720446790536899}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3343653451044702599}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5005124016087049769
 MeshFilter:
@@ -300,6 +312,8 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
