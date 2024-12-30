@@ -28,7 +28,6 @@ public class SoundManager : MonoBehaviour
 
         audioSource = GetComponent<AudioSource>();
         LoadClips();
-        Debug.Log($"Monster LayerMask value: {mosterLayer.value}");
     }
 
     // Resources에 있는 오디오 가져와서 딕셔너리에 할당

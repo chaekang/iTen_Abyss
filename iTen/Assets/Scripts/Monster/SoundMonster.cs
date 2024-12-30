@@ -1,3 +1,4 @@
+using NUnit.Framework.Internal.Commands;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -12,7 +13,7 @@ public enum MonsterState
 
 public class SoundMonster : MonoBehaviour
 {
-    private float detectionRadius = 5f;
+    private float detectionRadius = 20f;
     public LayerMask playerLayer;
 
     private Animator animator;
@@ -155,6 +156,12 @@ public class SoundMonster : MonoBehaviour
             return;
         }
 
+        float distanceToPlayer = Vector3.Distance(transform.position, detectedPlayer.position);
+        if (distanceToPlayer > agent.stoppingDistance)
+        {
+            return;
+        }
+
         isAttacking = true;
         Debug.Log("TriggerAttack");
 
@@ -207,28 +214,59 @@ public class SoundMonster : MonoBehaviour
     {
         if (isDetect || isAttacking)
         {
-            Debug.Log("Pass Detecting");
             return;
         }
 
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, playerLayer);
 
-        if (hitColliders.Length > 0)
+        foreach (Collider collider in hitColliders)
         {
-            detectedPlayer = hitColliders[0].transform;
-            if (!isAttacking)
+            if (((1 << collider.gameObject.layer) & playerLayer) == 0)
             {
-                TriggerAttack();
+                continue;
+            }
+
+            Transform potentialPlayer = collider.transform;
+            Vector3 directionToPlayer = (potentialPlayer.position - transform.position).normalized;
+            float distanceToPlayer = Vector3.Distance(transform.position, potentialPlayer.position);
+
+            int wallCount = DetectWallsBetween(transform.position, potentialPlayer.position);
+
+            float adjustRad = detectionRadius - wallCount * 5f;
+            if (distanceToPlayer <= adjustRad)
+            {
+                detectedPlayer = potentialPlayer;
+                Debug.Log($"Player detected. Wall count: {wallCount}, Adjusted radius: {adjustRad}");
+
+                if (!isAttacking)
+                {
+                    TriggerAttack();
+                }
+                return;
             }
         }
-        else
+        detectedPlayer = null;
+        if (!isChasing)
         {
-            detectedPlayer = null;
-            if (!isChasing)
+            TriggerWatch();
+        }
+    }
+
+    private int DetectWallsBetween(Vector3 start, Vector3 end)
+    {
+        Vector3 direction = (end - start).normalized;
+        float distance = Vector3.Distance(start, end);
+        RaycastHit[] hits = Physics.RaycastAll(start, direction, distance);
+
+        int wallCount = 0;
+        foreach (var hit in hits)
+        {
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Wall"))
             {
-                TriggerWatch();
+                wallCount++;
             }
         }
+        return wallCount;
     }
 
     private void Update()
@@ -247,7 +285,12 @@ public class SoundMonster : MonoBehaviour
 
         if (isChasing && currentTarget.HasValue)
         {
-            Debug.Log($"Monster is chasing target at {currentTarget.Value}");
+            agent.SetDestination(currentTarget.Value);
+
+            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+            {
+                StopChasing();
+            }
         }
     }
 }

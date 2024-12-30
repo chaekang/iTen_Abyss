@@ -5,7 +5,7 @@ public class SoundBox : ItemObject
     private Transform player;
     private bool isDropped = false;
     public bool IsDropped => isDropped;
-    public float soundRange = 300f;
+    private float soundRange = 100f;
 
     private void Awake()
     {
