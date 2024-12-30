@@ -4,5 +4,12 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Jiyun/Start.unity
+    guid: 3362e0f71039c574b88dc0b4ab79e3c9
+  - enabled: 1
+    path: Assets/Scenes/Jiyun/Lobby.unity
+    guid: 36e066577610d63409da604c838bc8a5
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0
