@@ -11,5 +11,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Jiyun/Lobby.unity
     guid: 36e066577610d63409da604c838bc8a5
+  - enabled: 1
+    path: Assets/Scenes/Jiyun/Loading.unity
+    guid: 694af4486ee568a47b84a7cf02e7565f
+  - enabled: 1
+    path: Assets/Scenes/Jiyun/PrisonDemo(copy).unity
+    guid: a218b70e2d24dde429fd91e02e85a4b2
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0
