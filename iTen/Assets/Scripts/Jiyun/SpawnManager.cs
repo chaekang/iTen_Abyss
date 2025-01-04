@@ -8,6 +8,8 @@ public class SpawnManager : MonoBehaviour
 
     public static SpawnManager Instance { get; private set; }
 
+    public Spawn spawn;
+
     void Awake()
     {
         if (Instance == null)

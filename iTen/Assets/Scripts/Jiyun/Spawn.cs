@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine;
 
 public class Spawn : MonoBehaviourPunCallbacks
 {
@@ -12,11 +10,11 @@ public class Spawn : MonoBehaviourPunCallbacks
     {
         //PhotonNetwork.SerializationRate = 30;
         //PhotonNetwork.SendRate = 30;
-        
-        SpawnPlayer();
+
+        //SpawnPlayer();
     }
 
-    void SpawnPlayer()
+    public void SpawnPlayer()
     {
         //int spawnIndex = PhotonNetwork.LocalPlayer.ActorNumber - 1;
         Transform spawnPoint = SpawnManager.Instance.GetSpawnPoint(0);
@@ -24,24 +22,24 @@ public class Spawn : MonoBehaviourPunCallbacks
         if (spawnPoint != null)
         {
             //GameObject player = PhotonNetwork.Instantiate("player", spawnPoint.position, spawnPoint.rotation, 0);
-            Instantiate(player, spawnPoint.position, spawnPoint.rotation);
-        }
-    }    
-
-    /*public override void OnPlayerEnteredRoom(Player newPlayer)
-    {
-        base.OnPlayerEnteredRoom(newPlayer);
-
-        if (PhotonNetwork.IsMasterClient)
-        {
-            photonView.RPC("UpdateAllPlayersSpawn", RpcTarget.All);
+            player = Instantiate(player, spawnPoint.position, spawnPoint.rotation);
         }
     }
 
-    [PunRPC]
-    void UpdateAllPlayersSpawn()
-    {
-        SpawnPlayer();
-    }
-    */
+    //public override void OnPlayerEnteredRoom(Player newPlayer)
+    //{
+    //    base.OnPlayerEnteredRoom(newPlayer);
+
+    //    if (PhotonNetwork.IsMasterClient)
+    //    {
+    //        photonView.RPC("UpdateAllPlayersSpawn", RpcTarget.All);
+    //    }
+    //}
+
+    //[PunRPC]
+    //void UpdateAllPlayersSpawn()
+    //{
+    //    SpawnPlayer();
+    //}
+
 }
