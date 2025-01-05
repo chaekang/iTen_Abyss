@@ -111,24 +111,75 @@ public class SoundMonster : MonoBehaviour
     {
         while (!isChasing)
         {
-            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
-            {
-                Vector3 randomDirection = Random.insideUnitSphere * 50f;
-                randomDirection += transform.position;
+            Transform curTarget = FindClosestPlayer();
 
-                if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, 10f, NavMesh.AllAreas))
+            if (curTarget != null)
+            {
+                float distanceToTarget = Vector3.Distance(transform.position, curTarget.position);
+
+                if (distanceToTarget <= 30f)
                 {
-                    agent.SetDestination(hit.position);
-                    SetWalkingState(0);
+                    if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+                    {
+                        Vector3 randomDirection = Random.insideUnitSphere * 50f;
+                        randomDirection += transform.position;
+
+                        if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, 10f, NavMesh.AllAreas))
+                        {
+                            agent.SetDestination(hit.position);
+                            SetWalkingState(0);
+                        }
+                        else
+                        {
+                            TriggerWatch();
+                        }
+                    }
                 }
                 else
                 {
-                    TriggerWatch();
+                    //Vector3 directionToTarget = (curTarget.position - transform.position).normalized;
+                    //float maxDistance = Mathf.Min(Vector3.Distance(transform.position, curTarget.position));
+                    Vector3 newPosition = curTarget.position;
+
+                    if (NavMesh.SamplePosition(newPosition, out NavMeshHit hit, 20f, NavMesh.AllAreas))
+                    {
+                        Debug.Log($"Monster is far away from player. Monster is going to {hit.position}");
+                        agent.SetDestination(hit.position);
+                        SetWalkingState(0);
+                    }
+                    else
+                    {
+                        Debug.Log("NavMesh.SamplePosition failed to find a valid position.");
+                    }
                 }
             }
 
             yield return null;
         }
+    }
+
+    private Transform FindClosestPlayer()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        Transform closestPlayer = null;
+        float minDistance=Mathf.Infinity;
+
+        foreach (GameObject player in players)
+        {
+            float dis = Vector3.Distance(transform.position, player.transform.position);
+            if (dis < minDistance)
+            {
+                closestPlayer = player.transform;
+                minDistance = dis;
+            }
+        }
+        return closestPlayer;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, 30f);
     }
 
     private IEnumerator HandlePostAttack()
