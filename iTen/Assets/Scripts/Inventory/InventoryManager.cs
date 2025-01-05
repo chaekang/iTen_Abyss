@@ -6,11 +6,13 @@ public class InventoryManager : MonoBehaviour
 {
     public GameObject inventoryUI;
     public Animator inventoryAnimator;
+    private bool isInventoryOpen = false;
+
     public Slot[] slots;
+    private int selectedSlotIndex = -1;
+
     public Transform player;
     public float pickupRange = 2f;
-    private bool isInventoryOpen = false;
-    private int selectedSlotIndex = -1;
     public LayerMask itemLayer = 8;
 
     private void Start()
@@ -38,12 +40,11 @@ public class InventoryManager : MonoBehaviour
 
             if (Input.GetMouseButtonDown(1) && selectedSlotIndex >= 0)
             {
-                DropItem(selectedSlotIndex);
-                //UseItem(selectedSlotIndex);
+                Debug.Log("아이템 사용 시도");
+                UseItem();
             }
         }
 
-        // .아이템 줍기
         if (Input.GetMouseButtonDown(1))
         {
             TryPickupItem();
@@ -84,16 +85,40 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    private void UseItem(int index)
+    private void UseItem()
     {
-        Slot slot = slots[index];
-        if (slot.HasItem)
+        // selectedSlotIndex가 유효한 값인지 확인
+        if (selectedSlotIndex >= 0 && selectedSlotIndex < slots.Length)
         {
-            slot.UseItem();
-            if (slot.ItemCount <= 0)
+            Slot selectedSlot = slots[selectedSlotIndex];
+
+            // 슬롯이 null인지 확인
+            if (selectedSlot == null)
             {
-                slot.ClearSlot();
+                Debug.LogWarning("선택된 슬롯이 null입니다.");
+                return;
             }
+
+            // 슬롯의 itemData가 null인지 확인
+            if (selectedSlot.itemData == null)
+            {
+                Debug.LogWarning("선택된 슬롯에 아이템이 없습니다.");
+                return;
+            }
+
+            // 아이템을 사용하는 로그
+            Debug.Log($"아이템 사용 시도: {selectedSlot.itemData.itemName}");
+
+            // 아이템을 사용
+            GameObject user = gameObject;
+            selectedSlot.UseItem(user);
+
+            // 사용 후 디버그 로그
+            Debug.Log($"{selectedSlot.itemData.itemName} 아이템이 사용되었습니다.");
+        }
+        else
+        {
+            Debug.LogWarning("잘못된 슬롯 인덱스입니다.");
         }
     }
 
@@ -154,24 +179,5 @@ public class InventoryManager : MonoBehaviour
             }
         }
         return false;
-    }
-
-    private void DropItem(int index)
-    {
-        Slot slot = slots[index];
-        if (slot.HasItem)
-        {
-            Vector3 dropPosition = player.position + player.forward * 3f;
-
-            GameObject droppedItem = Instantiate(slot.currentItem.prefab, dropPosition, Quaternion.identity);
-
-            ItemObject itemObject = droppedItem.GetComponent<ItemObject>();
-            if (itemObject != null)
-            {
-                itemObject.amount = slot.ItemCount;
-                itemObject.OnDrop();
-            }
-        }
-        slot.UseItem();
     }
 }

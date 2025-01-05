@@ -7,9 +7,9 @@ public class Slot : MonoBehaviour
 {
     public Image itemImage;
     public TextMeshProUGUI itemCountText;
-    public ItemData currentItem;
+    public ItemData itemData;
     private int itemCount;
-    public bool HasItem => currentItem != null;
+    public bool HasItem => itemData != null;
     public int ItemCount => itemCount;
 
     private void Start()
@@ -17,9 +17,9 @@ public class Slot : MonoBehaviour
         UpdateUI();
     }
 
-    public void AddItem(ItemData itemData, int amount)
+    public void AddItem(ItemData newItemData, int amount)
     {
-        currentItem = itemData;
+        itemData = newItemData;
         itemCount = amount;
         UpdateUI();
     }
@@ -33,30 +33,36 @@ public class Slot : MonoBehaviour
         }
     }
 
-    public void UseItem()
+    public void UseItem(GameObject user)
     {
-        if (itemCount > 0)
-        {
+        if (itemData != null)
+        { 
+            itemData.action.Use(user);
+
+            Debug.Log($"{itemData.itemName} 아이템이 사용되었습니다.");
+
             itemCount--;
-            if (itemCount == 0)
+
+            if (itemCount <= 0)
             {
                 ClearSlot();
             }
-            else
-            {
-                UpdateUI();
-            }
+        }
+
+        else
+        {
+            Debug.Log("아이템이 없거나 사용할 수 없습니다.");
         }
     }
 
     public void ClearSlot()
     {
-        currentItem = null;
+        itemData = null;
         itemCount = 0;
         UpdateUI();
     }
 
-    public bool HasSameItem(ItemData itemData) => currentItem != null && currentItem.itemName == itemData.itemName;
+    public bool HasSameItem(ItemData itemData) => itemData != null && itemData.itemName == itemData.itemName;
 
     public void Highlight(bool isSelected)
     {
@@ -65,9 +71,9 @@ public class Slot : MonoBehaviour
 
     private void UpdateUI()
     {
-        if (currentItem != null)
+        if (itemData != null)
         {
-            itemImage.sprite = currentItem.icon;
+            itemImage.sprite = itemData.icon;
             itemImage.enabled = true;
             itemImage.color = Color.white;
 
