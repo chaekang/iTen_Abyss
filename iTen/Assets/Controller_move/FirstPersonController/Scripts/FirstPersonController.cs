@@ -16,7 +16,9 @@ namespace StarterAssets
 		public float MoveSpeed = 4.0f;
 		[Tooltip("Sprint speed of the character in m/s")]
 		public float SprintSpeed = 6.0f;
-		[Tooltip("Rotation speed of the character")]
+        [Tooltip("Crouch speed of the character in m/s")]
+        public float CrouchSpeed = 2.0f;
+        [Tooltip("Rotation speed of the character")]
 		public float RotationSpeed = 1.0f;
 		[Tooltip("Acceleration and deceleration")]
 		public float SpeedChangeRate = 10.0f;
@@ -71,6 +73,9 @@ namespace StarterAssets
 		private CharacterController _controller;
 		private StarterAssetsInputs _input;
 		private GameObject _mainCamera;
+		private Animator _animator;
+		private CapsuleCollider _capsuleCollider;
+		[SerializeField] private GameObject _model;
 
 		private const float _threshold = 0.01f;
 
@@ -91,7 +96,7 @@ namespace StarterAssets
 			// get a reference to our main camera
 			if (_mainCamera == null)
 			{
-				_mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
+				_mainCamera = Camera.main.gameObject;
 			}
 		}
 
@@ -101,6 +106,7 @@ namespace StarterAssets
 			_input = GetComponent<StarterAssetsInputs>();
 #if ENABLE_INPUT_SYSTEM
 			_playerInput = GetComponent<PlayerInput>();
+			_animator = _model.GetComponent<Animator>();
 #else
 			Debug.LogError( "Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
 #endif
@@ -115,6 +121,7 @@ namespace StarterAssets
 			JumpAndGravity();
 			GroundedCheck();
 			Move();
+			Crouch();
 		}
 
 		private void LateUpdate()
@@ -155,6 +162,7 @@ namespace StarterAssets
 		{
 			// set target speed based on move speed, sprint speed and if sprint is pressed
 			float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+			targetSpeed = _input.crouch ? CrouchSpeed : targetSpeed;
 
 			// a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
@@ -192,7 +200,13 @@ namespace StarterAssets
 			{
 				// move
 				inputDirection = transform.right * _input.move.x + transform.forward * _input.move.y;
+                _animator.SetFloat("Forward", 1.0f);
+                Debug.Log(_input.move);
 			}
+			else
+			{
+                _animator.SetFloat("Forward", 0.0f);
+            }
 
 			// move the player
 			_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
@@ -245,6 +259,12 @@ namespace StarterAssets
 				_verticalVelocity += Gravity * Time.deltaTime;
 			}
 		}
+
+		// 앉기 기능 추가
+		private void Crouch()
+		{
+			_animator.SetBool("Crouch", _input.crouch);
+        }
 
 		private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
 		{
