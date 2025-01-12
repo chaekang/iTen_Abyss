@@ -40,6 +40,13 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - UpdateAllPlayersSpawn
+  - ObjectClicked
+  - ShowClearText
+  - ShowAllClearText
+  - Ex2
+  - Ex3
+  - CantHearYou
+  - HeresWhy
   DisableAutoOpenWizard: 1
-  ShowSettings: 0
+  ShowSettings: 1
   DevRegionSetOnce: 1
