@@ -69,7 +69,21 @@ public class SoundMonster : MonoBehaviour
 
                 if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
                 {
-                    StopChasing();
+                    currentTarget = null;
+                    isChasing = false;
+
+                    Transform nearbyPlayer = FindClosestPlayer();
+
+                    if (nearbyPlayer != null)
+                    {
+                        detectedPlayer = nearbyPlayer;
+                        DetectPlayer();
+                        yield break;
+                    }
+                    else
+                    {
+                        StopChasing();
+                    }
                 }
             }
             yield return new WaitForSeconds(0.2f);
