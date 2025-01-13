@@ -47,6 +47,8 @@ MonoBehaviour:
   - Ex3
   - CantHearYou
   - HeresWhy
+  - StartPressing
+  - StopPressing
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
