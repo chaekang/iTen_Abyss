@@ -7,9 +7,9 @@ public class Slot : MonoBehaviour
 {
     public Image itemImage;
     public TextMeshProUGUI itemCountText;
-    public ItemData itemData;
+    public ItemData currentItem;
     private int itemCount;
-    public bool HasItem => itemData != null;
+    public bool HasItem => currentItem != null;
     public int ItemCount => itemCount;
 
     private void Start()
@@ -17,9 +17,9 @@ public class Slot : MonoBehaviour
         UpdateUI();
     }
 
-    public void AddItem(ItemData newItemData, int amount)
+    public void AddItem(ItemData itemData, int amount)
     {
-        itemData = newItemData;
+        currentItem = itemData;
         itemCount = amount;
         UpdateUI();
     }
@@ -33,36 +33,30 @@ public class Slot : MonoBehaviour
         }
     }
 
-    public void UseItem(GameObject user)
+    public void UseItem()
     {
-        if (itemData != null)
-        { 
-            itemData.action.Use(user);
-
-            Debug.Log($"{itemData.itemName} 아이템이 사용되었습니다.");
-
+        if (itemCount > 0)
+        {
             itemCount--;
-
-            if (itemCount <= 0)
+            if (itemCount == 0)
             {
                 ClearSlot();
             }
-        }
-
-        else
-        {
-            Debug.Log("아이템이 없거나 사용할 수 없습니다.");
+            else
+            {
+                UpdateUI();
+            }
         }
     }
 
     public void ClearSlot()
     {
-        itemData = null;
+        currentItem = null;
         itemCount = 0;
         UpdateUI();
     }
 
-    public bool HasSameItem(ItemData itemData) => itemData != null && itemData.itemName == itemData.itemName;
+    public bool HasSameItem(ItemData itemData) => currentItem != null && currentItem.itemName == itemData.itemName;
 
     public void Highlight(bool isSelected)
     {
@@ -71,9 +65,9 @@ public class Slot : MonoBehaviour
 
     private void UpdateUI()
     {
-        if (itemData != null)
+        if (currentItem != null)
         {
-            itemImage.sprite = itemData.icon;
+            itemImage.sprite = currentItem.icon;
             itemImage.enabled = true;
             itemImage.color = Color.white;
 
