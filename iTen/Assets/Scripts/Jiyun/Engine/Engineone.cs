@@ -48,8 +48,8 @@ public class Engineone : MonoBehaviourPun
         clearText.text = "Clear!";
     }
 
-    /*
-    public void OnMouseUp()
+    
+    /*public void OnMouseUp()
     {
         photonView.RPC("StopPressing", RpcTarget.AllBuffered, PhotonNetwork.LocalPlayer);
     }
@@ -91,6 +91,6 @@ public class Engineone : MonoBehaviourPun
             }
             yield return null; // 다음 프레임까지 대기
         }
-    }
-    */
+    }*/
+    
 }
