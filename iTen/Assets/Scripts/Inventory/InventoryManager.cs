@@ -161,17 +161,83 @@ public class InventoryManager : MonoBehaviour
         Slot slot = slots[index];
         if (slot.HasItem)
         {
-            Vector3 dropPosition = player.position + player.forward * 3f;
+            string itemName = slot.currentItem.itemName;
 
-            GameObject droppedItem = Instantiate(slot.currentItem.prefab, dropPosition, Quaternion.identity);
-
-            ItemObject itemObject = droppedItem.GetComponent<ItemObject>();
-            if (itemObject != null)
+            if (itemName == "Wire")
             {
-                itemObject.amount = slot.ItemCount;
-                itemObject.OnDrop();
+                bool interactedWithEngines = InteractWithEngines("EngineA");
+                if (interactedWithEngines)
+                {
+                    Debug.Log("Interacted with nearby EngineA using Wire.");
+                    slot.UseItem();
+                }
+                else
+                {
+                    Debug.Log("No EngineA found nearby for Wire.");
+                }
+            }
+            else if (itemName == "Battery")
+            {
+                bool interactedWithEngines = InteractWithEngines("EngineB");
+
+                if (interactedWithEngines)
+                {
+                    Debug.Log("Interacted with nearby EngineB using Battery.");
+                }
+                else
+                {
+                    BatteryCharge();
+                    Debug.Log("Battery Charged");
+                }
+                slot.UseItem();
+            }
+            else
+            {
+                Vector3 dropPosition = player.position + player.forward * 3f;
+
+                GameObject droppedItem = Instantiate(slot.currentItem.prefab, dropPosition, Quaternion.identity);
+
+                ItemObject itemObject = droppedItem.GetComponent<ItemObject>();
+                if (itemObject != null)
+                {
+                    itemObject.amount = slot.ItemCount;
+                    itemObject.OnDrop();
+                    slot.UseItem();
+                }
             }
         }
-        slot.UseItem();
+    }
+
+    private bool InteractWithEngines(string engineName)
+    {
+        Collider[] nearbyObjects = Physics.OverlapSphere(player.position, 5f);
+        bool interacted = false;
+
+        foreach (var obj in nearbyObjects)
+        {
+            Engine engine = obj.GetComponent<Engine>();
+            if (engine != null && engine.name == engineName)
+            {
+                if (engineName == "EngineA")
+                {
+                    engine.IncreaseBatteryCount();
+                    interacted = true;
+                    Debug.Log("Interacted with EngineA.");
+                }
+                else if (engineName == "EngineB")
+                {
+                    engine.IncreaseWireCount();
+                    interacted = true;
+                    Debug.Log("Interacted with EngineB.");
+                }
+            }
+        }
+
+        return interacted;
+    }
+
+    private void BatteryCharge()
+    {
+        // 배터리 충전 로직
     }
 }
