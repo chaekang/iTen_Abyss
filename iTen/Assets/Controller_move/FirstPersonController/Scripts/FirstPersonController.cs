@@ -214,7 +214,7 @@ namespace StarterAssets
 			// move the player
 			Debug.Log(" 입력 방향 " + inputDirection);
 			Debug.Log(" 속도 " + _speed);
-			Debug.Log(" 수직 속도 " + _verticalVelocity);
+//			Debug.Log(" 수직 속도 " + _verticalVelocity);
 
 			_controller.Move(inputDirection.normalized * (_speed * Time.deltaTime) + new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
 		}
