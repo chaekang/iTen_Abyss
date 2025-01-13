@@ -12,12 +12,6 @@ public class SoundMonsterJumpScare : MonoBehaviour
 
     [SerializeField] private bool isScaring = false;
 
-    private Animator bloodAni;
-
-    private void Start()
-    {
-        bloodAni = bloodImage.GetComponent<Animator>();
-    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -36,17 +30,19 @@ public class SoundMonsterJumpScare : MonoBehaviour
         jumpScareCam.Priority = 11;
 
         // 실행 동안 기다림
-        yield return new WaitForSeconds(scareDuration - 0.7f);
+        yield return new WaitForSeconds(scareDuration - 0.75f);
 
         // 피 튀기는 효과 실행
         bloodImage.SetActive(true);
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(0.75f);
 
         // 일반 카메라로 전환
         jumpScareCam.Priority = 9;
 
         // 종료
         isScaring = false;
+        yield return new WaitForSeconds(3f);
+        bloodImage.SetActive(false);
     }
 
     private void Update()

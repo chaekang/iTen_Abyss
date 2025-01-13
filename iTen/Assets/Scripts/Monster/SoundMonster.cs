@@ -1,4 +1,3 @@
-using NUnit.Framework.Internal.Commands;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -17,7 +16,7 @@ public class SoundMonster : MonoBehaviour
     public LayerMask playerLayer;
 
     private Animator animator;
-    private MonsterState currentState;
+    private MonsterState currentState = MonsterState.Patrol;
 
     private NavMeshAgent agent;
     private Vector3? currentTarget;
@@ -27,13 +26,17 @@ public class SoundMonster : MonoBehaviour
 
     private Transform detectedPlayer;
 
+    private float normalSpeed;
+    private float chaseSpeed = 6;
+
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
 
-        SetWalkingState(0); // Idle 초기 상태
-        StartCoroutine(WanderRandomly());
+        normalSpeed = agent.speed;
+        agent.isStopped = true;
+        TriggerWatch();
     }
 
     public void OnSoundHeard(Vector3 soundPos)
@@ -51,6 +54,7 @@ public class SoundMonster : MonoBehaviour
         if (currentTarget.HasValue)
         {
             agent.SetDestination(currentTarget.Value);
+            agent.speed = chaseSpeed;
             isChasing = true;
             currentState = MonsterState.Chase;
             animator.SetInteger("isWalking", 1);
@@ -93,6 +97,7 @@ public class SoundMonster : MonoBehaviour
     private void StopChasing()
     {
         isChasing = false;
+        agent.speed = normalSpeed;
         currentTarget = null;
         SetWalkingState(0);
         StartCoroutine(WanderRandomly());
@@ -115,9 +120,10 @@ public class SoundMonster : MonoBehaviour
     private IEnumerator SwitchToRunAfterIdle()
     {
         currentState = MonsterState.Idle;
-        animator.SetInteger("isWalking", 0);   // 잠시 Idle 상태 유지
+        animator.SetTrigger("isWatching");     // Idle 상태로 전환
         yield return new WaitForSeconds(0.2f); // 잠시 멈춘 후
         animator.SetInteger("isWalking", 1);   // Run 상태로 전환
+        agent.speed = chaseSpeed;
         currentState = MonsterState.Chase;
     }
 
@@ -129,6 +135,7 @@ public class SoundMonster : MonoBehaviour
 
             if (curTarget != null)
             {
+                currentState = MonsterState.Patrol;
                 float distanceToTarget = Vector3.Distance(transform.position, curTarget.position);
 
                 if (distanceToTarget <= 30f)
@@ -250,20 +257,22 @@ public class SoundMonster : MonoBehaviour
             return;
         }
 
+        Debug.Log("TriggerWatch");
+        currentState = MonsterState.Idle;
         agent.isStopped = true;
         animator.SetTrigger("isWatching");
-        currentState = MonsterState.Idle;
-        StartCoroutine (HandlePostWatch());
+        StartCoroutine(HandlePostWatch());
     }
 
     private IEnumerator HandlePostWatch()
     {
-        yield return new WaitForSeconds(3.1f);
-
-        agent.isStopped = false;
+        Debug.Log("HandlePostWatch");
+        yield return new WaitForSeconds(0.2f);
 
         if (!isChasing && !isAttacking)
         {
+            agent.isStopped = false;
+            SetWalkingState(0);
             StartCoroutine(WanderRandomly());
         }
     }
@@ -310,6 +319,7 @@ public class SoundMonster : MonoBehaviour
                 return;
             }
         }
+
         detectedPlayer = null;
         if (!isChasing)
         {
@@ -357,5 +367,7 @@ public class SoundMonster : MonoBehaviour
                 StopChasing();
             }
         }
+
+        Debug.Log($"Monster current state is {currentState}");
     }
 }

@@ -29,7 +29,7 @@ public class ItemObject : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit, pickupRange, itemLayer))
         {
             ItemObject item = hit.collider.GetComponent<ItemObject>();
-            if (item != null)
+            if (item != null && !item.itemData.isUsed)
             {
                 item.OnInteract();
             }
