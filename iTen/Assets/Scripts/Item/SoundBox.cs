@@ -40,9 +40,11 @@ public class SoundBox : ItemObject
 
     public override void OnInteract()
     {
+        
         Debug.Log("music box interact");
         if (SoundManager.Instance != null)
         {
+            itemData.isUsed = true;
             SoundManager.Instance.PlaySound(transform, soundRange, "SoundBoxClip");
         }
     }
