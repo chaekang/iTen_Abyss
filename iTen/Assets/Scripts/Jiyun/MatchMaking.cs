@@ -13,8 +13,10 @@ public class MatchMaking : MonoBehaviourPunCallbacks
     public static string roomName;  // 방 이름
     public Transform content;
     public GameObject roomListingPrefab; // 방 리스트 prefab
+
     private void Start()
     {
+        Time.timeScale = 1;
         PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "asia";
         // 서버에 연결
         PhotonNetwork.ConnectUsingSettings();
@@ -63,7 +65,7 @@ public class MatchMaking : MonoBehaviourPunCallbacks
         }
     }
 
-    private void CreateRoomListing(string roomName, int playerCount) {   // 방 목록 생성
+    public void CreateRoomListing(string roomName, int playerCount) {   // 방 목록 생성
         GameObject roomListing = Instantiate(roomListingPrefab, content);
         TextMeshProUGUI roomText = roomListing.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
 
@@ -87,9 +89,9 @@ public class MatchMaking : MonoBehaviourPunCallbacks
         }
     }
 
-    private void OnClickJoinRoom(string roomName)
+    public void OnClickJoinRoom(string roomName)
     {   // 방 누르면 들어가짐
-        PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions{ MaxPlayers = 3, IsVisible = true, IsOpen = true}, TypedLobby.Default);
+        PhotonNetwork.JoinOrCreateRoom(roomName, new RoomOptions{ MaxPlayers = 2, IsVisible = true, IsOpen = true}, TypedLobby.Default);
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
