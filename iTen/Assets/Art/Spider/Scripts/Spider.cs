@@ -28,116 +28,9 @@ public class Spider : MonoBehaviour {
 
     private MonsterState currentState;                             // 플레이어 상태
 
-    private GameSystem gameSystem;
-    public Animator spider;
-    private IEnumerator coroutine;
+    private GameSystem gameSystem;              // 게임시스템
+    public Animator spiderAnimator;                    // 스파이더 애니메이션
 
-
-    //void Update () {
-    //    if (Input.GetKey(KeyCode.Alpha1))
-    //    {
-    //        spider.SetBool("idle", true);
-    //        spider.SetBool("running", false);
-    //        spider.SetBool("walking", false);
-    //        spider.SetBool("attack", false);
-    //        spider.SetBool("jumping", false);
-    //    }
-    //    if (Input.GetKey("up"))
-    //    {
-    //        spider.SetBool("running", true);
-    //        spider.SetBool("idle", false);
-    //        spider.SetBool("walking", false);
-    //        spider.SetBool("turnright", false);
-    //        spider.SetBool("turnleft", false);
-    //    }
-    //    if (Input.GetKey("down"))
-    //    {
-    //        spider.SetBool("running", false);
-    //        spider.SetBool("walking", true);
-    //        spider.SetBool("idle", false);
-    //        spider.SetBool("turnleft", false);
-    //        spider.SetBool("turnright", false);
-    //    }
-    //    if (Input.GetKey(KeyCode.Alpha2))
-    //    {
-    //        spider.SetBool("attack", true);
-    //        spider.SetBool("walking", false);
-    //        spider.SetBool("idle", false);
-    //        spider.SetBool("running", false);
-    //        StartCoroutine("idle");
-    //        idle();
-    //    }
-    //    if (Input.GetKey(KeyCode.Alpha3))
-    //    {
-    //        spider.SetBool("attack2", true);
-    //        spider.SetBool("attack", false);
-    //        spider.SetBool("idle", false);
-    //        spider.SetBool("running", false);
-    //        StartCoroutine("idle2");
-    //        idle2();
-    //    }
-    //    if (Input.GetKey(KeyCode.Space))
-    //    {
-    //        spider.SetBool("idle", false);
-    //        spider.SetBool("jumping", true);
-    //    }
-    //    if (Input.GetKey(KeyCode.Alpha5))
-    //    {
-    //        spider.SetBool("idle", false);
-    //        spider.SetBool("hited", true);
-    //        StartCoroutine("idle");
-    //        idle();
-    //    }
-    //    if (Input.GetKey(KeyCode.Alpha6))
-    //    {
-    //        spider.SetBool("idle", false);
-    //        spider.SetBool("died", true);
-    //    }
-    //    if (Input.GetKey("left"))
-    //    {
-    //        spider.SetBool("turnleft", true);
-    //        spider.SetBool("walking", false);
-    //        spider.SetBool("turnright", false);
-    //        spider.SetBool("idle", false);
-    //        spider.SetBool("running", false);
-    //        StartCoroutine("idle2");
-    //        idle2();
-    //    }
-    //    if (Input.GetKey("right"))
-    //    {
-    //        spider.SetBool("turnright", true);
-    //        spider.SetBool("walking", false);
-    //        spider.SetBool("turnleft", false);
-    //        spider.SetBool("idle", false);
-    //        spider.SetBool("running", false);
-    //        StartCoroutine("idle2");
-    //        idle2();
-    //    }
-    //}
-
-    IEnumerator idle()
-    {
-        yield return new WaitForSeconds(0.35f);
-        spider.SetBool("attack", false);
-        spider.SetBool("attack2", false);
-        spider.SetBool("idle", true);
-        spider.SetBool("hited", false);
-    }
-    IEnumerator idle2()
-    {
-        yield return new WaitForSeconds(1.0f);
-        spider.SetBool("attack", false);
-        spider.SetBool("attack2", false);
-        spider.SetBool("idle", true);
-        spider.SetBool("turnleft", false);
-        spider.SetBool("turnright", false);
-    }
-
-
-    // 이건 그냥 재미로
-    //[SerializeField] private Color chaseColor;
-    //[SerializeField] private Color normalColor;
-    //[SerializeField] private MeshRenderer mesh;
 
     private void Awake()
     {
@@ -215,12 +108,6 @@ public class Spider : MonoBehaviour {
 
     private void IdleState()
     {
-        spider.SetBool("idle", true);
-        spider.SetBool("running", false);
-        spider.SetBool("walking", false);
-        spider.SetBool("attack", false);
-        spider.SetBool("jumping", false);
-
         // 대기 상태
         agent.speed = patrolSpeed;
 
@@ -270,14 +157,6 @@ public class Spider : MonoBehaviour {
             // 플레이어로 바라보기
             transform.LookAt(player);
 
-            // 공격 애니메이션을 추가하거나 피해 로직을 추가하면 됨
-            spider.SetBool("attack", true);
-            spider.SetBool("walking", false);
-            spider.SetBool("idle", false);
-            spider.SetBool("running", false);
-            StartCoroutine("idle");
-            idle();
-
             // 그리고 어택딜레이는 여기서 추가해도 됨
             Debug.Log("플레이어 공격!");
             // 일단 Dotween으로 그냥 애니메이션 간단하게 재생
@@ -289,12 +168,6 @@ public class Spider : MonoBehaviour {
 
     private void RunState()
     {
-        spider.SetBool("running", true);
-        spider.SetBool("idle", false);
-        spider.SetBool("walking", false);
-        spider.SetBool("turnright", false);
-        spider.SetBool("turnleft", false);
-
         agent.speed = chaseSpeed;
 
         // 도망갈 때 런 포지션을 따로 잡아놓는 것으로 함
@@ -354,23 +227,38 @@ public class Spider : MonoBehaviour {
         }
     }
 
-    private void ChangeState(MonsterState state)
+    private string GetStateString()
     {
-        if (currentState != state)
+        switch (currentState)
         {
-            // 상태가 바뀔 때마다
-            //switch (currentState)
-            //{
-            //    case MonsterState.Chase:
-            //        mesh.material.color = chaseColor;
-            //        break;
-            //    default:
-            //        mesh.material.color = normalColor;
-            //        break;
-            //}
-            currentState = state;
+            case MonsterState.Idle:         // 대기상태
+            default:
+                return "Idle";
+            case MonsterState.Patrol:      // 정찰상태
+            case MonsterState.Chase:      // 추적상태
+            case MonsterState.Run:      // 도망상태
+                return "running";
+            case MonsterState.Attack:    // 공격상태
+                return "attack2";
         }
     }
+
+    
+    private void ChangeState(MonsterState newState)
+    {
+        if (currentState != newState)
+        {
+            spiderAnimator.SetBool(GetStateString(), false);
+
+            // 상태 변경
+            currentState = newState;
+            spiderAnimator.SetBool(GetStateString(), true);
+        }
+    }
+
+
+
+
 
 #if UNITY_EDITOR
     private void OnDrawGizmos()
