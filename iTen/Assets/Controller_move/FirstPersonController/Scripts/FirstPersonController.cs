@@ -125,7 +125,7 @@ namespace StarterAssets
 			GroundedCheck();
 			Move();
 			Crouch();
-		}
+        }
 
 		private void LateUpdate()
 		{
@@ -267,11 +267,12 @@ namespace StarterAssets
 			}
 		}
 
-		// 앉기 기능 추가
-		private void Crouch()
+        // 앉기 애니메이션 추가
+        private void Crouch()
 		{
 			_animator.SetBool("Crouch", _input.crouch);
         }
+
 
 		private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
 		{
@@ -291,5 +292,26 @@ namespace StarterAssets
 			// when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
 			Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z), GroundedRadius);
 		}
-	}
+
+        // 안전지대에 들어왔을 때 손전등을 켜거나 끄는 기능 추가
+        void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.layer == LayerMask.NameToLayer("Light"))
+            {
+                GameSystem.Instance?.ToggleSafeZone();
+            }
+        }
+
+        void OnTriggerExit(Collider other)
+        {
+            if (other.gameObject.layer == LayerMask.NameToLayer("Light"))
+            {
+                GameSystem.Instance?.ToggleSafeZone();
+            }
+        }
+
+
+    }
+
+
 }

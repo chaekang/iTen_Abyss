@@ -6,7 +6,7 @@ public class GameSystem : MonoBehaviour
 {
     public static GameSystem Instance { get; private set; }
 
-    public bool IsFlashlightOn { get; private set; }
+
     public bool IsSafeZone { get; private set; }
 
     private void Awake()
@@ -23,19 +23,7 @@ public class GameSystem : MonoBehaviour
 
     }
 
-    public void ToggleFlashlight()
-    {
-        IsFlashlightOn = !IsFlashlightOn;
 
-        if (IsFlashlightOn)
-        {
-            Debug.Log("손전등 켰다.");
-        }
-        else
-        {
-            Debug.Log("손전등 껐다");
-        }
-    }
 
     public void ToggleSafeZone()
     {

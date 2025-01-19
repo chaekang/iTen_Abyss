@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
+using StarterAssets;
 
 public class Spider : MonoBehaviour {
 
@@ -30,6 +31,7 @@ public class Spider : MonoBehaviour {
 
     private GameSystem gameSystem;              // 게임시스템
     public Animator spiderAnimator;                    // 스파이더 애니메이션
+    private StarterAssetsInputs playerInput;
 
 
     private void Awake()
@@ -86,10 +88,10 @@ public class Spider : MonoBehaviour {
                 {
                     ChangeState(MonsterState.Attack);
                 }
-                else if (gameSystem.IsSafeZone || gameSystem.IsFlashlightOn) // 도망 조건 추가
-                {
-                    ChangeState(MonsterState.Run);
-                }
+                //else if (gameSystem.IsSafeZone || ) // 도망 조건 추가
+                //{
+                //    ChangeState(MonsterState.Run);
+                //}
                 break;
             case MonsterState.Run:
                 if (distanceToPlayer > detectionRange * detectionRange * 4.0f) // 도망 상태에서는 더 먼 거리에서 Idle로 전환
@@ -118,10 +120,10 @@ public class Spider : MonoBehaviour {
         }
 
         // 어두운 곳에서 플레이어 감지 시 추적 상태로 전환
-        if (!gameSystem.IsSafeZone && !gameSystem.IsFlashlightOn && CanSeePlayer())
-        {
-            ChangeState(MonsterState.Chase);
-        }
+        //if (!gameSystem.IsSafeZone && !gameSystem.IsFlashlightOn && CanSeePlayer())
+        //{
+        //    ChangeState(MonsterState.Chase);
+        //}
     }
 
     private void PatrolState()
@@ -131,10 +133,10 @@ public class Spider : MonoBehaviour {
         IdleState();
 
         // 어두운 곳에서 플레이어 감지 시 추적 상태로 전환
-        if (!gameSystem.IsSafeZone && !gameSystem.IsFlashlightOn && CanSeePlayer())
-        {
-            ChangeState(MonsterState.Chase);
-        }
+        //if (!gameSystem.IsSafeZone && !gameSystem.IsFlashlightOn && CanSeePlayer())
+        //{
+        //    ChangeState(MonsterState.Chase);
+        //}
     }
 
     private void ChaseState()

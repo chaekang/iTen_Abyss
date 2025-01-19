@@ -90,10 +90,10 @@ public class LightMonster : MonoBehaviour
                 {
                     ChangeState(MonsterState.Attack);
                 }
-                else if (gameSystem.IsSafeZone || gameSystem.IsFlashlightOn) // 도망 조건 추가
-                {
-                    ChangeState(MonsterState.Run);
-                }
+                //else if (gameSystem.IsSafeZone || gameSystem.IsFlashlightOn) // 도망 조건 추가
+                //{
+                //    ChangeState(MonsterState.Run);
+                //}
                 break;
             case MonsterState.Run:
                 if (distanceToPlayer > detectionRange * detectionRange * 4.0f) // 도망 상태에서는 더 먼 거리에서 Idle로 전환
@@ -122,10 +122,10 @@ public class LightMonster : MonoBehaviour
         }
 
         // 어두운 곳에서 플레이어 감지 시 추적 상태로 전환
-        if (!gameSystem.IsSafeZone && !gameSystem.IsFlashlightOn && CanSeePlayer())
-        {
-            ChangeState(MonsterState.Chase);
-        }
+        //if (!gameSystem.IsSafeZone && !gameSystem.IsFlashlightOn && CanSeePlayer())
+        //{
+        //    ChangeState(MonsterState.Chase);
+        //}
     }
 
     private void PatrolState()
@@ -135,10 +135,10 @@ public class LightMonster : MonoBehaviour
         IdleState();
 
         // 어두운 곳에서 플레이어 감지 시 추적 상태로 전환
-        if (!gameSystem.IsSafeZone && !gameSystem.IsFlashlightOn && CanSeePlayer())
-        {
-            ChangeState(MonsterState.Chase);
-        }
+        //if (!gameSystem.IsSafeZone && !gameSystem.IsFlashlightOn && CanSeePlayer())
+        //{
+        //    ChangeState(MonsterState.Chase);
+        //}
     }
 
     private void ChaseState()

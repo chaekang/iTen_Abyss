@@ -13,6 +13,7 @@ namespace StarterAssets
 		public bool jump;
 		public bool sprint;
 		public bool crouch = false;
+		public bool flash = false;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -49,10 +50,17 @@ namespace StarterAssets
 			if (value.isPressed)
                 CrouchInput();
 		}
+
+		// 손전등 기능 추가
+        public void OnFlash(InputValue value)
+        {
+            if (value.isPressed)
+                FlashInput();
+        }
 #endif
 
 
-		public void MoveInput(Vector2 newMoveDirection)
+        public void MoveInput(Vector2 newMoveDirection)
 		{
 			move = newMoveDirection;
 		} 
@@ -76,8 +84,22 @@ namespace StarterAssets
 		{
 			crouch = crouch == true ? false : true;
 		}
-		
-		private void OnApplicationFocus(bool hasFocus)
+
+        public void FlashInput()
+        {
+            flash = flash == true ? false : true;
+
+            if (flash)
+            {
+                Debug.Log("손전등 켰다.");
+            }
+            else
+            {
+                Debug.Log("손전등 껐다");
+            }
+        }
+
+        private void OnApplicationFocus(bool hasFocus)
 		{
 			SetCursorState(cursorLocked);
 		}
