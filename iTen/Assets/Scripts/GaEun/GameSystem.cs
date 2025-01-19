@@ -23,17 +23,35 @@ public class GameSystem : MonoBehaviour
 
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            ToggleFlashlight();
+        }
+    }
+
     public void ToggleFlashlight()
     {
-        IsFlashlightOn = !IsFlashlightOn;
+        if (FlashlightManager.Instance != null)
+        {
+            if (!FlashlightManager.Instance.CanUseFlashlight)
+            {
+                Debug.Log("손전등 배터리가 없습니다.");
+                return;
+            }
 
-        if (IsFlashlightOn)
-        {
-            Debug.Log("손전등 켰다.");
-        }
-        else
-        {
-            Debug.Log("손전등 껐다");
+            IsFlashlightOn = !IsFlashlightOn;
+            FlashlightManager.Instance.SetFlashlightState(IsFlashlightOn);
+
+            if (IsFlashlightOn)
+            {
+                Debug.Log("손전등 켰다.");
+            }
+            else
+            {
+                Debug.Log("손전등 껐다");
+            }
         }
     }
 
