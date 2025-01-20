@@ -1,7 +1,8 @@
 using UnityEditor.Rendering;
 using UnityEngine;
+using Photon.Pun;
 
-public class ItemObject : MonoBehaviour
+public class ItemObject : MonoBehaviourPun
 {
     public ItemData itemData;
     public int amount = 1;
