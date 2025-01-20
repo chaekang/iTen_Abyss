@@ -133,7 +133,7 @@ public class SoundMonster : MonoBehaviour
             {
                 float distanceToTarget = Vector3.Distance(transform.position, curTarget.position);
 
-                if (distanceToTarget <= 100f)
+                if (distanceToTarget <= 50f)
                 {
                     if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
                     {
@@ -193,7 +193,7 @@ public class SoundMonster : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, 30f);
+        Gizmos.DrawWireSphere(transform.position, 50f);
     }
 
     private IEnumerator HandlePostAttack()

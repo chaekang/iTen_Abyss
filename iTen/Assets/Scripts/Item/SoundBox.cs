@@ -45,7 +45,7 @@ public class SoundBox : ItemObject
         if (SoundManager.Instance != null)
         {
             itemData.isUsed = true;
-            SoundManager.Instance.PlaySound(transform, soundRange, "SoundBoxClip");
+            SoundManager.Instance.PlaySound(transform, soundRange, "SoundBox");
         }
     }
 }

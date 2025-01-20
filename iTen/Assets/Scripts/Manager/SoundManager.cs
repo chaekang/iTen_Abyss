@@ -40,7 +40,6 @@ public class SoundManager : MonoBehaviour
         foreach (AudioClip cl in clips)
         {
             soundClips.Add(cl.name, cl);
-            Debug.Log($"{cl.name} is loaded");
         }
     }
 
@@ -62,13 +61,9 @@ public class SoundManager : MonoBehaviour
             {
                 int randomIndex = Random.Range(0, footstepClips.Count);
                 audioSource.spatialBlend = 1.0f;  // 3D 사운드
-                audioSource.minDistance = 5f;     // 최소 거리 (플레이어가 이 거리 이내로 가까워지면 볼륨이 최대)
-                audioSource.maxDistance = 10f;    // 최대 거리 (발소리가 이 거리 이상에서 들리지 않음
+                audioSource.minDistance = 5f;     // 최소 거리
+                audioSource.maxDistance = 10f;    // 최대 거리
                 audioSource.PlayOneShot(footstepClips[randomIndex]);
-            }
-            else
-            {
-                Debug.LogWarning("No footstep clips found in soundClips dictionary!");
             }
 
             footstepTimer = footstepInterval;
@@ -82,11 +77,10 @@ public class SoundManager : MonoBehaviour
         if (soundClips.ContainsKey(clipKey))
         {
             AudioClip clip = soundClips[clipKey];
-            audioSource.clip = clip;
             audioSource.spatialBlend = 1.0f;
             audioSource.minDistance = range;
             audioSource.maxDistance = range * 2;
-            audioSource.Play();
+            audioSource.PlayOneShot(clip);
 
             followTarget = target;
             isFollowing = true;
@@ -122,8 +116,6 @@ public class SoundManager : MonoBehaviour
             }
         }
     }
-
-
 
     private IEnumerator EmitSoundContinuously(float range)
     {
