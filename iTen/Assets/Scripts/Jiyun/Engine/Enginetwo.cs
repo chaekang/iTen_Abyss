@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Enginetwo : MonoBehaviourPun
 {
-    void Start()
+    public void Interact2()
     {
         photonView.RPC("Ex2", RpcTarget.All);
     }

@@ -5,8 +5,8 @@ using Photon.Pun;
 using UnityEngine;
 
 public class Enginethree : MonoBehaviourPun
-{
-    void Start()
+{   // 배터리3개
+    public void Interact3()
     {
         photonView.RPC("Ex3", RpcTarget.All);
     }
@@ -14,7 +14,7 @@ public class Enginethree : MonoBehaviourPun
     [PunRPC]
     void Ex3(){
         GameObject engineManagerObject = GameObject.Find("EngineManager");
-        EngineManager engineManager3 = engineManagerObject.GetComponent<EngineManager>(); 
+        EngineManager engineManager3 = engineManagerObject.GetComponent<EngineManager>();
         if (engineManager3 != null)
         {
             engineManager3.engine_3 = true;
