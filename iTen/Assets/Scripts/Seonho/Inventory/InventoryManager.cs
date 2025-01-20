@@ -1,8 +1,9 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using Photon.Pun;
 
-public class InventoryManager : MonoBehaviour
+public class InventoryManager : MonoBehaviourPun
 {
     public GameObject inventoryUI;
     public Animator inventoryAnimator;
@@ -43,8 +44,8 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
-        // .æ∆¿Ã≈€ ¡›±‚
-        if (Input.GetMouseButtonDown(0))
+        // .ÔøΩÔøΩÔøΩÔøΩÔøΩÔøΩ ÔøΩ›±ÔøΩ
+        if (Input.GetMouseButtonDown(1))
         {
             TryPickupItem();
         }
@@ -117,7 +118,8 @@ public class InventoryManager : MonoBehaviour
                 bool isAdded = AddItemToInventory(item.itemData, item.amount);
                 if (isAdded)
                 {
-                    Destroy(item.gameObject);
+                    //Destroy(item.gameObject);
+                    photonView.RPC("DestroyItemObject", RpcTarget.All, item.gameObject.GetComponent<PhotonView>().ViewID);
                     Debug.Log($"{item.name} has been destroyed.");
                 }
                 else
@@ -125,6 +127,16 @@ public class InventoryManager : MonoBehaviour
                     Debug.Log("Failed to add item to inventory");
                 }
             }
+        }
+    }
+
+    [PunRPC]
+    private void DestroyItemObject(int networkID)
+    {
+        GameObject itemObject = PhotonNetwork.GetPhotonView(networkID).gameObject;
+        if (itemObject != null)
+        {
+            PhotonNetwork.Destroy(itemObject);
         }
     }
 
@@ -165,7 +177,17 @@ public class InventoryManager : MonoBehaviour
 
             if (itemName == "Wire")
             {
-                bool interactedWithEngines = InteractWithEngines("EngineA");
+                GameObject engineobject_2 = GameObject.Find("Engine2");
+                Enginetwo enginetwo = engineobject_2.GetComponent<Enginetwo>();
+
+                if(engineobject_2 != null){
+                    enginetwo.Interact2();
+                    slot.UseItem();
+                }
+                else{
+                    Debug.Log("engine2 Î™ª Ï∞æÏùå!");
+                }
+                /*bool interactedWithEngines = InteractWithEngines("EngineA");
                 if (interactedWithEngines)
                 {
                     Debug.Log("Interacted with nearby EngineA using Wire.");
@@ -174,11 +196,21 @@ public class InventoryManager : MonoBehaviour
                 else
                 {
                     Debug.Log("No EngineA found nearby for Wire.");
-                }
+                }*/
             }
             else if (itemName == "Battery")
             {
-                bool interactedWithEngines = InteractWithEngines("EngineB");
+                GameObject engineobject_3 = GameObject.Find("Engine3");
+                Enginethree enginethree = engineobject_3.GetComponent<Enginethree>();
+
+                if(engineobject_3 != null){
+                    enginethree.Interact3();
+                    slot.UseItem();
+                }
+                else{
+                    Debug.Log("engine2 Î™ª Ï∞æÏùå!");
+                }
+                /*bool interactedWithEngines = InteractWithEngines("EngineB");
 
                 if (interactedWithEngines)
                 {
@@ -189,7 +221,7 @@ public class InventoryManager : MonoBehaviour
                     BatteryCharge();
                     Debug.Log("Battery Charged");
                 }
-                slot.UseItem();
+                slot.UseItem();*/
             }
             else
             {
@@ -238,14 +270,6 @@ public class InventoryManager : MonoBehaviour
 
     private void BatteryCharge()
     {
-        if (FlashlightManager.Instance != null)
-        {
-            FlashlightManager.Instance.AddBatteryTime(120);
-            Debug.Log($"πË≈Õ∏Æ∞° √Ê¿¸µ«æ˙Ω¿¥œ¥Ÿ.");
-        }
-        else
-        {
-            Debug.LogWarning("FlashlightManager∏¶ √£¿ª ºˆ æ¯Ω¿¥œ¥Ÿ.");
-        }
+        // ÔøΩÔøΩÔøΩÕ∏ÔøΩ ÔøΩÔøΩÔøΩÔøΩ ÔøΩÔøΩÔøΩÔøΩ
     }
 }
