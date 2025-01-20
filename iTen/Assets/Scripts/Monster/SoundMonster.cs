@@ -16,7 +16,7 @@ public class SoundMonster : MonoBehaviour
     public LayerMask playerLayer;
 
     private Animator animator;
-    private MonsterState currentState;
+    private MonsterState currentState = MonsterState.Patrol;
 
     private NavMeshAgent agent;
     private Vector3? currentTarget;
@@ -36,7 +36,7 @@ public class SoundMonster : MonoBehaviour
 
         normalSpeed = agent.speed;
         SetWalkingState(0); // Idle 초기 상태
-        StartCoroutine(WanderRandomly());
+        TriggerWatch();
     }
 
     public void OnSoundHeard(Vector3 soundPos)
@@ -57,7 +57,6 @@ public class SoundMonster : MonoBehaviour
             agent.speed = chaseSpeed;
             isChasing = true;
             currentState = MonsterState.Chase;
-            animator.SetInteger("isWalking", 1);
             StopCoroutine(WanderRandomly());
             StartCoroutine(UpdateChasingTarget());
         }
@@ -105,8 +104,6 @@ public class SoundMonster : MonoBehaviour
 
     public void SetWalkingState(int walkingState)
     {
-        animator.SetInteger("isWalking", walkingState);
-
         if (walkingState == 1 && currentState != MonsterState.Chase)
         {
             StartCoroutine(SwitchToRunAfterIdle());
@@ -120,9 +117,8 @@ public class SoundMonster : MonoBehaviour
     private IEnumerator SwitchToRunAfterIdle()
     {
         currentState = MonsterState.Idle;
-        animator.SetInteger("isWalking", 0);   // 잠시 Idle 상태 유지
+        animator.SetTrigger("isWatching");
         yield return new WaitForSeconds(0.2f); // 잠시 멈춘 후
-        animator.SetInteger("isWalking", 1);   // Run 상태로 전환
         agent.speed = chaseSpeed;
         currentState = MonsterState.Chase;
     }
@@ -137,7 +133,7 @@ public class SoundMonster : MonoBehaviour
             {
                 float distanceToTarget = Vector3.Distance(transform.position, curTarget.position);
 
-                if (distanceToTarget <= 30f)
+                if (distanceToTarget <= 100f)
                 {
                     if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
                     {
@@ -157,11 +153,9 @@ public class SoundMonster : MonoBehaviour
                 }
                 else
                 {
-                    //Vector3 directionToTarget = (curTarget.position - transform.position).normalized;
-                    //float maxDistance = Mathf.Min(Vector3.Distance(transform.position, curTarget.position));
                     Vector3 newPosition = curTarget.position;
 
-                    if (NavMesh.SamplePosition(newPosition, out NavMeshHit hit, 20f, NavMesh.AllAreas))
+                    if (NavMesh.SamplePosition(newPosition, out NavMeshHit hit, 10f, NavMesh.AllAreas))
                     {
                         //Debug.Log($"Monster is far away from player. Monster is going to {hit.position}");
                         agent.SetDestination(hit.position);
@@ -257,14 +251,14 @@ public class SoundMonster : MonoBehaviour
         }
 
         agent.isStopped = true;
-        animator.SetTrigger("isWatching");
         currentState = MonsterState.Idle;
+        animator.SetTrigger("isWatching");
         StartCoroutine(HandlePostWatch());
     }
 
     private IEnumerator HandlePostWatch()
     {
-        yield return new WaitForSeconds(3.1f);
+        yield return new WaitForSecondsRealtime(3.11f);
 
         agent.isStopped = false;
 
@@ -361,6 +355,24 @@ public class SoundMonster : MonoBehaviour
             {
                 StopChasing();
             }
+        }
+
+        switch (currentState)
+        {
+            case MonsterState.Patrol:
+                animator.SetInteger("isWalking", 0);
+                break;
+            case MonsterState.Chase:
+                animator.SetInteger("isWalking", 1);
+                break;
+            case MonsterState.Idle:
+                Debug.Log("Monster state is idle");
+                break;
+            case MonsterState.Attack:
+                Debug.Log("Monster state is attack");
+                break;
+            default:
+                break;
         }
     }
 }
