@@ -44,7 +44,7 @@ public class InventoryManager : MonoBehaviour
         }
 
         // .아이템 줍기
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(0))
         {
             TryPickupItem();
         }

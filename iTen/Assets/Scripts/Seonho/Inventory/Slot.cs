@@ -77,6 +77,7 @@ public class Slot : MonoBehaviour
         {
             itemImage.sprite = currentItem.icon;
             itemImage.enabled = true;
+            itemImage.color = Color.white;
 
             itemCountText.text = itemCount > 1 ? itemCount.ToString() : "1";
             itemCountText.enabled = true;
