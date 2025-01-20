@@ -163,7 +163,7 @@ public class SoundMonster : MonoBehaviour
 
                     if (NavMesh.SamplePosition(newPosition, out NavMeshHit hit, 20f, NavMesh.AllAreas))
                     {
-                        Debug.Log($"Monster is far away from player. Monster is going to {hit.position}");
+                        //Debug.Log($"Monster is far away from player. Monster is going to {hit.position}");
                         agent.SetDestination(hit.position);
                         SetWalkingState(0);
                     }
