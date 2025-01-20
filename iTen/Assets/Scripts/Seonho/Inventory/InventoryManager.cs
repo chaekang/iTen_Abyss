@@ -45,7 +45,7 @@ public class InventoryManager : MonoBehaviourPun
         }
 
         // .������ �ݱ�
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(0))
         {
             TryPickupItem();
         }
@@ -270,6 +270,14 @@ public class InventoryManager : MonoBehaviourPun
 
     private void BatteryCharge()
     {
-        // ���͸� ���� ����
+        if (FlashlightManager.Instance != null)
+        {
+            FlashlightManager.Instance.AddBatteryTime(120);
+            Debug.Log($"배터리가 충전되었습니다.");
+        }
+        else
+        {
+            Debug.LogWarning("FlashlightManager를 찾을 수 없습니다.");
+        }
     }
 }
