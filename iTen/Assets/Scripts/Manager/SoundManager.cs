@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SoundManager : MonoBehaviour
@@ -14,6 +15,8 @@ public class SoundManager : MonoBehaviour
 
     private bool isFollowing = false;
     private Transform followTarget;
+
+    private float footstepTimer;
 
     private void Awake()
     {
@@ -33,25 +36,51 @@ public class SoundManager : MonoBehaviour
     // Resources에 있는 오디오 가져와서 딕셔너리에 할당
     private void LoadClips()
     {
-        AudioClip soundBoxClip = Resources.Load<AudioClip>("Audio/SoundBox");
-        if (soundBoxClip != null)
+        AudioClip[] clips = Resources.LoadAll<AudioClip>("Audio");
+        foreach (AudioClip cl in clips)
         {
-            soundClips["SoundBoxClip"] = soundBoxClip;
+            soundClips.Add(cl.name, cl);
         }
     }
 
-    // 음악 재생
+    public void PlayerFootstep(float interval)
+    {
+        if (footstepTimer <= 0f)
+        {
+            float minSpeed = 1f;
+            float maxSpeed = 4f;
+            float minInterval = 0.2f;
+            float maxInterval = 0.6f;
+
+            float speedRatio = Mathf.InverseLerp(minSpeed, maxSpeed, interval);
+            float footstepInterval = Mathf.Lerp(maxInterval, minInterval, speedRatio);
+
+            var footstepClips = soundClips.Where(kvp => kvp.Key.StartsWith("Footstep_Walk")).Select(kvp => kvp.Value).ToList();
+
+            if (footstepClips.Count > 0)
+            {
+                int randomIndex = Random.Range(0, footstepClips.Count);
+                audioSource.spatialBlend = 1.0f;  // 3D 사운드
+                audioSource.minDistance = 5f;     // 최소 거리
+                audioSource.maxDistance = 10f;    // 최대 거리
+                audioSource.PlayOneShot(footstepClips[randomIndex]);
+            }
+
+            footstepTimer = footstepInterval;
+        }
+    }
+
+    // 음악 재생 
     public void PlaySound(Transform target, float range, string clipKey)
     {
+        Debug.Log($"Playing sound '{clipKey}' at {target.position}");
         if (soundClips.ContainsKey(clipKey))
         {
-            Debug.Log("PlaySound");
             AudioClip clip = soundClips[clipKey];
-            audioSource.clip = clip;
             audioSource.spatialBlend = 1.0f;
             audioSource.minDistance = range;
             audioSource.maxDistance = range * 2;
-            audioSource.Play();
+            audioSource.PlayOneShot(clip);
 
             followTarget = target;
             isFollowing = true;
@@ -88,8 +117,6 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-
-
     private IEnumerator EmitSoundContinuously(float range)
     {
         while (isFollowing && followTarget != null)
@@ -119,6 +146,11 @@ public class SoundManager : MonoBehaviour
         if (isFollowing && followTarget != null)
         {
             audioSource.transform.position = followTarget.position;
+        }
+
+        if (footstepTimer > 0f)
+        {
+            footstepTimer -= Time.deltaTime;
         }
     }
 }

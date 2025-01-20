@@ -35,7 +35,7 @@ public class SoundMonster : MonoBehaviour
         animator = GetComponent<Animator>();
 
         normalSpeed = agent.speed;
-        agent.isStopped = true;
+        SetWalkingState(0); // Idle 초기 상태
         TriggerWatch();
     }
 
@@ -57,7 +57,6 @@ public class SoundMonster : MonoBehaviour
             agent.speed = chaseSpeed;
             isChasing = true;
             currentState = MonsterState.Chase;
-            animator.SetInteger("isWalking", 1);
             StopCoroutine(WanderRandomly());
             StartCoroutine(UpdateChasingTarget());
         }
@@ -105,8 +104,6 @@ public class SoundMonster : MonoBehaviour
 
     public void SetWalkingState(int walkingState)
     {
-        animator.SetInteger("isWalking", walkingState);
-
         if (walkingState == 1 && currentState != MonsterState.Chase)
         {
             StartCoroutine(SwitchToRunAfterIdle());
@@ -120,9 +117,8 @@ public class SoundMonster : MonoBehaviour
     private IEnumerator SwitchToRunAfterIdle()
     {
         currentState = MonsterState.Idle;
-        animator.SetTrigger("isWatching");     // Idle 상태로 전환
+        animator.SetTrigger("isWatching");
         yield return new WaitForSeconds(0.2f); // 잠시 멈춘 후
-        animator.SetInteger("isWalking", 1);   // Run 상태로 전환
         agent.speed = chaseSpeed;
         currentState = MonsterState.Chase;
     }
@@ -135,10 +131,9 @@ public class SoundMonster : MonoBehaviour
 
             if (curTarget != null)
             {
-                currentState = MonsterState.Patrol;
                 float distanceToTarget = Vector3.Distance(transform.position, curTarget.position);
 
-                if (distanceToTarget <= 30f)
+                if (distanceToTarget <= 50f)
                 {
                     if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
                     {
@@ -158,13 +153,11 @@ public class SoundMonster : MonoBehaviour
                 }
                 else
                 {
-                    //Vector3 directionToTarget = (curTarget.position - transform.position).normalized;
-                    //float maxDistance = Mathf.Min(Vector3.Distance(transform.position, curTarget.position));
                     Vector3 newPosition = curTarget.position;
 
-                    if (NavMesh.SamplePosition(newPosition, out NavMeshHit hit, 20f, NavMesh.AllAreas))
+                    if (NavMesh.SamplePosition(newPosition, out NavMeshHit hit, 10f, NavMesh.AllAreas))
                     {
-                        Debug.Log($"Monster is far away from player. Monster is going to {hit.position}");
+                        //Debug.Log($"Monster is far away from player. Monster is going to {hit.position}");
                         agent.SetDestination(hit.position);
                         SetWalkingState(0);
                     }
@@ -183,7 +176,7 @@ public class SoundMonster : MonoBehaviour
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
         Transform closestPlayer = null;
-        float minDistance=Mathf.Infinity;
+        float minDistance = Mathf.Infinity;
 
         foreach (GameObject player in players)
         {
@@ -200,7 +193,7 @@ public class SoundMonster : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, 30f);
+        Gizmos.DrawWireSphere(transform.position, 50f);
     }
 
     private IEnumerator HandlePostAttack()
@@ -257,22 +250,20 @@ public class SoundMonster : MonoBehaviour
             return;
         }
 
-        Debug.Log("TriggerWatch");
-        currentState = MonsterState.Idle;
         agent.isStopped = true;
+        currentState = MonsterState.Idle;
         animator.SetTrigger("isWatching");
         StartCoroutine(HandlePostWatch());
     }
 
     private IEnumerator HandlePostWatch()
     {
-        Debug.Log("HandlePostWatch");
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSecondsRealtime(3.11f);
+
+        agent.isStopped = false;
 
         if (!isChasing && !isAttacking)
         {
-            agent.isStopped = false;
-            SetWalkingState(0);
             StartCoroutine(WanderRandomly());
         }
     }
@@ -301,7 +292,6 @@ public class SoundMonster : MonoBehaviour
             }
 
             Transform potentialPlayer = collider.transform;
-            Vector3 directionToPlayer = (potentialPlayer.position - transform.position).normalized;
             float distanceToPlayer = Vector3.Distance(transform.position, potentialPlayer.position);
 
             int wallCount = DetectWallsBetween(transform.position, potentialPlayer.position);
@@ -319,7 +309,6 @@ public class SoundMonster : MonoBehaviour
                 return;
             }
         }
-
         detectedPlayer = null;
         if (!isChasing)
         {
@@ -347,7 +336,7 @@ public class SoundMonster : MonoBehaviour
     private void Update()
     {
         DetectPlayer();
-
+        /*
         if (detectedPlayer != null && !isAttacking)
         {
             agent.SetDestination(detectedPlayer.position);
@@ -356,7 +345,7 @@ public class SoundMonster : MonoBehaviour
             {
                 TriggerAttack();
             }
-        }
+        }*/
 
         if (isChasing && currentTarget.HasValue)
         {
@@ -368,6 +357,22 @@ public class SoundMonster : MonoBehaviour
             }
         }
 
-        Debug.Log($"Monster current state is {currentState}");
+        switch (currentState)
+        {
+            case MonsterState.Patrol:
+                animator.SetInteger("isWalking", 0);
+                break;
+            case MonsterState.Chase:
+                animator.SetInteger("isWalking", 1);
+                break;
+            case MonsterState.Idle:
+                Debug.Log("Monster state is idle");
+                break;
+            case MonsterState.Attack:
+                Debug.Log("Monster state is attack");
+                break;
+            default:
+                break;
+        }
     }
 }
