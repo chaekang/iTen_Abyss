@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1582618815828981089}
   - component: {fileID: 4795741294667569678}
   m_Layer: 8
-  m_Name: note1
+  m_Name: HP_Prison_Book_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -102,9 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemData: {fileID: 11400000, guid: 54c844d254fce43e882078de265543ac, type: 2}
   amount: 1
-  panel: {fileID: 0}
-  textUI: {fileID: 0}
-  noteNum: 1
+  noteNum: 0
 --- !u!205 &1582618815828981089
 LODGroup:
   m_ObjectHideFlags: 0
