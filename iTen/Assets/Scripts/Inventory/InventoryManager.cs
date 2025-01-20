@@ -43,7 +43,7 @@ public class InventoryManager : MonoBehaviour
             }
         }
 
-        // .¾ÆÀÌÅÛ ÁÝ±â
+        // .ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ý±ï¿½
         if (Input.GetMouseButtonDown(1))
         {
             TryPickupItem();
@@ -112,6 +112,12 @@ public class InventoryManager : MonoBehaviour
                     Debug.Log("Cannot pick up a dropped SoundBox.");
                     return;
                 }
+
+                if(item is Note note)
+                {
+                    return;
+                }
+     
 
                 Debug.Log($"Picking up item: {item.name}");
                 bool isAdded = AddItemToInventory(item.itemData, item.amount);
@@ -238,6 +244,6 @@ public class InventoryManager : MonoBehaviour
 
     private void BatteryCharge()
     {
-        // ¹èÅÍ¸® ÃæÀü ·ÎÁ÷
+        // ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 }

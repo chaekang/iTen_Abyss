@@ -120,9 +120,9 @@ public class SoundMonster : MonoBehaviour
     private IEnumerator SwitchToRunAfterIdle()
     {
         currentState = MonsterState.Idle;
-        animator.SetTrigger("isWatching");     // Idle »óÅÂ·Î ÀüÈ¯
-        yield return new WaitForSeconds(0.2f); // Àá½Ã ¸ØÃá ÈÄ
-        animator.SetInteger("isWalking", 1);   // Run »óÅÂ·Î ÀüÈ¯
+        animator.SetTrigger("isWatching");     // Idle ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½È¯
+        yield return new WaitForSeconds(0.2f); // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+        animator.SetInteger("isWalking", 1);   // Run ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½È¯
         agent.speed = chaseSpeed;
         currentState = MonsterState.Chase;
     }
@@ -257,7 +257,7 @@ public class SoundMonster : MonoBehaviour
             return;
         }
 
-        Debug.Log("TriggerWatch");
+        //Debug.Log("TriggerWatch");
         currentState = MonsterState.Idle;
         agent.isStopped = true;
         animator.SetTrigger("isWatching");
@@ -266,7 +266,7 @@ public class SoundMonster : MonoBehaviour
 
     private IEnumerator HandlePostWatch()
     {
-        Debug.Log("HandlePostWatch");
+        //Debug.Log("HandlePostWatch");
         yield return new WaitForSeconds(0.2f);
 
         if (!isChasing && !isAttacking)
@@ -368,6 +368,6 @@ public class SoundMonster : MonoBehaviour
             }
         }
 
-        Debug.Log($"Monster current state is {currentState}");
+        //Debug.Log($"Monster current state is {currentState}");
     }
 }
