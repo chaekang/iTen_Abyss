@@ -45,7 +45,7 @@ public class Engineone : MonoBehaviourPun
     [PunRPC]
     void ShowClearText()
     {
-        clearText.text = "Clear!";
+        //clearText.text = "Clear!";
     }
 
     
