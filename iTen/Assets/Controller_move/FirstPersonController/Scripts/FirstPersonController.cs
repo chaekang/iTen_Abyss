@@ -2,6 +2,7 @@
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
+using Photon.Pun;
 
 namespace StarterAssets
 {
@@ -9,7 +10,7 @@ namespace StarterAssets
 #if ENABLE_INPUT_SYSTEM
 	[RequireComponent(typeof(PlayerInput))]
 #endif
-	public class FirstPersonController : MonoBehaviour
+	public class FirstPersonController : MonoBehaviourPun
 	{
 		[Header("CameraRoot")]
 		public Transform FollowTransform;
@@ -81,6 +82,8 @@ namespace StarterAssets
 		[SerializeField] private GameObject _model;
 
 		private const float _threshold = 0.01f;
+
+		public float state_1 = 0f;
 
 		private bool IsCurrentDeviceMouse
 		{
@@ -199,18 +202,23 @@ namespace StarterAssets
 
 			// note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
 			// if there is a move input rotate player when the player is moving
-			if (_input.move != Vector2.zero)
-			{
-				// move
-				inputDirection = transform.right * _input.move.x + transform.forward * _input.move.y;
-                _animator.SetFloat("Forward", 1.0f);
-				SoundManager.Instance.PlayerFootstep(_speed);
-                Debug.Log(_input.move);
+			if(photonView.IsMine) {
+				if (_input.move != Vector2.zero)
+				{
+					// move
+					inputDirection = transform.right * _input.move.x + transform.forward * _input.move.y;
+					state_1 = 1.0f;
+                	_animator.SetFloat("Forward", state_1);
+					SoundManager.Instance.PlayerFootstep(_speed);
+                	Debug.Log(_input.move);
+				}
+				else
+				{
+					state_1 = 0.0f;
+                	_animator.SetFloat("Forward", state_1);
+            	}
 			}
-			else
-			{
-                _animator.SetFloat("Forward", 0.0f);
-            }
+			
 
 			// move the player
 //			Debug.Log(" 입력 방향 " + inputDirection);
@@ -311,7 +319,17 @@ namespace StarterAssets
             }
         }
 
-
+        // public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        // {
+        //     if (stream.IsWriting)
+        // 	{
+		// 		stream.SendNext(state_1);
+        // 	}
+        // 	else
+        // 	{
+        //     	state_1 = (float)stream.ReceiveNext();
+        // 	}
+        // }
     }
 
 
