@@ -6,19 +6,25 @@ using UnityEngine;
 
 public class Enginetwo : MonoBehaviourPun
 {
+    public int wire_count = 0;
     public void Interact2()
     {
         photonView.RPC("Ex2", RpcTarget.All);
+        Debug.Log("wire count: " + wire_count);
     }
 
     [PunRPC]
     void Ex2(){
         GameObject engineManagerObject = GameObject.Find("EngineManager");
         EngineManager engineManager2 = engineManagerObject.GetComponent<EngineManager>(); 
+
+        wire_count++;
         if (engineManager2 != null)
         {
-            engineManager2.engine_2 = true;
-            engineManager2.CheckAllEngines();
+            if(wire_count == 2){
+                engineManager2.engine_2 = true;
+                engineManager2.CheckAllEngines();
+            }
         }
     }
 }
