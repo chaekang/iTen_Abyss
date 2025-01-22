@@ -118,8 +118,15 @@ public class InventoryManager : MonoBehaviourPun
                 bool isAdded = AddItemToInventory(item.itemData, item.amount);
                 if (isAdded)
                 {
-                    //Destroy(item.gameObject);
-                    photonView.RPC("DestroyItemObject", RpcTarget.All, item.gameObject.GetComponent<PhotonView>().ViewID);
+                    PhotonView itemView = item.gameObject.GetComponent<PhotonView>();
+                    if(PhotonNetwork.IsMasterClient){
+                        PhotonNetwork.Destroy(item.gameObject);
+                    }
+                    else{
+                        Debug.Log("viewid = "+itemView.ViewID);
+                        photonView.RPC("DestroyItem", RpcTarget.MasterClient, itemView.ViewID); 
+                    }
+                    
                     Debug.Log($"{item.name} has been destroyed.");
                 }
                 else
@@ -131,12 +138,12 @@ public class InventoryManager : MonoBehaviourPun
     }
 
     [PunRPC]
-    private void DestroyItemObject(int networkID)
+    private void DestroyItem(int viewID) 
     {
-        GameObject itemObject = PhotonNetwork.GetPhotonView(networkID).gameObject;
-        if (itemObject != null)
+        PhotonView itemView = PhotonView.Find(viewID); 
+        if (itemView != null)
         {
-            PhotonNetwork.Destroy(itemObject);
+            PhotonNetwork.Destroy(itemView.gameObject);
         }
     }
 

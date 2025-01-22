@@ -210,7 +210,7 @@ namespace StarterAssets
 					state_1 = 1.0f;
                 	_animator.SetFloat("Forward", state_1);
 					SoundManager.Instance.PlayerFootstep(_speed);
-                	Debug.Log(_input.move);
+//                	Debug.Log(_input.move);
 				}
 				else
 				{
