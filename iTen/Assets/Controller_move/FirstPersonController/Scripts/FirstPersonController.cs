@@ -202,22 +202,22 @@ namespace StarterAssets
 
 			// note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
 			// if there is a move input rotate player when the player is moving
-			if(photonView.IsMine) {
-				if (_input.move != Vector2.zero)
-				{
-					// move
-					inputDirection = transform.right * _input.move.x + transform.forward * _input.move.y;
-					state_1 = 1.0f;
-                	_animator.SetFloat("Forward", state_1);
-					SoundManager.Instance.PlayerFootstep(_speed, "Footstep_Walk", transform);
+			
+			if (_input.move != Vector2.zero)
+			{
+				// move
+				inputDirection = transform.right * _input.move.x + transform.forward * _input.move.y;
+				state_1 = 1.0f;
+                _animator.SetFloat("Forward", state_1);
+				SoundManager.Instance.PlayerFootstep(_speed, "Footstep_Walk", transform);
 //                	Debug.Log(_input.move);
-				}
-				else
-				{
-					state_1 = 0.0f;
-                	_animator.SetFloat("Forward", state_1);
-            	}
 			}
+			else
+			{
+				state_1 = 0.0f;
+                _animator.SetFloat("Forward", state_1);
+            }
+			
 			
 
 			// move the player
