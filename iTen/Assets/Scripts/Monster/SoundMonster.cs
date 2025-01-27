@@ -12,7 +12,7 @@ public enum MonsterState
 
 public class SoundMonster : MonoBehaviour
 {
-    private float detectionRadius = 20f;
+    private float detectionRadius = 30f;
     public LayerMask playerLayer;
 
     private Animator animator;
@@ -158,7 +158,7 @@ public class SoundMonster : MonoBehaviour
 
                     if (NavMesh.SamplePosition(newPosition, out NavMeshHit hit, 10f, NavMesh.AllAreas))
                     {
-                        //Debug.Log($"Monster is far away from player. Monster is going to {hit.position}");
+                        Debug.Log($"Monster is far away from player. Monster is going to {hit.position}");
                         agent.SetDestination(hit.position);
                         SetWalkingState(0);
                     }
@@ -302,6 +302,8 @@ public class SoundMonster : MonoBehaviour
             {
                 detectedPlayer = potentialPlayer;
                 Debug.Log($"Player detected. Wall count: {wallCount}, Adjusted radius: {adjustRad}");
+                agent.SetDestination(detectedPlayer.position);
+                StartChasing();
 
                 if (!isAttacking)
                 {
@@ -338,6 +340,7 @@ public class SoundMonster : MonoBehaviour
     {
         DetectPlayer();
         
+        /*
         if (detectedPlayer != null && !isAttacking)
         {
             agent.SetDestination(detectedPlayer.position);
@@ -346,7 +349,7 @@ public class SoundMonster : MonoBehaviour
             {
                 TriggerAttack();
             }
-        }
+        }*/
 
         if (isChasing && currentTarget.HasValue)
         {
