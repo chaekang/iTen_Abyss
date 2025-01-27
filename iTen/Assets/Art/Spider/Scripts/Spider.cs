@@ -2,8 +2,10 @@
 using System.Collections;
 using UnityEngine.AI;
 using StarterAssets;
+using Photon.Pun; // 포톤 네트워킹 using 추가
 
-public class Spider : MonoBehaviour {
+public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCallbacks 상속
+{
 
     // 빛의 몬스터 상태
     public enum MonsterState
@@ -16,21 +18,21 @@ public class Spider : MonoBehaviour {
     }
 
     [Header("Components")]
-    [SerializeField] private NavMeshAgent agent;            // NavMesh 사용
-    [SerializeField] private Transform player;              // Player위치 캐싱
+    [SerializeField] private NavMeshAgent agent;                      // NavMesh 사용
+    [SerializeField] private Transform player;                        // Player위치 캐싱
 
     [Header("Settings")]
-    [SerializeField] private float attackRange = 2.0f;        // 공격 범위
-    [SerializeField] private float detectionRange = 10.0f;    // 감지 범위
-    [SerializeField] private float patrolSpeed = 2.0f;        // 정찰 속도
-    [SerializeField] private float chaseSpeed = 5.0f;         // 추적 속도
-    [SerializeField] private float RandAnRunRadius = 5.0f;    // 도망가거나 랜덤으로 잡을 때 반경
-    [SerializeField] private float fieldOfViewAngle = 360.0f;  // 시야각
+    [SerializeField] private float attackRange = 2.0f;                // 공격 범위
+    [SerializeField] private float detectionRange = 10.0f;              // 감지 범위
+    [SerializeField] private float patrolSpeed = 2.0f;                // 정찰 속도
+    [SerializeField] private float chaseSpeed = 5.0f;                 // 추적 속도
+    [SerializeField] private float RandAnRunRadius = 5.0f;             // 도망가거나 랜덤으로 잡을 때 반경
+    [SerializeField] private float fieldOfViewAngle = 360.0f;          // 시야각
 
-    private MonsterState currentState;                             // 플레이어 상태
+    private MonsterState currentState;                              // 플레이어 상태
 
-    private GameSystem gameSystem;              // 게임시스템
-    public Animator spiderAnimator;                    // 스파이더 애니메이션
+    private GameSystem gameSystem;                                  // 게임시스템
+    public Animator spiderAnimator;                                     // 스파이더 애니메이션
     [SerializeField] private FirstPersonController playerController;
 
 
@@ -48,29 +50,33 @@ public class Spider : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        // 주기적으로 시야를 체크
-        // 만약 최적화가 필요하다면
-        // Time.time을 써서 시간별로 체크하는 것이 좋음
-        CheckPlayerDistance();
-
-        // 상태 머신
-        switch (currentState)
+        // 호스트에서만 몬스터 AI 실행
+        if (photonView.IsMine)
         {
-            case MonsterState.Idle:
-                IdleState();
-                break;
-            case MonsterState.Patrol:
-                PatrolState();
-                break;
-            case MonsterState.Chase:
-                ChaseState();
-                break;
-            case MonsterState.Attack:
-                AttackState();
-                break;
-            case MonsterState.Run:
-                RunState();
-                break;
+            // 주기적으로 시야를 체크
+            // 만약 최적화가 필요하다면
+            // Time.time을 써서 시간별로 체크하는 것이 좋음
+            CheckPlayerDistance();
+
+            // 상태 머신
+            switch (currentState)
+            {
+                case MonsterState.Idle:
+                    IdleState();
+                    break;
+                case MonsterState.Patrol:
+                    PatrolState();
+                    break;
+                case MonsterState.Chase:
+                    ChaseState();
+                    break;
+                case MonsterState.Attack:
+                    AttackState();
+                    break;
+                case MonsterState.Run:
+                    RunState();
+                    break;
+            }
         }
     }
 
@@ -116,7 +122,7 @@ public class Spider : MonoBehaviour {
         // remaingDistance는 목적지까지의 거리가 얼마나 남았는지에 대한 여부이다.
         if (!agent.pathPending && agent.remainingDistance < 0.5f)
         {
-            SetRandomPosition();
+            photonView.RPC("RPC_SetRandomPosition", RpcTarget.All); // RPC 호출
         }
 
         // 어두운 곳에서 플레이어 감지 시 추적 상태로 전환
@@ -143,11 +149,11 @@ public class Spider : MonoBehaviour {
     {
         // 추적 상태 로직
         agent.speed = chaseSpeed;
-        agent.SetDestination(player.position);
+        photonView.RPC("RPC_SetDestination", RpcTarget.All, player.position); // RPC 호출
     }
 
     private float attackDelay = 0.0f;
-    private float attackInterval = 1.0f;            // 1초마다 때리기
+    private float attackInterval = 1.0f;                // 1초마다 때리기
     private void AttackState()
     {
         attackDelay += Time.deltaTime;
@@ -157,7 +163,7 @@ public class Spider : MonoBehaviour {
             agent.ResetPath();
 
             // 플레이어로 바라보기
-            transform.LookAt(player);
+            photonView.RPC("RPC_LookAtPlayer", RpcTarget.All); // RPC 호출
 
             // 그리고 어택딜레이는 여기서 추가해도 됨
             Debug.Log("플레이어 공격!");
@@ -175,7 +181,7 @@ public class Spider : MonoBehaviour {
         // 도망갈 때 런 포지션을 따로 잡아놓는 것으로 함
         if (!agent.hasPath || agent.remainingDistance < 0.5f)
         {
-            SetRunPosition();
+            photonView.RPC("RPC_SetRunPosition", RpcTarget.All); // RPC 호출
         }
     }
 
@@ -204,7 +210,9 @@ public class Spider : MonoBehaviour {
         Debug.Log("플레이어 찾음");
         return true;
     }
-    private void SetRandomPosition()
+
+    [PunRPC]
+    private void RPC_SetRandomPosition()
     {
         Vector3 randomDirection = Random.insideUnitSphere * RandAnRunRadius;
         randomDirection += transform.position;
@@ -215,7 +223,8 @@ public class Spider : MonoBehaviour {
         }
     }
 
-    private void SetRunPosition()
+    [PunRPC]
+    private void RPC_SetRunPosition()
     {
         Vector3 fleeDirection = transform.position - player.position;
         Vector3 fleePosition = transform.position + fleeDirection.normalized * RandAnRunRadius;
@@ -229,31 +238,49 @@ public class Spider : MonoBehaviour {
         }
     }
 
+    [PunRPC]
+    private void RPC_SetDestination(Vector3 targetPos)
+    {
+        agent.SetDestination(targetPos);
+    }
+
+    [PunRPC]
+    private void RPC_LookAtPlayer()
+    {
+        transform.LookAt(player);
+    }
+
     private string GetStateString()
     {
         switch (currentState)
         {
-            case MonsterState.Idle:         // 대기상태
+            case MonsterState.Idle:           // 대기상태
             default:
                 return "Idle";
-            case MonsterState.Patrol:      // 정찰상태
-            case MonsterState.Chase:      // 추적상태
-            case MonsterState.Run:      // 도망상태
+            case MonsterState.Patrol:         // 정찰상태
+            case MonsterState.Chase:          // 추적상태
+            case MonsterState.Run:            // 도망상태
                 return "running";
-            case MonsterState.Attack:    // 공격상태
+            case MonsterState.Attack:         // 공격상태
                 return "attack2";
         }
     }
 
-    
+
     private void ChangeState(MonsterState newState)
     {
-        if (currentState != newState)
+        photonView.RPC("RPC_ChangeState", RpcTarget.All, (int)newState); // RPC 호출
+    }
+
+    [PunRPC]
+    private void RPC_ChangeState(int newState)
+    {
+        if (currentState != (MonsterState)newState)
         {
             spiderAnimator.SetBool(GetStateString(), false);
 
             // 상태 변경
-            currentState = newState;
+            currentState = (MonsterState)newState;
             spiderAnimator.SetBool(GetStateString(), true);
         }
     }
@@ -287,6 +314,4 @@ public class Spider : MonoBehaviour {
         }
     }
 #endif
-
-
 }
