@@ -145,10 +145,21 @@ public class SoundManager : MonoBehaviour
         soundPos.Add(pos);
     }
 
-    public void PlayShortSound(string name)
+    public void PlayJumpScareSound(string name)
     {
+        if (!soundClips.ContainsKey(name))
+        {
+            Debug.LogWarning($"Sound '{name}' not found in soundClips.");
+            return;
+        }
+
         AudioClip clip = soundClips[name];
+        float originalVol = audioSource.volume;
+
+        audioSource.volume = Mathf.Clamp(1.5f, 0f, 1f);
         audioSource.PlayOneShot(clip);
+
+        audioSource.volume = originalVol;
     }
 
     private void Update()
