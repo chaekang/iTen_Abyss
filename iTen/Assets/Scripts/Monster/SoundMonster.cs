@@ -27,7 +27,7 @@ public class SoundMonster : MonoBehaviour
     private Transform detectedPlayer;
 
     private float normalSpeed;
-    private float chaseSpeed = 6;
+    private float chaseSpeed = 5;
 
     private void Start()
     {
@@ -35,7 +35,6 @@ public class SoundMonster : MonoBehaviour
         animator = GetComponent<Animator>();
 
         normalSpeed = agent.speed;
-        SetWalkingState(0);
         TriggerWatch();
     }
 
@@ -45,20 +44,8 @@ public class SoundMonster : MonoBehaviour
 
         if (!isChasing)
         {
-            StartChasing();
-        }
-    }
-
-    private void StartChasing()
-    {
-        if (currentTarget.HasValue)
-        {
-            agent.SetDestination(currentTarget.Value);
-            agent.speed = chaseSpeed;
-            isChasing = true;
-            currentState = MonsterState.Chase;
-            StopCoroutine(WanderRandomly());
-            StartCoroutine(UpdateChasingTarget());
+            SoundManager.Instance.PlayGrowlingSound("Find_SoundMonster");
+            SwitchToRunAfterIdle();
         }
     }
 
@@ -98,29 +85,17 @@ public class SoundMonster : MonoBehaviour
         isChasing = false;
         agent.speed = normalSpeed;
         currentTarget = null;
-        SetWalkingState(0);
+        currentState = MonsterState.Patrol;
         StartCoroutine(WanderRandomly());
     }
 
-    public void SetWalkingState(int walkingState)
+    private void SwitchToRunAfterIdle()
     {
-        if (walkingState == 1 && currentState != MonsterState.Chase)
-        {
-            StartCoroutine(SwitchToRunAfterIdle());
-        }
-        else if (walkingState == 0)
-        {
-            currentState = MonsterState.Patrol;
-        }
-    }
-
-    private IEnumerator SwitchToRunAfterIdle()
-    {
-        currentState = MonsterState.Idle;
-        animator.SetTrigger("isWatching");
-        yield return new WaitForSeconds(0.2f); // ¿·Ω√ ∏ÿ√· »ƒ
-        agent.speed = chaseSpeed;
+        SoundManager.Instance.PlayGrowlingSound("Find_SoundMonster");
         currentState = MonsterState.Chase;
+        agent.speed = chaseSpeed;
+        StopCoroutine(WanderRandomly());
+        StartCoroutine(UpdateChasingTarget());
     }
 
     private IEnumerator WanderRandomly()
@@ -144,7 +119,7 @@ public class SoundMonster : MonoBehaviour
                         {
                             agent.SetDestination(hit.position);
                             SoundManager.Instance.PlayGrowlingSound("SoundMonster_Growl");
-                            SetWalkingState(0);
+                            currentState = MonsterState.Patrol;
                         }
                         else
                         {
@@ -158,9 +133,9 @@ public class SoundMonster : MonoBehaviour
 
                     if (NavMesh.SamplePosition(newPosition, out NavMeshHit hit, 10f, NavMesh.AllAreas))
                     {
-                        Debug.Log($"Monster is far away from player. Monster is going to {hit.position}");
+                        //Debug.Log($"Monster is far away from player. Monster is going to {hit.position}");
                         agent.SetDestination(hit.position);
-                        SetWalkingState(0);
+                        currentState = MonsterState.Patrol;
                     }
                     else
                     {
@@ -199,7 +174,6 @@ public class SoundMonster : MonoBehaviour
 
     private IEnumerator HandlePostAttack()
     {
-        Debug.Log("HandlePostAttack");
         yield return new WaitForSeconds(2.1f);
 
         detectedPlayer = null;
@@ -229,7 +203,6 @@ public class SoundMonster : MonoBehaviour
         }
 
         isAttacking = true;
-        Debug.Log("TriggerAttack");
 
         Vector3 directionToPlayer = (detectedPlayer.position - transform.position).normalized;
         directionToPlayer.y = 0;
@@ -242,7 +215,6 @@ public class SoundMonster : MonoBehaviour
 
         StartCoroutine(HandlePostAttack());
     }
-
 
     public void TriggerWatch()
     {
@@ -303,7 +275,8 @@ public class SoundMonster : MonoBehaviour
                 detectedPlayer = potentialPlayer;
                 Debug.Log($"Player detected. Wall count: {wallCount}, Adjusted radius: {adjustRad}");
                 agent.SetDestination(detectedPlayer.position);
-                StartChasing();
+
+                SwitchToRunAfterIdle();
 
                 if (!isAttacking)
                 {
@@ -313,10 +286,6 @@ public class SoundMonster : MonoBehaviour
             }
         }
         detectedPlayer = null;
-        if (!isChasing)
-        {
-            TriggerWatch();
-        }
     }
 
     private int DetectWallsBetween(Vector3 start, Vector3 end)
@@ -339,17 +308,6 @@ public class SoundMonster : MonoBehaviour
     private void Update()
     {
         DetectPlayer();
-        
-        /*
-        if (detectedPlayer != null && !isAttacking)
-        {
-            agent.SetDestination(detectedPlayer.position);
-
-            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
-            {
-                TriggerAttack();
-            }
-        }*/
 
         if (isChasing && currentTarget.HasValue)
         {
@@ -364,9 +322,13 @@ public class SoundMonster : MonoBehaviour
         switch (currentState)
         {
             case MonsterState.Patrol:
+                Debug.Log("Monster state is patrol");
+                SoundManager.Instance.PlayerFootstep(0.2f, "SoundMonster_Walk", transform);
                 animator.SetInteger("isWalking", 0);
                 break;
             case MonsterState.Chase:
+                Debug.Log("Monster state is chase");
+                SoundManager.Instance.PlayerFootstep(0.1f, "SoundMonster_Walk", transform);
                 animator.SetInteger("isWalking", 1);
                 break;
             case MonsterState.Idle:
@@ -376,6 +338,7 @@ public class SoundMonster : MonoBehaviour
                 Debug.Log("Monster state is attack");
                 break;
             default:
+                Debug.Log("Monster state is null");
                 break;
         }
     }
