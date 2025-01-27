@@ -30,7 +30,10 @@ public class FlashlightManager : MonoBehaviour
 
         remainingTime = flashlightDuration;
         UpdateTimerUI();
+
+        flashlight.enabled = false;
     }
+
 
     public void SetFlashlightState(bool isOn)
     {
