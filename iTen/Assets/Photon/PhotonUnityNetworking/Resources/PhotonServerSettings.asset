@@ -51,6 +51,13 @@ MonoBehaviour:
   - StopPressing
   - DestroyItemObject
   - DestroyItem
+  - RPC_MoveToTarget
+  - RPC_OnSoundHeard
+  - RPC_SetWalkingState
+  - RPC_StartChasing
+  - RPC_StopChasing
+  - RPC_TriggerAttack
+  - RPC_TriggerWatch
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
