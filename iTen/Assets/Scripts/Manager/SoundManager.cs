@@ -168,6 +168,15 @@ public class SoundManager : MonoBehaviour
         audioSource.PlayOneShot(clip);
     }
 
+    public AudioClip GetClip(string name)
+    {
+        if (soundClips.ContainsKey(name))
+        {
+            return soundClips[name];
+        }
+        return null;
+    }
+
     private void Update()
     {
         if (isFollowing && followTarget != null)
