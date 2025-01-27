@@ -46,7 +46,7 @@ public class SoundMonster : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviou
     }
 
     [PunRPC]
-    private void RPC_OnSoundHeard(Vector3 soundPos) 
+    private void RPC_OnSoundHeard(Vector3 soundPos)
     {
         currentTarget = soundPos;
 
@@ -382,7 +382,7 @@ public class SoundMonster : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviou
     {
         // DetectPlayer() 함수는 각 클라이언트에서 실행되지만, 
         // TriggerAttack() 함수는 RPC를 통해 모든 클라이언트에서 동기화됩니다.
-        DetectPlayer(); 
+        DetectPlayer();
 
         if (isChasing && currentTarget.HasValue)
         {
