@@ -642,7 +642,6 @@ GameObject:
   - component: {fileID: 1774128736233601873}
   - component: {fileID: 2802180074628500771}
   - component: {fileID: 2245376835019365441}
-  - component: {fileID: 6723358511849690782}
   m_Layer: 8
   m_Name: PlayerCapsule
   m_TagString: Player
@@ -1035,24 +1034,6 @@ MonoBehaviour:
     Max: 1000
     SpeedUpPerc: 5
   restartOnDeviceChange: 1
---- !u!114 &6723358511849690782
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8616685848737228372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5448f5dbe7d49584f92e0c8eb74db888, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameOverUI: {fileID: 0}
-  respawnPoint: {fileID: 0}
-  respawnCountdown: 10
-  playerController: {fileID: 0}
-  inventoryManager: {fileID: 0}
-  countdownText: {fileID: 0}
 --- !u!1 &8847208693776320802
 GameObject:
   m_ObjectHideFlags: 0
