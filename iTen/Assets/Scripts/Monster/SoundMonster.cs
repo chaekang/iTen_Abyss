@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun; // 포톤 네트워킹 using 추가
 
 public enum MonsterState
 {
@@ -10,7 +11,7 @@ public enum MonsterState
     Attack
 }
 
-public class SoundMonster : MonoBehaviour
+public class SoundMonster : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCallbacks 상속
 {
     private float detectionRadius = 20f;
     public LayerMask playerLayer;
@@ -35,11 +36,17 @@ public class SoundMonster : MonoBehaviour
         animator = GetComponent<Animator>();
 
         normalSpeed = agent.speed;
-        SetWalkingState(0); // Idle �ʱ� ����
+        SetWalkingState(0); // Idle 상태 설정
         TriggerWatch();
     }
 
     public void OnSoundHeard(Vector3 soundPos)
+    {
+        photonView.RPC("RPC_OnSoundHeard", RpcTarget.All, soundPos); // RPC 호출
+    }
+
+    [PunRPC]
+    private void RPC_OnSoundHeard(Vector3 soundPos)
     {
         currentTarget = soundPos;
 
@@ -53,13 +60,19 @@ public class SoundMonster : MonoBehaviour
     {
         if (currentTarget.HasValue)
         {
-            agent.SetDestination(currentTarget.Value);
-            agent.speed = chaseSpeed;
-            isChasing = true;
-            currentState = MonsterState.Chase;
-            StopCoroutine(WanderRandomly());
-            StartCoroutine(UpdateChasingTarget());
+            photonView.RPC("RPC_StartChasing", RpcTarget.All, currentTarget.Value); // RPC 호출
         }
+    }
+
+    [PunRPC]
+    private void RPC_StartChasing(Vector3 targetPos)
+    {
+        agent.SetDestination(targetPos);
+        agent.speed = chaseSpeed;
+        isChasing = true;
+        currentState = MonsterState.Chase;
+        StopCoroutine(WanderRandomly());
+        StartCoroutine(UpdateChasingTarget());
     }
 
     private IEnumerator UpdateChasingTarget()
@@ -95,6 +108,12 @@ public class SoundMonster : MonoBehaviour
 
     private void StopChasing()
     {
+        photonView.RPC("RPC_StopChasing", RpcTarget.All); // RPC 호출
+    }
+
+    [PunRPC]
+    private void RPC_StopChasing()
+    {
         isChasing = false;
         agent.speed = normalSpeed;
         currentTarget = null;
@@ -103,6 +122,12 @@ public class SoundMonster : MonoBehaviour
     }
 
     public void SetWalkingState(int walkingState)
+    {
+        photonView.RPC("RPC_SetWalkingState", RpcTarget.All, walkingState); // RPC 호출
+    }
+
+    [PunRPC]
+    public void RPC_SetWalkingState(int walkingState)
     {
         if (walkingState == 1 && currentState != MonsterState.Chase)
         {
@@ -118,7 +143,7 @@ public class SoundMonster : MonoBehaviour
     {
         currentState = MonsterState.Idle;
         animator.SetTrigger("isWatching");
-        yield return new WaitForSeconds(0.2f); // ��� ���� ��
+        yield return new WaitForSeconds(0.2f); // 잠시 대기
         agent.speed = chaseSpeed;
         currentState = MonsterState.Chase;
     }
@@ -142,7 +167,7 @@ public class SoundMonster : MonoBehaviour
 
                         if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, 10f, NavMesh.AllAreas))
                         {
-                            agent.SetDestination(hit.position);
+                            photonView.RPC("RPC_MoveToTarget", RpcTarget.All, hit.position); // RPC 호출
                             SetWalkingState(0);
                         }
                         else
@@ -158,7 +183,7 @@ public class SoundMonster : MonoBehaviour
                     if (NavMesh.SamplePosition(newPosition, out NavMeshHit hit, 10f, NavMesh.AllAreas))
                     {
                         //Debug.Log($"Monster is far away from player. Monster is going to {hit.position}");
-                        agent.SetDestination(hit.position);
+                        photonView.RPC("RPC_MoveToTarget", RpcTarget.All, hit.position); // RPC 호출
                         SetWalkingState(0);
                     }
                     else
@@ -170,6 +195,12 @@ public class SoundMonster : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    [PunRPC]
+    private void RPC_MoveToTarget(Vector3 targetPos)
+    {
+        agent.SetDestination(targetPos);
     }
 
     private Transform FindClosestPlayer()
@@ -216,6 +247,12 @@ public class SoundMonster : MonoBehaviour
 
     public void TriggerAttack()
     {
+        photonView.RPC("RPC_TriggerAttack", RpcTarget.All); // RPC 호출
+    }
+
+    [PunRPC]
+    public void RPC_TriggerAttack()
+    {
         if (isAttacking || detectedPlayer == null)
         {
             return;
@@ -244,6 +281,12 @@ public class SoundMonster : MonoBehaviour
 
 
     public void TriggerWatch()
+    {
+        photonView.RPC("RPC_TriggerWatch", RpcTarget.All); // RPC 호출
+    }
+
+    [PunRPC]
+    public void RPC_TriggerWatch()
     {
         if (isAttacking || currentState == MonsterState.Idle)
         {
@@ -277,6 +320,8 @@ public class SoundMonster : MonoBehaviour
 
     private void DetectPlayer()
     {
+        // 플레이어 감지 로직은 각 클라이언트에서 실행되지만, 
+        // TriggerAttack() 함수는 RPC를 통해 모든 클라이언트에서 동기화됩니다.
         if (isDetect || isAttacking)
         {
             return;
@@ -304,7 +349,7 @@ public class SoundMonster : MonoBehaviour
 
                 if (!isAttacking)
                 {
-                    TriggerAttack();
+                    TriggerAttack(); // RPC 호출
                 }
                 return;
             }
@@ -312,7 +357,7 @@ public class SoundMonster : MonoBehaviour
         detectedPlayer = null;
         if (!isChasing)
         {
-            TriggerWatch();
+            TriggerWatch(); // RPC 호출
         }
     }
 
@@ -335,17 +380,9 @@ public class SoundMonster : MonoBehaviour
 
     private void Update()
     {
+        // DetectPlayer() 함수는 각 클라이언트에서 실행되지만, 
+        // TriggerAttack() 함수는 RPC를 통해 모든 클라이언트에서 동기화됩니다.
         DetectPlayer();
-        /*
-        if (detectedPlayer != null && !isAttacking)
-        {
-            agent.SetDestination(detectedPlayer.position);
-
-            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
-            {
-                TriggerAttack();
-            }
-        }*/
 
         if (isChasing && currentTarget.HasValue)
         {
@@ -353,7 +390,7 @@ public class SoundMonster : MonoBehaviour
 
             if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
             {
-                StopChasing();
+                StopChasing(); // RPC 호출
             }
         }
 

@@ -13,7 +13,7 @@ public class GameScene : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player newPlayer){
         if(PhotonNetwork.CurrentRoom.PlayerCount == 2){    
-            PhotonNetwork.LoadLevel("Map(copy)");
+            PhotonNetwork.LoadLevel("Map");
         }
     }
 }
