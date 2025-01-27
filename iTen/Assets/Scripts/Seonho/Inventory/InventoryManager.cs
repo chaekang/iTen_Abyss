@@ -123,6 +123,11 @@ public class InventoryManager : MonoBehaviourPun
                     return;
                 }
 
+                if( item is Note note)
+                {
+                    return;
+                }
+
                 Debug.Log($"Picking up item: {item.name}");
                 bool isAdded = AddItemToInventory(item.itemData, item.amount);
                 if (isAdded)
