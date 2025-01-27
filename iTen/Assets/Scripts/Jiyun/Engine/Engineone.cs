@@ -12,6 +12,10 @@ public class Engineone : MonoBehaviourPun
     private List<Photon.Realtime.Player> pressingPlayers = new List<Photon.Realtime.Player>();
     // 각 플레이어의 마우스 누르기 시작하는 시간
     private Dictionary<Photon.Realtime.Player, float> pressStartTime = new Dictionary<Photon.Realtime.Player, float>();
+
+    public AudioClip engineSound;
+    private AudioSource audioSource;
+
     public void OnMouseDown()
     {
         Debug.Log("Pressing!");
@@ -37,8 +41,16 @@ public class Engineone : MonoBehaviourPun
             engineManager1.engine_1 = true;
             // 텍스트 표시
             photonView.RPC("ShowClearText", RpcTarget.All);
-
+            PlayEngineSound();
             engineManager1.CheckAllEngines();
+        }
+    }
+
+    private void PlayEngineSound()
+    {
+        if (engineSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(engineSound);
         }
     }
 
