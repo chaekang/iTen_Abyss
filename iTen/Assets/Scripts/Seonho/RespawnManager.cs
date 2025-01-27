@@ -7,13 +7,26 @@ using StarterAssets;
 
 public class RespawnManager : MonoBehaviour
 {
+    public static RespawnManager Instance { get; private set; }
+
     public GameObject gameOverUI;
     public Transform respawnPoint;
     public float respawnCountdown = 10f;
-    public FirstPersonController playerController; 
     public InventoryManager inventoryManager;
     public TextMeshProUGUI countdownText;
     private Button respawnButton;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void Start()
     {
@@ -32,10 +45,6 @@ public class RespawnManager : MonoBehaviour
     {
         gameOverUI.SetActive(true);
 
-        if (playerController != null)
-        {
-            playerController.enabled = false;
-        }
 
         if (respawnButton != null)
         {
@@ -67,11 +76,6 @@ public class RespawnManager : MonoBehaviour
             }
         }
 
-        if (playerController != null && respawnPoint != null)
-        {
-            playerController.transform.position = respawnPoint.position;
-        }
-
         float countdown = respawnCountdown;
         while (countdown > 0)
         {
@@ -89,10 +93,5 @@ public class RespawnManager : MonoBehaviour
         }
 
         gameOverUI.SetActive(false);
-
-        if (playerController != null)
-        {
-            playerController.enabled = true;
-        }
     }
 }

@@ -76,6 +76,16 @@ public class MonsterJumpScare : MonoBehaviour
         isScaring = false;
         yield return new WaitForSeconds(3f);
         bloodImage.SetActive(false);
+
+        //¸®½ºÆù
+        if (RespawnManager.Instance != null)
+        {
+            RespawnManager.Instance.OnPlayerDeath();
+        }
+        else
+        {
+            Debug.LogError("RespawnManager Instance not found in the scene.");
+        }
     }
 
     private int GetClosetTargetIndex()
