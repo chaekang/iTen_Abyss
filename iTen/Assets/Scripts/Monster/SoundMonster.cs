@@ -403,10 +403,10 @@ public class SoundMonster : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviou
                 animator.SetInteger("isWalking", 1);
                 break;
             case MonsterState.Idle:
-                Debug.Log("Monster state is idle");
+                //Debug.Log("Monster state is idle");
                 break;
             case MonsterState.Attack:
-                Debug.Log("Monster state is attack");
+                //Debug.Log("Monster state is attack");
                 break;
             default:
                 break;
