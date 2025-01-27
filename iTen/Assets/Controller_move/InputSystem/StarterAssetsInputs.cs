@@ -97,6 +97,15 @@ namespace StarterAssets
             {
                 Debug.Log("손전등 껐다");
             }
+
+            if (FlashlightManager.Instance != null)
+            {
+                FlashlightManager.Instance.SetFlashlightState(flash);
+            }
+            else
+            {
+                Debug.LogWarning("FlashlightManager 인스턴스가 존재하지 않습니다.");
+            }
         }
 
         private void OnApplicationFocus(bool hasFocus)

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameSystem : MonoBehaviour
 {
@@ -37,5 +38,10 @@ public class GameSystem : MonoBehaviour
         {
             Debug.Log("안전한 곳에 나갔다.");
         }
+    }
+
+    public void OnClickStart()
+    {
+        SceneManager.LoadScene(1);
     }
 }

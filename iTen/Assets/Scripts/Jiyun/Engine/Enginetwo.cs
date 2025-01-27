@@ -7,6 +7,10 @@ using UnityEngine;
 public class Enginetwo : MonoBehaviourPun
 {
     public int wire_count = 0;
+
+    public AudioClip engineSound;
+    private AudioSource audioSource;
+
     public void Interact2()
     {
         photonView.RPC("Ex2", RpcTarget.All);
@@ -22,9 +26,18 @@ public class Enginetwo : MonoBehaviourPun
         if (engineManager2 != null)
         {
             if(wire_count == 2){
+                PlayEngineSound();
                 engineManager2.engine_2 = true;
                 engineManager2.CheckAllEngines();
             }
+        }
+    }
+
+    private void PlayEngineSound()
+    {
+        if (engineSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(engineSound);
         }
     }
 }

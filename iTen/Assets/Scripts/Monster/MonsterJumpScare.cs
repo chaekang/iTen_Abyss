@@ -46,6 +46,10 @@ public class MonsterJumpScare : MonoBehaviour
         // 카메라 이동
         MoveDollyCart();
 
+        // 사운드 실행
+        string monsterIndex = "JumpScare" + GetClosetTargetIndex();
+        SoundManager.Instance.PlayJumpScareSound(monsterIndex);
+
         // 실행 동안 기다림
         yield return new WaitForSeconds(scareDuration - 0.75f);
 

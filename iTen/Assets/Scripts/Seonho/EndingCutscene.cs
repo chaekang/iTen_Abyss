@@ -11,6 +11,9 @@ public class EndingCutscene : MonoBehaviour
     public GameObject player;
     public KeyCode cutsceneKey = KeyCode.Tab;
 
+    public AudioClip cutsceneSound;
+    private AudioSource audioSource;
+
     private FirstPersonController playerController;
     private bool isCutsceneActive = false;
 
@@ -19,6 +22,12 @@ public class EndingCutscene : MonoBehaviour
         if (player != null)
         {
             playerController = player.GetComponent<FirstPersonController>();
+        }
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
         }
     }
 
@@ -47,6 +56,8 @@ public class EndingCutscene : MonoBehaviour
             doorAnimator.SetTrigger("Open");
         }
 
+        PlayCutsceneSound();
+
         yield return new WaitForSeconds(3f);
 
         cutsceneCamera.gameObject.SetActive(false);
@@ -58,5 +69,13 @@ public class EndingCutscene : MonoBehaviour
         }
 
         isCutsceneActive = false;
+    }
+
+    private void PlayCutsceneSound()
+    {
+        if (cutsceneSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(cutsceneSound);
+        }
     }
 }
