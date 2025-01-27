@@ -5,10 +5,13 @@ using TMPro;
 
 public class Note : ItemObject
 {
-    public GameObject panel;
+    public GameObject Itempanel;
+    public GameObject UIpanel;
+
+    public TextMeshProUGUI Itemtext;
     public TextMeshProUGUI textUI;
 
-    public int notePage = 0;
+    private int notePage = 0;
 
     private bool isItemPanelActive = false; // 아이템과 상호작용으로 열린 패널
     private bool isUiPanelActive = false;  // Tab 키로 열린 패널
@@ -19,14 +22,15 @@ public class Note : ItemObject
 
     void Start()
     {
-        panel.SetActive(false);
+        UIpanel.SetActive(false);
+        Itempanel.SetActive(false);
         Debug.Log(viewedNotes.Count);
     }
 
     public override void OnInteract()
     {
         Debug.Log("note interact");
-        panel.SetActive(true);
+        Itempanel.SetActive(true);
         isItemPanelActive = true;
         UpdateText();
 
@@ -45,7 +49,7 @@ public class Note : ItemObject
         // ESC로 패널 닫기
         if ((isItemPanelActive || isUiPanelActive) && Input.GetKeyDown(KeyCode.Escape))
         {
-            panel.SetActive(false);
+            UIpanel.SetActive(false);
             isItemPanelActive = false;
             isUiPanelActive = false;
             notePage = 0;
@@ -63,7 +67,7 @@ public class Note : ItemObject
             // UI 패널을 열거나 다음 페이지를 보여줌
             if (!isUiPanelActive)
             {
-                panel.SetActive(true);
+                UIpanel.SetActive(true);
                 isUiPanelActive = true;
                 notePage = 0;
                 Debug.Log("ui 페이지");
