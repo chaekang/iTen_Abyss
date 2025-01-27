@@ -11,32 +11,37 @@ public class Enginethree : MonoBehaviourPun
     public AudioClip engineSound;
     private AudioSource audioSource;
 
-    public void Interact3()
-    {
-        photonView.RPC("Ex3", RpcTarget.All);
-    }
-
-    [PunRPC]
-    void Ex3(){
+    public void Start(){
         GameObject engineManagerObject = GameObject.Find("EngineManager");
         EngineManager engineManager3 = engineManagerObject.GetComponent<EngineManager>();
-
-        battery_count++;
-        if (engineManager3 != null)
-        {
-            if(battery_count == 3){
-                PlayEngineSound();
-                engineManager3.engine_3 = true;
-                engineManager3.CheckAllEngines();
-            }
-        }
+        engineManager3.engine_3 = true;
     }
+    // public void Interact3()
+    // {
+    //     photonView.RPC("Ex3", RpcTarget.All);
+    // }
 
-    private void PlayEngineSound()
-    {
-        if (engineSound != null && audioSource != null)
-        {
-            audioSource.PlayOneShot(engineSound);
-        }
-    }
+    // [PunRPC]
+    // void Ex3(){
+    //     GameObject engineManagerObject = GameObject.Find("EngineManager");
+    //     EngineManager engineManager3 = engineManagerObject.GetComponent<EngineManager>();
+
+    //     battery_count++;
+    //     if (engineManager3 != null)
+    //     {
+    //         if(battery_count == 3){
+    //             PlayEngineSound();
+    //             engineManager3.engine_3 = true;
+    //             engineManager3.CheckAllEngines();
+    //         }
+    //     }
+    // }
+
+    // private void PlayEngineSound()
+    // {
+    //     if (engineSound != null && audioSource != null)
+    //     {
+    //         audioSource.PlayOneShot(engineSound);
+    //     }
+    // }
 }

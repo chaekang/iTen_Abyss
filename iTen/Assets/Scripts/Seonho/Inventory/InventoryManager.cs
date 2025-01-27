@@ -199,7 +199,7 @@ public class InventoryManager : MonoBehaviourPun
                 Enginetwo enginetwo = engineobject_2.GetComponent<Enginetwo>();
 
                 if(engineobject_2 != null){
-                    enginetwo.Interact2();
+                    //enginetwo.Interact2();
                     slot.UseItem();
                     PlaySound(interactionSound);
                 }
@@ -213,7 +213,7 @@ public class InventoryManager : MonoBehaviourPun
                 Enginethree enginethree = engineobject_3.GetComponent<Enginethree>();
 
                 if(engineobject_3 != null){
-                    enginethree.Interact3();
+                    //enginethree.Interact3();
                     slot.UseItem();
                     PlaySound(interactionSound);
                 }

@@ -63,6 +63,15 @@ MonoBehaviour:
   - RPC_SetDestination
   - RPC_SetRandomPosition
   - RPC_SetRunPosition
+  - SetTargetPlayer
+  - OnSoundHeard
+  - TriggerAttack
+  - TriggerWatch
+  - EmitSound
+  - PlayFootstepRPC
+  - PlaySound
+  - RegisterSoundPosition
+  - PlayCutsceneRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
