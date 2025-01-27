@@ -212,6 +212,7 @@ public class Spider : MonoBehaviour {
         NavMeshHit hit;
         if (NavMesh.SamplePosition(randomDirection, out hit, RandAnRunRadius, NavMesh.AllAreas))
         {
+            SoundManager.Instance.PlayGrowlingSound("Spider_Growl");
             agent.SetDestination(hit.position);
         }
     }

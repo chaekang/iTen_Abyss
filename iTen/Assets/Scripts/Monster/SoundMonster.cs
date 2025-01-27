@@ -143,6 +143,7 @@ public class SoundMonster : MonoBehaviour
                         if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, 10f, NavMesh.AllAreas))
                         {
                             agent.SetDestination(hit.position);
+                            SoundManager.Instance.PlayGrowlingSound("SoundMonster_Growl");
                             SetWalkingState(0);
                         }
                         else

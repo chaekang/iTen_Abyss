@@ -162,6 +162,12 @@ public class SoundManager : MonoBehaviour
         audioSource.volume = originalVol;
     }
 
+    public void PlayGrowlingSound(string name)
+    {
+        AudioClip clip = soundClips[name];
+        audioSource.PlayOneShot(clip);
+    }
+
     private void Update()
     {
         if (isFollowing && followTarget != null)
