@@ -100,13 +100,7 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
 
     private void FixedUpdate()
     {
-        // 호스트에서만 몬스터 AI 실행
-        if (photonView.IsMine)
-        {
-            // 주기적으로 시야를 체크
-            // 만약 최적화가 필요하다면
-            // Time.time을 써서 시간별로 체크하는 것이 좋음
-            CheckPlayerDistance();
+        CheckPlayerDistance();
 
             // 상태 머신
             switch (currentState)
@@ -127,7 +121,7 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
                     RunState();
                     break;
             }
-        }
+        // 호스트에서만 몬스터 AI 실행
     }
 
     private void CheckPlayerDistance()
@@ -216,7 +210,7 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
             photonView.RPC("RPC_LookAtPlayer", RpcTarget.All); // RPC 호출
 
             // 그리고 어택딜레이는 여기서 추가해도 됨
-            Debug.Log("플레이어 공격!");
+//            Debug.Log("플레이어 공격!");
             // 일단 Dotween으로 그냥 애니메이션 간단하게 재생
             //this.transform.DOPunchScale(Vector3.one, 0.5f);
             ChangeState(MonsterState.Chase);
@@ -257,7 +251,7 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
         }
 
         // 이 조건을 뚫고 오면 플레이어를 찾은거
-        Debug.Log("플레이어 찾음");
+//        Debug.Log("플레이어 찾음");
         return true;
     }
 
