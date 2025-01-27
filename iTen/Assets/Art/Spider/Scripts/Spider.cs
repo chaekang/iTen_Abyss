@@ -31,7 +31,7 @@ public class Spider : MonoBehaviour {
 
     private GameSystem gameSystem;              // 게임시스템
     public Animator spiderAnimator;                    // 스파이더 애니메이션
-    private FirstPersonController playerController;
+    [SerializeField] private FirstPersonController playerController;
 
 
     private void Awake()
