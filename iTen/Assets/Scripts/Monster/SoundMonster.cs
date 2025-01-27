@@ -322,23 +322,23 @@ public class SoundMonster : MonoBehaviour
         switch (currentState)
         {
             case MonsterState.Patrol:
-                Debug.Log("Monster state is patrol");
+//                Debug.Log("Monster state is patrol");
                 SoundManager.Instance.PlayerFootstep(0.2f, "SoundMonster_Walk", transform);
                 animator.SetInteger("isWalking", 0);
                 break;
             case MonsterState.Chase:
-                Debug.Log("Monster state is chase");
+//                Debug.Log("Monster state is chase");
                 SoundManager.Instance.PlayerFootstep(0.1f, "SoundMonster_Walk", transform);
                 animator.SetInteger("isWalking", 1);
                 break;
             case MonsterState.Idle:
-                Debug.Log("Monster state is idle");
+//                Debug.Log("Monster state is idle");
                 break;
             case MonsterState.Attack:
-                Debug.Log("Monster state is attack");
+//                Debug.Log("Monster state is attack");
                 break;
             default:
-                Debug.Log("Monster state is null");
+//                Debug.Log("Monster state is null");
                 break;
         }
     }
