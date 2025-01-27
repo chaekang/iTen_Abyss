@@ -244,7 +244,7 @@ public class SoundMonster : MonoBehaviour
     private IEnumerator DetectionCoolTime()
     {
         isDetect = true;
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(20f);
         isDetect = false;
     }
 
