@@ -58,6 +58,11 @@ MonoBehaviour:
   - RPC_StopChasing
   - RPC_TriggerAttack
   - RPC_TriggerWatch
+  - RPC_ChangeState
+  - RPC_LookAtPlayer
+  - RPC_SetDestination
+  - RPC_SetRandomPosition
+  - RPC_SetRunPosition
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
