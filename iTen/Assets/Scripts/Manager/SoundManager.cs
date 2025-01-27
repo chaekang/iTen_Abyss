@@ -83,7 +83,7 @@ public class SoundManager : MonoBehaviourPunCallbacks
         audioSource.spatialBlend = 1.0f;
         audioSource.minDistance = 5f;
         audioSource.maxDistance = 20f;
-
+        audioSource.volume = 0.4f;
         audioSource.rolloffMode = AudioRolloffMode.Logarithmic;
         audioSource.PlayOneShot(clip);
     }
