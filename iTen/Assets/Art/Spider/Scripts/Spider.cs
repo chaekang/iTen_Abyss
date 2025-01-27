@@ -131,7 +131,7 @@ public class Spider : MonoBehaviour {
         // 순찰 상태
         // 무언가 대기상태랑 비슷하다.
         IdleState();
-
+        SoundManager.Instance.PlayerFootstep(0.4f, "Spider_Walk", transform);
         // 어두운 곳에서 플레이어 감지 시 추적 상태로 전환
         if (!gameSystem.IsSafeZone && playerController._input.flash && CanSeePlayer())
         {
@@ -142,6 +142,7 @@ public class Spider : MonoBehaviour {
     private void ChaseState()
     {
         // 추적 상태 로직
+        SoundManager.Instance.PlayerFootstep(0.2f, "Spider_Walk", transform);
         agent.speed = chaseSpeed;
         agent.SetDestination(player.position);
     }

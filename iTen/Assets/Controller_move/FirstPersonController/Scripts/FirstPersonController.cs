@@ -204,7 +204,7 @@ namespace StarterAssets
 				// move
 				inputDirection = transform.right * _input.move.x + transform.forward * _input.move.y;
                 _animator.SetFloat("Forward", 1.0f);
-				SoundManager.Instance.PlayerFootstep(_speed);
+				SoundManager.Instance.PlayerFootstep(_speed, "Footstep_Walk", transform);
                 Debug.Log(_input.move);
 			}
 			else
