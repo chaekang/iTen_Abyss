@@ -11,33 +11,38 @@ public class Enginetwo : MonoBehaviourPun
     public AudioClip engineSound;
     private AudioSource audioSource;
 
-    public void Interact2()
-    {
-        photonView.RPC("Ex2", RpcTarget.All);
-        Debug.Log("wire count: " + wire_count);
-    }
-
-    [PunRPC]
-    void Ex2(){
+    public void Start(){
         GameObject engineManagerObject = GameObject.Find("EngineManager");
         EngineManager engineManager2 = engineManagerObject.GetComponent<EngineManager>(); 
-
-        wire_count++;
-        if (engineManager2 != null)
-        {
-            if(wire_count == 2){
-                PlayEngineSound();
-                engineManager2.engine_2 = true;
-                engineManager2.CheckAllEngines();
-            }
-        }
+        engineManager2.engine_2 = true;
     }
+    // public void Interact2()
+    // {
+    //     photonView.RPC("Ex2", RpcTarget.All);
+    //     Debug.Log("wire count: " + wire_count);
+    // }
 
-    private void PlayEngineSound()
-    {
-        if (engineSound != null && audioSource != null)
-        {
-            audioSource.PlayOneShot(engineSound);
-        }
-    }
+    // [PunRPC]
+    // void Ex2(){
+    //     GameObject engineManagerObject = GameObject.Find("EngineManager");
+    //     EngineManager engineManager2 = engineManagerObject.GetComponent<EngineManager>(); 
+
+    //     wire_count++;
+    //     if (engineManager2 != null)
+    //     {
+    //         if(wire_count == 2){
+    //             PlayEngineSound();
+    //             engineManager2.engine_2 = true;
+    //             engineManager2.CheckAllEngines();
+    //         }
+    //     }
+    // }
+
+    // private void PlayEngineSound()
+    // {
+    //     if (engineSound != null && audioSource != null)
+    //     {
+    //         audioSource.PlayOneShot(engineSound);
+    //     }
+    // }
 }
