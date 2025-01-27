@@ -31,15 +31,15 @@ public class EndingCutscene : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(cutsceneKey) && !isCutsceneActive)
-        {
-            StartCoroutine(PlayCutscene());
-        }
-    }
+    // private void Update()
+    // {
+    //     if (Input.GetKeyDown(cutsceneKey) && !isCutsceneActive)
+    //     {
+    //         StartCoroutine(PlayCutscene());
+    //     }
+    // }
 
-    private IEnumerator PlayCutscene()
+    public IEnumerator PlayCutscene()
     {
         isCutsceneActive = true;
 

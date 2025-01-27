@@ -8,20 +8,21 @@ public class EngineManager : MonoBehaviourPun
     public bool engine_2;
     public bool engine_3;
     public TextMeshProUGUI allClearText; // "All Clear" 텍스트를 표시할 TextMeshProUGUI 컴포넌트
+    public EndingCutscene cutsceneManager;
 
     public void CheckAllEngines()
     {
-        // 모든 엔진이 true인가가
+        
+        // 모든 엔진이 true인가
         if (engine_1 && engine_2 && engine_3)
         {
-            photonView.RPC("ShowAllClearText", RpcTarget.All);
+            photonView.RPC("PlayCutsceneRPC", RpcTarget.All);
         }
     }
 
     [PunRPC]
-    void ShowAllClearText()
+    void PlayCutsceneRPC() 
     {
-        // 텍스트 표시
-        allClearText.text = "All Clear!";
+        StartCoroutine(cutsceneManager.PlayCutscene()); // 컷씬 실행
     }
 }
