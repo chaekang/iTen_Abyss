@@ -43,7 +43,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void PlayerFootstep(float interval)
+    public void PlayerFootstep(float interval, string name, Transform sourceTransform)
     {
         if (footstepTimer <= 0f)
         {
@@ -55,14 +55,18 @@ public class SoundManager : MonoBehaviour
             float speedRatio = Mathf.InverseLerp(minSpeed, maxSpeed, interval);
             float footstepInterval = Mathf.Lerp(maxInterval, minInterval, speedRatio);
 
-            var footstepClips = soundClips.Where(kvp => kvp.Key.StartsWith("Footstep_Walk")).Select(kvp => kvp.Value).ToList();
+            var footstepClips = soundClips.Where(kvp => kvp.Key.StartsWith(name)).Select(kvp => kvp.Value).ToList();
 
             if (footstepClips.Count > 0)
             {
                 int randomIndex = Random.Range(0, footstepClips.Count);
+
+                audioSource.transform.position = sourceTransform.position;
                 audioSource.spatialBlend = 1.0f;  // 3D 사운드
                 audioSource.minDistance = 5f;     // 최소 거리
-                audioSource.maxDistance = 10f;    // 최대 거리
+                audioSource.maxDistance = 30f;    // 최대 거리
+
+                audioSource.rolloffMode = AudioRolloffMode.Logarithmic;
                 audioSource.PlayOneShot(footstepClips[randomIndex]);
             }
 
@@ -139,6 +143,12 @@ public class SoundManager : MonoBehaviour
     {
         Debug.Log("RegisterSoundPos");
         soundPos.Add(pos);
+    }
+
+    public void PlayShortSound(string name)
+    {
+        AudioClip clip = soundClips[name];
+        audioSource.PlayOneShot(clip);
     }
 
     private void Update()
