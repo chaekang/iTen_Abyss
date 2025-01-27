@@ -76,16 +76,14 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
 
     private void Update()
     {
-        player = FindClosestPlayer(); // 가장 가까운 플레이어 찾기
-        playerController = FindClosestPlayerTransform();
-        // if (photonView.IsMine)
-        // {
-        //     // ... (기존 코드)
+        if (photonView.IsMine)
+        {
+            // ... (기존 코드)
 
-        //     player = FindClosestPlayer(); // 가장 가까운 플레이어 찾기
-        //     playerController = FindClosestPlayerTransform();
-        //     // ... (기존 코드)
-        // }
+            player = FindClosestPlayer(); // 가장 가까운 플레이어 찾기
+            playerController = FindClosestPlayerTransform();
+            // ... (기존 코드)
+        }
     }
 
     private void Awake()

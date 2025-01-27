@@ -1,7 +1,4 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.Events;
-
+﻿using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
@@ -87,8 +84,6 @@ namespace StarterAssets
 		private const float _threshold = 0.01f;
 
 		public float state_1 = 0f;
-		[SerializeField] private GameObject flashObj;
-
 
 		private bool IsCurrentDeviceMouse
 		{
@@ -133,22 +128,9 @@ namespace StarterAssets
 			GroundedCheck();
 			Move();
 			Crouch();
-            FlashCheck();
         }
 
-        private void FlashCheck()
-        {
-            if (_input.flash && flashObj.activeSelf == false)
-			{
-				flashObj.SetActive(true);
-            }
-            else if (_input.flash == false && flashObj.activeSelf == true)
-            {
-                flashObj.SetActive(false);                
-            }
-        }
-
-        private void LateUpdate()
+		private void LateUpdate()
 		{
 			CameraRotation();
 		}

@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using Photon.Pun;
 
 public enum MonsterState
 {
@@ -11,72 +10,34 @@ public enum MonsterState
     Attack
 }
 
-public class SoundMonster : MonoBehaviourPunCallbacks
+public class SoundMonster : MonoBehaviour
 {
-    private MonsterState currentState = MonsterState.Patrol;
-
-    private PhotonView photonView;
-
     private float detectionRadius = 30f;
     public LayerMask playerLayer;
 
     private Animator animator;
-    //private MonsterState currentState = MonsterState.Patrol;
+    private MonsterState currentState = MonsterState.Patrol;
 
     private NavMeshAgent agent;
     private Vector3? currentTarget;
     private bool isChasing = false;
     private bool isAttacking = false;
     private bool isDetect = false;
-    //private PhotonView photonView;
 
-    private Transform detectedPlayer; //플레이어 트랜스
+    private Transform detectedPlayer;
 
     private float normalSpeed;
     private float chaseSpeed = 5;
 
     private void Start()
     {
-        photonView = GetComponent<PhotonView>();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
 
         normalSpeed = agent.speed;
-
-        if (PhotonNetwork.IsMasterClient)
-        {
-            TriggerWatch();
-        }
-        
+        TriggerWatch();
     }
 
-    [PunRPC]
-    private void SetTargetPlayer(int playerId)
-    {
-        detectedPlayer = PhotonView.Find(playerId).transform;
-        SwitchToRunAfterIdle();
-    }
-
-    private Transform FindClosestPlayer()
-    {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        Transform closestPlayer = null;
-        float minDistance = Mathf.Infinity;
-
-        foreach (GameObject player in players)
-        {
-            float dis = Vector3.Distance(transform.position, player.transform.position);
-            if (dis < minDistance)
-            {
-                closestPlayer = player.transform;
-                minDistance = dis;
-            }
-        }
-        return closestPlayer;
-    }
-
-
-    [PunRPC]
     public void OnSoundHeard(Vector3 soundPos)
     {
         currentTarget = soundPos;
@@ -187,6 +148,23 @@ public class SoundMonster : MonoBehaviourPunCallbacks
         }
     }
 
+    private Transform FindClosestPlayer()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        Transform closestPlayer = null;
+        float minDistance = Mathf.Infinity;
+
+        foreach (GameObject player in players)
+        {
+            float dis = Vector3.Distance(transform.position, player.transform.position);
+            if (dis < minDistance)
+            {
+                closestPlayer = player.transform;
+                minDistance = dis;
+            }
+        }
+        return closestPlayer;
+    }
 
     private void OnDrawGizmos()
     {
@@ -211,41 +189,33 @@ public class SoundMonster : MonoBehaviourPunCallbacks
         }
     }
 
-    [PunRPC]
-    public void TriggerAttack(int playerViewId)
+    public void TriggerAttack()
     {
         if (isAttacking || detectedPlayer == null)
         {
             return;
         }
 
-        PhotonView playerView = PhotonView.Find(playerViewId);
-        if (playerView != null)
+        float distanceToPlayer = Vector3.Distance(transform.position, detectedPlayer.position);
+        if (distanceToPlayer > agent.stoppingDistance)
         {
-            detectedPlayer = playerView.transform;
-
-            float distanceToPlayer = Vector3.Distance(transform.position, detectedPlayer.position);
-            if (distanceToPlayer > agent.stoppingDistance)
-            {
-                return;
-            }
-
-            isAttacking = true;
-
-            Vector3 directionToPlayer = (detectedPlayer.position - transform.position).normalized;
-            directionToPlayer.y = 0;
-            transform.rotation = Quaternion.LookRotation(directionToPlayer);
-
-            agent.isStopped = true;
-
-            animator.SetTrigger("isAttack");
-            currentState = MonsterState.Attack;
-
-            StartCoroutine(HandlePostAttack());
+            return;
         }
+
+        isAttacking = true;
+
+        Vector3 directionToPlayer = (detectedPlayer.position - transform.position).normalized;
+        directionToPlayer.y = 0;
+        transform.rotation = Quaternion.LookRotation(directionToPlayer);
+
+        agent.isStopped = true;
+
+        animator.SetTrigger("isAttack");
+        currentState = MonsterState.Attack;
+
+        StartCoroutine(HandlePostAttack());
     }
 
-    [PunRPC]
     public void TriggerWatch()
     {
         if (isAttacking || currentState == MonsterState.Idle)
@@ -278,40 +248,44 @@ public class SoundMonster : MonoBehaviourPunCallbacks
         isDetect = false;
     }
 
-    
     private void DetectPlayer()
     {
-        if (!isDetect && !isAttacking)
+        if (isDetect || isAttacking)
         {
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, playerLayer);
-
-            foreach (Collider collider in hitColliders)
-            {
-                if (((1 << collider.gameObject.layer) & playerLayer) == 0)
-                {
-                    continue;
-                }
-
-                Transform potentialPlayer = collider.transform;
-                float distanceToPlayer = Vector3.Distance(transform.position, potentialPlayer.position);
-
-                int wallCount = DetectWallsBetween(transform.position, potentialPlayer.position);
-
-                float adjustRad = detectionRadius - wallCount * 5f;
-                if (distanceToPlayer <= adjustRad)
-                {
-                    detectedPlayer = potentialPlayer;
-                    photonView.RPC("TriggerAttack", RpcTarget.All, collider.transform.parent.GetComponent<PhotonView>().ViewID);
-                    Debug.Log($"Player detected. Wall count: {wallCount}, Adjusted radius: {adjustRad}");
-                    agent.SetDestination(detectedPlayer.position);
-
-                    SwitchToRunAfterIdle();
-
-                    return;
-                }
-            }
-            detectedPlayer = null;
+            return;
         }
+
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, playerLayer);
+
+        foreach (Collider collider in hitColliders)
+        {
+            if (((1 << collider.gameObject.layer) & playerLayer) == 0)
+            {
+                continue;
+            }
+
+            Transform potentialPlayer = collider.transform;
+            float distanceToPlayer = Vector3.Distance(transform.position, potentialPlayer.position);
+
+            int wallCount = DetectWallsBetween(transform.position, potentialPlayer.position);
+
+            float adjustRad = detectionRadius - wallCount * 5f;
+            if (distanceToPlayer <= adjustRad)
+            {
+                detectedPlayer = potentialPlayer;
+                Debug.Log($"Player detected. Wall count: {wallCount}, Adjusted radius: {adjustRad}");
+                agent.SetDestination(detectedPlayer.position);
+
+                SwitchToRunAfterIdle();
+
+                if (!isAttacking)
+                {
+                    TriggerAttack();
+                }
+                return;
+            }
+        }
+        detectedPlayer = null;
     }
 
     private int DetectWallsBetween(Vector3 start, Vector3 end)
@@ -333,42 +307,39 @@ public class SoundMonster : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        if (photonView.IsMine)
+        DetectPlayer();
+
+        if (isChasing && currentTarget.HasValue)
         {
-            DetectPlayer();
+            agent.SetDestination(currentTarget.Value);
 
-            if (isChasing && currentTarget.HasValue)
+            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
             {
-                agent.SetDestination(currentTarget.Value);
-
-                if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
-                {
-                    StopChasing();
-                }
+                StopChasing();
             }
+        }
 
-            switch (currentState)
-            {
-                case MonsterState.Patrol:
-                    //Debug.Log("Monster state is patrol");
-                    SoundManager.Instance.PlayerFootstep(0.2f, "SoundMonster_Walk", transform);
-                    animator.SetInteger("isWalking", 0);
-                    break;
-                case MonsterState.Chase:
-                    //Debug.Log("Monster state is chase");
-                    SoundManager.Instance.PlayerFootstep(0.1f, "SoundMonster_Walk", transform);
-                    animator.SetInteger("isWalking", 1);
-                    break;
-                case MonsterState.Idle:
-                    //Debug.Log("Monster state is idle");
-                    break;
-                case MonsterState.Attack:
-                    //Debug.Log("Monster state is attack");
-                    break;
-                default:
-                    //Debug.Log("Monster state is null");
-                    break;
-            }
+        switch (currentState)
+        {
+            case MonsterState.Patrol:
+                //Debug.Log("Monster state is patrol");
+                SoundManager.Instance.PlayerFootstep(0.2f, "SoundMonster_Walk", transform);
+                animator.SetInteger("isWalking", 0);
+                break;
+            case MonsterState.Chase:
+                //Debug.Log("Monster state is chase");
+                SoundManager.Instance.PlayerFootstep(0.1f, "SoundMonster_Walk", transform);
+                animator.SetInteger("isWalking", 1);
+                break;
+            case MonsterState.Idle:
+                //Debug.Log("Monster state is idle");
+                break;
+            case MonsterState.Attack:
+                //Debug.Log("Monster state is attack");
+                break;
+            default:
+                Debug.Log("Monster state is null");
+                break;
         }
     }
 }
