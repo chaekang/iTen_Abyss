@@ -7,6 +7,10 @@ using UnityEngine;
 public class Enginethree : MonoBehaviourPun
 {   // 배터리3개
     public int battery_count = 0;
+
+    public AudioClip engineSound;
+    private AudioSource audioSource;
+
     public void Interact3()
     {
         photonView.RPC("Ex3", RpcTarget.All);
@@ -21,9 +25,18 @@ public class Enginethree : MonoBehaviourPun
         if (engineManager3 != null)
         {
             if(battery_count == 3){
+                PlayEngineSound();
                 engineManager3.engine_3 = true;
                 engineManager3.CheckAllEngines();
             }
+        }
+    }
+
+    private void PlayEngineSound()
+    {
+        if (engineSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(engineSound);
         }
     }
 }
