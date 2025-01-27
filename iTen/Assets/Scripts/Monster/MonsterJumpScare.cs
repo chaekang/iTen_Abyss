@@ -19,6 +19,18 @@ public class MonsterJumpScare : MonoBehaviour
 
     private int curTargetIndex = -1;
 
+    private void Start()
+    {
+        Transform jumpScareRoot = GameObject.Find("JumpScareRoot")?.transform;
+        Transform jumpScareTarget = GameObject.Find("JumpScareTarget")?.transform;
+
+        targetPos = new Transform[] { jumpScareRoot, jumpScareTarget };
+
+        if (targetPos[0] == null || targetPos[1] == null)
+        {
+            Debug.Log("JumpScareRoot 또는 JumpScareTarget을 찾지 못했습니다.");
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
