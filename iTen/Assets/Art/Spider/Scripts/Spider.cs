@@ -19,7 +19,7 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
 
     [Header("Components")]
     [SerializeField] private NavMeshAgent agent;                      // NavMesh 사용
-    [SerializeField] private Transform player;                        // Player위치 캐싱
+    private Transform player;                        // Player위치 캐싱
 
     [Header("Settings")]
     [SerializeField] private float attackRange = 2.0f;                // 공격 범위
@@ -33,8 +33,58 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
 
     private GameSystem gameSystem;                                  // 게임시스템
     public Animator spiderAnimator;                                     // 스파이더 애니메이션
-    [SerializeField] private FirstPersonController playerController;
+    private FirstPersonController playerController;
 
+
+    private Transform FindClosestPlayer()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        Transform closestPlayer = null;
+        float minDistance = Mathf.Infinity;
+
+        foreach (GameObject player in players)
+        {
+
+            float distance = Vector3.Distance(transform.position, player.transform.position);
+            if (distance < minDistance)
+            {
+                closestPlayer = player.transform;
+                minDistance = distance;
+            }
+        }
+        return closestPlayer;
+    }
+
+    private FirstPersonController FindClosestPlayerTransform()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        FirstPersonController closestPlayerController = null;
+        float minDistance = Mathf.Infinity;
+
+        foreach (GameObject player in players)
+        {
+
+            float distance = Vector3.Distance(transform.position, player.transform.position);
+            if (distance < minDistance)
+            {
+                closestPlayerController = player.GetComponent<FirstPersonController>();
+                minDistance = distance;
+            }
+        }
+        return closestPlayerController;
+    }
+
+    private void Update()
+    {
+        if (photonView.IsMine)
+        {
+            // ... (기존 코드)
+
+            player = FindClosestPlayer(); // 가장 가까운 플레이어 찾기
+            playerController = FindClosestPlayerTransform();
+            // ... (기존 코드)
+        }
+    }
 
     private void Awake()
     {
