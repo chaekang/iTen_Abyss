@@ -209,7 +209,7 @@ namespace StarterAssets
 					inputDirection = transform.right * _input.move.x + transform.forward * _input.move.y;
 					state_1 = 1.0f;
                 	_animator.SetFloat("Forward", state_1);
-					SoundManager.Instance.PlayerFootstep(_speed);
+					SoundManager.Instance.PlayerFootstep(_speed, "Footstep_Walk", transform);
 //                	Debug.Log(_input.move);
 				}
 				else

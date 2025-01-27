@@ -35,7 +35,7 @@ public class SoundMonster : MonoBehaviour
         animator = GetComponent<Animator>();
 
         normalSpeed = agent.speed;
-        SetWalkingState(0); // Idle 초기 상태
+        SetWalkingState(0);
         TriggerWatch();
     }
 
@@ -336,7 +336,7 @@ public class SoundMonster : MonoBehaviour
     private void Update()
     {
         DetectPlayer();
-        /*
+        
         if (detectedPlayer != null && !isAttacking)
         {
             agent.SetDestination(detectedPlayer.position);
@@ -345,7 +345,7 @@ public class SoundMonster : MonoBehaviour
             {
                 TriggerAttack();
             }
-        }*/
+        }
 
         if (isChasing && currentTarget.HasValue)
         {
