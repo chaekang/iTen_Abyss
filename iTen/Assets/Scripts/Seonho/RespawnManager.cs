@@ -14,7 +14,6 @@ public class RespawnManager : MonoBehaviour
     public float respawnCountdown = 10f;
     public InventoryManager inventoryManager;
     public TextMeshProUGUI countdownText;
-    private Button respawnButton;
 
     private void Awake()
     {
@@ -31,10 +30,6 @@ public class RespawnManager : MonoBehaviour
     private void Start()
     {
         gameOverUI.SetActive(false);
-        if (gameOverUI != null)
-        {
-            respawnButton = gameOverUI.GetComponentInChildren<Button>();
-        }
         if (countdownText != null)
         {
             countdownText.text = "";
@@ -45,29 +40,16 @@ public class RespawnManager : MonoBehaviour
     {
         gameOverUI.SetActive(true);
 
-
-        if (respawnButton != null)
-        {
-            respawnButton.gameObject.SetActive(true);
-            respawnButton.interactable = true;
-            respawnButton.onClick.RemoveAllListeners();
-            respawnButton.onClick.AddListener(() => StartCoroutine(RespawnPlayer()));
-        }
-
         if (countdownText != null)
         {
             countdownText.text = "";
         }
+
+        StartCoroutine(RespawnPlayer());
     }
 
     private IEnumerator RespawnPlayer()
     {
-        if (respawnButton != null)
-        {
-            respawnButton.interactable = false;
-            respawnButton.gameObject.SetActive(false);
-        }
-
         if (inventoryManager != null)
         {
             foreach (Slot slot in inventoryManager.slots)
