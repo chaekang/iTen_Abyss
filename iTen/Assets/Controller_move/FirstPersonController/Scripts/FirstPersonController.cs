@@ -318,18 +318,6 @@ namespace StarterAssets
                 GameSystem.Instance?.ToggleSafeZone();
             }
         }
-
-        // public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-        // {
-        //     if (stream.IsWriting)
-        // 	{
-		// 		stream.SendNext(state_1);
-        // 	}
-        // 	else
-        // 	{
-        //     	state_1 = (float)stream.ReceiveNext();
-        // 	}
-        // }
     }
 
 

@@ -25,7 +25,7 @@ public class Spawn : MonoBehaviourPunCallbacks
 
         if (spawnPoint != null)
         {
-            GameObject player = PhotonNetwork.Instantiate("player", spawnPoint.position, spawnPoint.rotation, 0);
+            GameObject player = PhotonNetwork.Instantiate("PlayerCapsule", spawnPoint.position, spawnPoint.rotation, 0);
             //player = Instantiate(player, spawnPoint.position, spawnPoint.rotation);
             _camera.Follow = player.GetComponent<FirstPersonController>().FollowTransform;
         }

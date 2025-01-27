@@ -15,6 +15,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Jiyun/Loading.unity
     guid: 694af4486ee568a47b84a7cf02e7565f
   - enabled: 1
+    path: Assets/Scenes/Jiyun/Map(copy).unity
+    guid: 7e81696b1b6704d4eb4d4a1bd1df5671
+  - enabled: 0
+    path: Assets/Scenes/Chaekang/Map.unity
+    guid: 3b017484884dbb64bb7507d9ef0f3ce6
+  - enabled: 0
     path: Assets/Scenes/Jiyun/ItemMap(copy).unity
     guid: 05801c4a9acd33d4086b1eb126e26d73
   - enabled: 0
