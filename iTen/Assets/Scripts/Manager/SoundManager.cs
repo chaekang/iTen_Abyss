@@ -64,7 +64,7 @@ public class SoundManager : MonoBehaviour
                 audioSource.transform.position = sourceTransform.position;
                 audioSource.spatialBlend = 1.0f;  // 3D 사운드
                 audioSource.minDistance = 5f;     // 최소 거리
-                audioSource.maxDistance = 30f;    // 최대 거리
+                audioSource.maxDistance = 20f;    // 최대 거리
 
                 audioSource.rolloffMode = AudioRolloffMode.Logarithmic;
                 audioSource.PlayOneShot(footstepClips[randomIndex]);
