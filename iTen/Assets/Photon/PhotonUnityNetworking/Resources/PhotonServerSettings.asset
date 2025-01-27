@@ -74,6 +74,7 @@ MonoBehaviour:
   - PlayCutsceneRPC
   - PlayCutsceneInternal
   - TriggerCutsceneForAllPlayers
+  - TriggerJumpScareRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

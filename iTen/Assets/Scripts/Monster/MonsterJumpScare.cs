@@ -2,8 +2,9 @@ using UnityEngine;
 using Cinemachine;
 using System.Collections;
 using UnityEngine.Rendering.PostProcessing;
+using Photon.Pun;
 
-public class MonsterJumpScare : MonoBehaviour
+public class MonsterJumpScare : MonoBehaviourPun
 {
     [SerializeField] private CinemachineVirtualCamera jumpScareCam;
     [SerializeField] private PostProcessVolume postProcessing;
@@ -28,7 +29,7 @@ public class MonsterJumpScare : MonoBehaviour
 
         if (targetPos[0] == null || targetPos[1] == null)
         {
-            Debug.Log("JumpScareRoot ∂«¥¬ JumpScareTarget¿ª √£¡ˆ ∏¯«ﬂΩ¿¥œ¥Ÿ.");
+            Debug.Log("JumpScareRoot  «¥  JumpScareTarget   √£      ﬂΩ  œ¥ .");
         }
     }
 
@@ -36,56 +37,67 @@ public class MonsterJumpScare : MonoBehaviour
     {
         if (other.CompareTag("Monster") && !isScaring)
         {
-            Debug.Log("Start JumpScare");
-            StartCoroutine(TriggerJumpScare());
+            // ÏûêÏã†Ïùò PhotonViewÎ•º ÏÇ¨Ïö©ÌïòÏó¨ RPC Ìò∏Ï∂ú
+            photonView.RPC("TriggerJumpScareRPC", RpcTarget.All); 
         }
+    
     }
+
+[PunRPC]
+public void TriggerJumpScareRPC()
+{
+    StartCoroutine(TriggerJumpScare());
+}
 
     private IEnumerator TriggerJumpScare()
     {
-        isScaring = true;
-
-        // ∞°±ÓøÓ ≈∏∞Ÿ¿∏∑Œ º≥¡§
-        int closestTargetIndex = GetClosetTargetIndex();
-        if (curTargetIndex != closestTargetIndex)
+        if (photonView.IsMine && !isScaring)
         {
-            SwitchToTarget(closestTargetIndex);
+            isScaring = true;
+
+            //       ≈∏           
+            int closestTargetIndex = GetClosetTargetIndex();
+            if (curTargetIndex != closestTargetIndex)
+            {
+                SwitchToTarget(closestTargetIndex);
+            }
+
+            //        …æ  ƒ´ ﬁ∂  »∞  »≠
+            jumpScareCam.Priority = 11;
+
+            // ƒ´ ﬁ∂   Ãµ 
+            MoveDollyCart();
+
+            //          
+            string monsterIndex = "JumpScare" + GetClosetTargetIndex();
+            SoundManager.Instance.PlayJumpScareSound(monsterIndex);
+
+            //             Ÿ∏ 
+            yield return new WaitForSeconds(scareDuration - 0.75f);
+
+            //    ∆¢    »ø       
+            bloodImage.SetActive(true);
+            yield return new WaitForSeconds(0.75f);
+
+            //  œπ  ƒ´ ﬁ∂     »Ø
+            jumpScareCam.Priority = 9;
+
+            //     
+            isScaring = false;
+            yield return new WaitForSeconds(3f);
+            bloodImage.SetActive(false);
+
+            //      
+            if (RespawnManager.Instance != null)
+            {
+                RespawnManager.Instance.OnPlayerDeath();
+            }
+            else
+            {
+                Debug.LogError("RespawnManager Instance not found in the scene.");
+            }
         }
-
-        // ¡°«¡Ω∫ƒ…æÓ ƒ´∏ﬁ∂Û »∞º∫»≠
-        jumpScareCam.Priority = 11;
-
-        // ƒ´∏ﬁ∂Û ¿Ãµø
-        MoveDollyCart();
-
-        // ªÁøÓµÂ Ω««‡
-        string monsterIndex = "JumpScare" + GetClosetTargetIndex();
-        SoundManager.Instance.PlayJumpScareSound(monsterIndex);
-
-        // Ω««‡ µøæ» ±‚¥Ÿ∏≤
-        yield return new WaitForSeconds(scareDuration - 0.75f);
-
-        // «« ∆¢±‚¥¬ »ø∞˙ Ω««‡
-        bloodImage.SetActive(true);
-        yield return new WaitForSeconds(0.75f);
-
-        // ¿œπ› ƒ´∏ﬁ∂Û∑Œ ¿¸»Ø
-        jumpScareCam.Priority = 9;
-
-        // ¡æ∑·
-        isScaring = false;
-        yield return new WaitForSeconds(3f);
-        bloodImage.SetActive(false);
-
-        //∏ÆΩ∫∆˘
-        if (RespawnManager.Instance != null)
-        {
-            RespawnManager.Instance.OnPlayerDeath();
-        }
-        else
-        {
-            Debug.LogError("RespawnManager Instance not found in the scene.");
-        }
+        
     }
 
     private int GetClosetTargetIndex()
