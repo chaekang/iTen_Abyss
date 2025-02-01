@@ -79,6 +79,7 @@ using Photon.Pun;
 using TMPro;
 using System.Collections;
 using StarterAssets;
+using static Photon.Voice.OpusCodec;
 
 public class EngineManager : MonoBehaviourPun
 {
@@ -94,6 +95,9 @@ public class EngineManager : MonoBehaviourPun
     private AudioSource audioSource;
 
     private bool isCutsceneActive = false;
+
+    public GameObject fadeImage;
+    public float fadeDuration = 2f;
 
     private void Awake()
     {
@@ -146,7 +150,8 @@ public class EngineManager : MonoBehaviourPun
 
         PlayCutsceneSound();
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
+        yield return StartCoroutine(FadeOut());
 
         // 컷씬 종료 후 원래 상태로 복원
         cutsceneCamera.gameObject.SetActive(false);
@@ -175,6 +180,24 @@ public class EngineManager : MonoBehaviourPun
         if (cutsceneSound != null && audioSource != null)
         {
             audioSource.PlayOneShot(cutsceneSound);
+        }
+    }
+
+    private IEnumerator FadeOut()
+    {
+        if (fadeImage != null)
+        {
+            float elapsedTime = 0f;
+            var color = fadeImage.GetComponent<SpriteRenderer>().color;
+            while (elapsedTime < fadeDuration)
+            {
+                color.a = Mathf.Lerp(0f, 1f, elapsedTime / fadeDuration);
+                fadeImage.GetComponent<SpriteRenderer>().color = color;
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+            color.a = 1f;
+            fadeImage.GetComponent<SpriteRenderer>().color = color;
         }
     }
 }
