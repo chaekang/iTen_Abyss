@@ -7,7 +7,7 @@ public class LastScene : MonoBehaviour
 {
     public string MainScene;
 
-    private float delayTime = 20.4f;
+    private float delayTime = 33.8f;
 
     void Start()
     {

@@ -17,6 +17,9 @@ public class EndingCutscene : MonoBehaviour
     private FirstPersonController playerController;
     private bool isCutsceneActive = false;
 
+    public GameObject fadeImage;
+    public float fadeDuration = 2f;
+
     private void Start()
     {
         if (player != null)
@@ -28,6 +31,13 @@ public class EndingCutscene : MonoBehaviour
         if (audioSource == null)
         {
             audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        if (fadeImage != null)
+        {
+            var color = fadeImage.GetComponent<SpriteRenderer>().color;
+            color.a = 0f;
+            fadeImage.GetComponent<SpriteRenderer>().color = color;
         }
     }
 
@@ -58,7 +68,8 @@ public class EndingCutscene : MonoBehaviour
 
         PlayCutsceneSound();
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
+        yield return StartCoroutine(FadeOut());
 
         cutsceneCamera.gameObject.SetActive(false);
         playerCamera.gameObject.SetActive(true);
@@ -76,6 +87,24 @@ public class EndingCutscene : MonoBehaviour
         if (cutsceneSound != null && audioSource != null)
         {
             audioSource.PlayOneShot(cutsceneSound);
+        }
+    }
+
+    private IEnumerator FadeOut()
+    {
+        if (fadeImage != null)
+        {
+            float elapsedTime = 0f;
+            var color = fadeImage.GetComponent<SpriteRenderer>().color;
+            while (elapsedTime < fadeDuration)
+            {
+                color.a = Mathf.Lerp(0f, 1f, elapsedTime / fadeDuration);
+                fadeImage.GetComponent<SpriteRenderer>().color = color;
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+            color.a = 1f;
+            fadeImage.GetComponent<SpriteRenderer>().color = color;
         }
     }
 }

@@ -10,10 +10,11 @@ public class RespawnManager : MonoBehaviour
     public static RespawnManager Instance { get; private set; }
 
     public GameObject gameOverUI;
-    public Transform respawnPoint;
     public float respawnCountdown = 10f;
     public InventoryManager inventoryManager;
     public TextMeshProUGUI countdownText;
+
+    private bool isWaitingForInput = false;
 
     private void Awake()
     {
@@ -27,25 +28,24 @@ public class RespawnManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        gameOverUI.SetActive(false);
-        if (countdownText != null)
-        {
-            countdownText.text = "";
-        }
-    }
-
     public void OnPlayerDeath()
     {
         gameOverUI.SetActive(true);
 
         if (countdownText != null)
         {
-            countdownText.text = "";
+            countdownText.text = "Press F to Respawn";
         }
+        isWaitingForInput = true;
+    }
 
-        StartCoroutine(RespawnPlayer());
+    private void Update()
+    {
+        if (isWaitingForInput && Input.GetKeyDown(KeyCode.F))
+        {
+            isWaitingForInput = false;
+            StartCoroutine(RespawnPlayer());
+        }
     }
 
     private IEnumerator RespawnPlayer()
