@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace StarterAssets
 {
+
 	public class StarterAssetsInputs : MonoBehaviour
 	{
 		[Header("Character Input Values")]

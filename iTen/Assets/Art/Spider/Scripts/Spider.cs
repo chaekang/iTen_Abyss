@@ -153,7 +153,7 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
             default:
                 if (distanceToPlayer <= sqrDetectionRange && CanSeePlayer())
                 {
-                    ChangeState(MonsterState.Chase);
+                    ChangeState(MonsterState.Idle);
                 }
                 break;
         }
