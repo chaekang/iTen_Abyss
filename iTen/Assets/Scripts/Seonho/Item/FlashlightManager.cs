@@ -28,11 +28,6 @@ public class FlashlightManager : MonoBehaviour
             Destroy(this.gameObject);
         }
 
-        GameObject timerObject = GameObject.Find("FlashlightTimer");
-        if (timerObject != null)
-        {
-            timerText = timerObject.GetComponent<TextMeshProUGUI>();
-        }
         remainingTime = flashlightDuration;
         UpdateTimerUI();
 
