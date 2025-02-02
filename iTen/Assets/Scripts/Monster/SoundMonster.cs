@@ -12,7 +12,7 @@ public enum MonsterState
 
 public class SoundMonster : MonoBehaviour
 {
-    private float detectionRadius = 30f;
+    private float detectionRadius = 20f;
     public LayerMask playerLayer;
 
     private Animator animator;
@@ -108,11 +108,11 @@ public class SoundMonster : MonoBehaviour
             {
                 float distanceToTarget = Vector3.Distance(transform.position, curTarget.position);
 
-                if (distanceToTarget <= 50f)
+                if (distanceToTarget <= 70f)
                 {
                     if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
                     {
-                        Vector3 randomDirection = Random.insideUnitSphere * 50f;
+                        Vector3 randomDirection = Random.insideUnitSphere * 70f;
                         randomDirection += transform.position;
 
                         if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, 10f, NavMesh.AllAreas))
@@ -169,7 +169,7 @@ public class SoundMonster : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, 50f);
+        Gizmos.DrawWireSphere(transform.position, 20f);
     }
 
     private IEnumerator HandlePostAttack()
@@ -322,20 +322,16 @@ public class SoundMonster : MonoBehaviour
         switch (currentState)
         {
             case MonsterState.Patrol:
-                //Debug.Log("Monster state is patrol");
                 SoundManager.Instance.PlayerFootstep(0.2f, "SoundMonster_Walk", transform);
                 animator.SetInteger("isWalking", 0);
                 break;
             case MonsterState.Chase:
-                //Debug.Log("Monster state is chase");
                 SoundManager.Instance.PlayerFootstep(0.1f, "SoundMonster_Walk", transform);
                 animator.SetInteger("isWalking", 1);
                 break;
             case MonsterState.Idle:
-                //Debug.Log("Monster state is idle");
                 break;
             case MonsterState.Attack:
-                //Debug.Log("Monster state is attack");
                 break;
             default:
                 Debug.Log("Monster state is null");
