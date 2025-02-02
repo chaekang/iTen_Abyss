@@ -4,7 +4,7 @@ using UnityEngine.AI;
 using StarterAssets;
 using Photon.Pun; // 포톤 네트워킹 using 추가
 
-public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCallbacks 상속
+public class Spider : MonoBehaviour // Photon.Pun.MonoBehaviourPunCallbacks 상속
 {
 
     // 빛의 몬스터 상태
@@ -19,7 +19,6 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
 
     [Header("Components")]
     [SerializeField] private NavMeshAgent agent;                      // NavMesh 사용
-    private Transform player;                        // Player위치 캐싱
 
     [Header("Settings")]
     [SerializeField] private float attackRange = 2.0f;                // 공격 범위
@@ -75,8 +74,7 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
 
     private void Update()
     {
-        player = FindClosestPlayer(); // 가장 가까운 플레이어 찾기
-        playerController = FindClosestPlayerTransform();
+
         // if (photonView.IsMine)
         // {
         //     // ... (기존 코드)
@@ -101,7 +99,12 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
 
     private void FixedUpdate()
     {
-        CheckPlayerDistance();
+        playerController = FindClosestPlayerTransform();
+
+        if (playerController != null)
+            CheckPlayerDistance();
+        else
+            ChangeState(MonsterState.Idle);
 
         // 상태 머신
         switch (currentState)
@@ -128,7 +131,7 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
     private void CheckPlayerDistance()
     {
         // 거리 계산
-        float distanceToPlayer = (player.position - transform.position).sqrMagnitude;
+        float distanceToPlayer = (playerController.transform.position - transform.position).sqrMagnitude;
         float sqrDetectionRange = detectionRange * detectionRange;
 
         // 상태별 거리 체크
@@ -167,11 +170,11 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
         // remaingDistance는 목적지까지의 거리가 얼마나 남았는지에 대한 여부이다.
         if (!agent.pathPending && agent.remainingDistance < 0.5f)
         {
-            photonView.RPC("RPC_SetRandomPosition", RpcTarget.All); // RPC 호출
+            RPC_SetRandomPosition(); // RPC 호출
         }
 
         // 어두운 곳에서 플레이어 감지 시 추적 상태로 전환
-        if (!gameSystem.IsSafeZone && playerController._input.flash && CanSeePlayer())
+        if (!gameSystem.IsSafeZone && !playerController._input.flash && CanSeePlayer())
         {
             ChangeState(MonsterState.Chase);
         }
@@ -185,7 +188,7 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
         IdleState();
         SoundManager.Instance.PlayerFootstep(0.4f, "Spider_Walk", transform);
         // 어두운 곳에서 플레이어 감지 시 추적 상태로 전환
-        if (!gameSystem.IsSafeZone && playerController._input.flash && CanSeePlayer())
+        if (!gameSystem.IsSafeZone && !playerController._input.flash && CanSeePlayer())
         {
             ChangeState(MonsterState.Chase);
         }
@@ -201,7 +204,7 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
         Invoke(nameof(PlayFootstepAfterGrowling), growlingTime);
 
         agent.speed = chaseSpeed;
-        photonView.RPC("RPC_SetDestination", RpcTarget.All, player.position); // RPC 호출
+        RPC_SetDestination(playerController.transform.position); // RPC 호출
     }
 
     private void PlayFootstepAfterGrowling()
@@ -220,7 +223,7 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
             agent.ResetPath();
 
             // 플레이어로 바라보기
-            photonView.RPC("RPC_LookAtPlayer", RpcTarget.All); // RPC 호출
+            RPC_LookAtPlayer(); // RPC 호출
 
             // 그리고 어택딜레이는 여기서 추가해도 됨
             //            Debug.Log("플레이어 공격!");
@@ -238,16 +241,16 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
         // 도망갈 때 런 포지션을 따로 잡아놓는 것으로 함
         if (!agent.hasPath || agent.remainingDistance < 0.5f)
         {
-            photonView.RPC("RPC_SetRunPosition", RpcTarget.All); // RPC 호출
+            RPC_SetRunPosition(); // RPC 호출
         }
     }
 
     private bool CanSeePlayer()
     {
-        if (player == null) return false;
+        if (playerController.transform == null) return false;
 
         // 몬스터에서 플레이어까지의 방향 벡터와 거리 계산
-        Vector3 directionToPlayer = player.position - transform.position;
+        Vector3 directionToPlayer = playerController.transform.position - transform.position;
         float distanceToPlayer = directionToPlayer.magnitude;
 
         // 플레이어가 감지 범위 내에 있는지 확인
@@ -268,7 +271,6 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
         return true;
     }
 
-    [PunRPC]
     private void RPC_SetRandomPosition()
     {
         Vector3 randomDirection = Random.insideUnitSphere * RandAnRunRadius;
@@ -281,10 +283,9 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
         }
     }
 
-    [PunRPC]
     private void RPC_SetRunPosition()
     {
-        Vector3 fleeDirection = transform.position - player.position;
+        Vector3 fleeDirection = transform.position - playerController.transform.position;
         Vector3 fleePosition = transform.position + fleeDirection.normalized * RandAnRunRadius;
 
         NavMeshHit hit;
@@ -296,16 +297,14 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
         }
     }
 
-    [PunRPC]
     private void RPC_SetDestination(Vector3 targetPos)
     {
         agent.SetDestination(targetPos);
     }
 
-    [PunRPC]
     private void RPC_LookAtPlayer()
     {
-        transform.LookAt(player);
+        transform.LookAt(playerController.transform);
     }
 
     private string GetStateString()
@@ -327,10 +326,10 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
 
     private void ChangeState(MonsterState newState)
     {
-        photonView.RPC("RPC_ChangeState", RpcTarget.All, (int)newState); // RPC 호출
+        RPC_ChangeState((int)newState);
     }
 
-    [PunRPC]
+
     private void RPC_ChangeState(int newState)
     {
         if (currentState != (MonsterState)newState)
@@ -361,13 +360,13 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
         Gizmos.DrawRay(transform.position, leftRayDirection);
         Gizmos.DrawRay(transform.position, rightRayDirection);
 
-        if (player != null)
+        if (playerController.transform != null)
         {
-            float sqrDistanceToPlayer = (player.position - transform.position).sqrMagnitude;
+            float sqrDistanceToPlayer = (playerController.transform.position - transform.position).sqrMagnitude;
             if (sqrDistanceToPlayer <= detectionRange * detectionRange)
             {
                 Gizmos.color = Color.red;
-                Gizmos.DrawLine(transform.position, player.position);
+                Gizmos.DrawLine(transform.position, playerController.transform.position);
             }
         }
     }
