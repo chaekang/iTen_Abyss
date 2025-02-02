@@ -102,8 +102,8 @@ public void TriggerJumpScareRPC()
 
     private int GetClosetTargetIndex()
     {
-        float disToTarget0 = Vector3.Distance(transform.position, targetPos[0].position);
-        float disToTarget1 = Vector3.Distance(transform.position, targetPos[1].position);
+        float disToTarget0 = targetPos[0] != null ? Vector3.Distance(transform.position, targetPos[0].position) : 0;
+        float disToTarget1 = targetPos[1] != null ? Vector3.Distance(transform.position, targetPos[1].position) : 0;
 
         return disToTarget0 < disToTarget1 ? 0 : 1;
 
