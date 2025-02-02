@@ -14,7 +14,8 @@ public class Spider : MonoBehaviour // Photon.Pun.MonoBehaviourPunCallbacks 상�
         Patrol,         // 정찰 상태
         Chase,          // 추적 상태
         Attack,         // 공격 상태
-        Run            // 도망 상태
+        Run,            // 도망 상태
+        COUNT,
     }
 
     [Header("Components")]
@@ -89,6 +90,7 @@ public class Spider : MonoBehaviour // Photon.Pun.MonoBehaviourPunCallbacks 상�
     {
         agent = GetComponent<NavMeshAgent>();
         // mesh = GetComponent<MeshRenderer>();
+        currentState = MonsterState.COUNT;
     }
 
     private void Start()
@@ -312,8 +314,6 @@ public class Spider : MonoBehaviour // Photon.Pun.MonoBehaviourPunCallbacks 상�
         switch (currentState)
         {
             case MonsterState.Idle:           // 대기상태
-            default:
-                return "Idle";
             case MonsterState.Patrol:         // 정찰상태
             case MonsterState.Chase:          // 추적상태
             case MonsterState.Run:            // 도망상태
@@ -321,6 +321,8 @@ public class Spider : MonoBehaviour // Photon.Pun.MonoBehaviourPunCallbacks 상�
             case MonsterState.Attack:         // 공격상태
                 return "attack2";
         }
+
+        return "Idle";
     }
 
 
