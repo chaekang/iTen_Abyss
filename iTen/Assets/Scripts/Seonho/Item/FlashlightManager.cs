@@ -11,7 +11,7 @@ public class FlashlightManager : MonoBehaviour
 
     public Light flashlight; // 손전등 불빛
     public TextMeshProUGUI timerText; // 배터리 타이머 UI
-    public float flashlightDuration = 120f; // 배터리 지속 시간 (초)
+    public float flashlightDuration = 480f; // 배터리 지속 시간 (초)
 
     private float remainingTime; // 남은 배터리 시간
     private bool isTimerRunning = false;
