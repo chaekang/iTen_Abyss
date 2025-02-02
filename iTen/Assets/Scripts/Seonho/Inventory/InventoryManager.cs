@@ -18,6 +18,8 @@ public class InventoryManager : MonoBehaviourPun
     public AudioClip interactionSound;
     public AudioClip dropSound;
     private AudioSource audioSource;
+    private FlashlightManager flashlightManager;
+
 
     private void Start()
     {
@@ -26,6 +28,13 @@ public class InventoryManager : MonoBehaviourPun
         if (audioSource == null)
         {
             audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        flashlightManager = FindObjectOfType<FlashlightManager>();
+        if (flashlightManager == null)
+        {
+            Debug.LogWarning("플래시라이트 매니저를 찾을 수 없습니다. 자식 트리를 탐색합니다.");
+            flashlightManager = player.GetComponentInChildren<FlashlightManager>();
         }
     }
 
@@ -246,9 +255,9 @@ public class InventoryManager : MonoBehaviourPun
 
     private void BatteryCharge()
     {
-        if (FlashlightManager.Instance != null)
+        if (flashlightManager != null)
         {
-            FlashlightManager.Instance.AddBatteryTime(120);
+            flashlightManager.AddBatteryTime(120);
             Debug.Log($"배터리가 충전되었습니다.");
         }
         else
