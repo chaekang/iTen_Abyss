@@ -35,7 +35,6 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
     public Animator spiderAnimator;                                     // 스파이더 애니메이션
     private FirstPersonController playerController;
 
-
     private Transform FindClosestPlayer()
     {
         GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
@@ -76,14 +75,16 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
 
     private void Update()
     {
-        if (photonView.IsMine)
-        {
-            // ... (기존 코드)
+        player = FindClosestPlayer(); // 가장 가까운 플레이어 찾기
+        playerController = FindClosestPlayerTransform();
+        // if (photonView.IsMine)
+        // {
+        //     // ... (기존 코드)
 
-            player = FindClosestPlayer(); // 가장 가까운 플레이어 찾기
-            playerController = FindClosestPlayerTransform();
-            // ... (기존 코드)
-        }
+        //     player = FindClosestPlayer(); // 가장 가까운 플레이어 찾기
+        //     playerController = FindClosestPlayerTransform();
+        //     // ... (기존 코드)
+        // }
     }
 
     private void Awake()
@@ -102,25 +103,25 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
     {
         CheckPlayerDistance();
 
-            // 상태 머신
-            switch (currentState)
-            {
-                case MonsterState.Idle:
-                    IdleState();
-                    break;
-                case MonsterState.Patrol:
-                    PatrolState();
-                    break;
-                case MonsterState.Chase:
-                    ChaseState();
-                    break;
-                case MonsterState.Attack:
-                    AttackState();
-                    break;
-                case MonsterState.Run:
-                    RunState();
-                    break;
-            }
+        // 상태 머신
+        switch (currentState)
+        {
+            case MonsterState.Idle:
+                IdleState();
+                break;
+            case MonsterState.Patrol:
+                PatrolState();
+                break;
+            case MonsterState.Chase:
+                ChaseState();
+                break;
+            case MonsterState.Attack:
+                AttackState();
+                break;
+            case MonsterState.Run:
+                RunState();
+                break;
+        }
         // 호스트에서만 몬스터 AI 실행
     }
 
@@ -152,7 +153,7 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
             default:
                 if (distanceToPlayer <= sqrDetectionRange && CanSeePlayer())
                 {
-                    ChangeState(MonsterState.Chase);
+                    ChangeState(MonsterState.Idle);
                 }
                 break;
         }
@@ -180,6 +181,7 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
     {
         // 순찰 상태
         // 무언가 대기상태랑 비슷하다.
+
         IdleState();
         SoundManager.Instance.PlayerFootstep(0.4f, "Spider_Walk", transform);
         // 어두운 곳에서 플레이어 감지 시 추적 상태로 전환
@@ -192,13 +194,23 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
     private void ChaseState()
     {
         // 추적 상태 로직
-        SoundManager.Instance.PlayerFootstep(0.2f, "Spider_Walk", transform);
+        SoundManager.Instance.PlayGrowlingSound("Find_Spider");
+
+        AudioClip growlingClip = SoundManager.Instance.GetClip("Find_Spider");
+        float growlingTime = growlingClip.length;
+        Invoke(nameof(PlayFootstepAfterGrowling), growlingTime);
+
         agent.speed = chaseSpeed;
         photonView.RPC("RPC_SetDestination", RpcTarget.All, player.position); // RPC 호출
     }
 
+    private void PlayFootstepAfterGrowling()
+    {
+        SoundManager.Instance.PlayerFootstep(0.2f, "Spider_Walk", transform);
+    }
+
     private float attackDelay = 0.0f;
-    private float attackInterval = 1.0f;                // 1초마다 때리기
+    private float attackInterval = 20.0f;                // 20초마다 때리기
     private void AttackState()
     {
         attackDelay += Time.deltaTime;
@@ -211,7 +223,7 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
             photonView.RPC("RPC_LookAtPlayer", RpcTarget.All); // RPC 호출
 
             // 그리고 어택딜레이는 여기서 추가해도 됨
-//            Debug.Log("플레이어 공격!");
+            //            Debug.Log("플레이어 공격!");
             // 일단 Dotween으로 그냥 애니메이션 간단하게 재생
             //this.transform.DOPunchScale(Vector3.one, 0.5f);
             ChangeState(MonsterState.Chase);
@@ -252,7 +264,7 @@ public class Spider : MonoBehaviourPunCallbacks // Photon.Pun.MonoBehaviourPunCa
         }
 
         // 이 조건을 뚫고 오면 플레이어를 찾은거
-//        Debug.Log("플레이어 찾음");
+        //        Debug.Log("플레이어 찾음");
         return true;
     }
 

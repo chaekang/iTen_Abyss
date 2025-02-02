@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Photon.Pun;
 
-public class SoundManager : MonoBehaviour
+public class SoundManager : MonoBehaviourPunCallbacks
 {
     public static SoundManager Instance { get; private set; }
 
@@ -18,8 +19,11 @@ public class SoundManager : MonoBehaviour
 
     private float footstepTimer;
 
+    private PhotonView photonView;
+
     private void Awake()
     {
+        photonView=GetComponent<PhotonView>();
         if (Instance == null)
         {
             Instance = this;
@@ -33,7 +37,7 @@ public class SoundManager : MonoBehaviour
         LoadClips();
     }
 
-    // Resourcesø° ¿÷¥¬ ø¿µø¿ ∞°¡ÆøÕº≠ µÒº≈≥ ∏Æø° «“¥Á
+    // Resources    ÷¥             Õº    ≈≥ ∏     “¥ 
     private void LoadClips()
     {
         AudioClip[] clips = Resources.LoadAll<AudioClip>("Audio");
@@ -61,20 +65,31 @@ public class SoundManager : MonoBehaviour
             {
                 int randomIndex = Random.Range(0, footstepClips.Count);
 
-                audioSource.transform.position = sourceTransform.position;
-                audioSource.spatialBlend = 1.0f;  // 3D ªÁøÓµÂ
-                audioSource.minDistance = 5f;     // √÷º“ ∞≈∏Æ
-                audioSource.maxDistance = 20f;    // √÷¥Î ∞≈∏Æ
-
-                audioSource.rolloffMode = AudioRolloffMode.Logarithmic;
-                audioSource.PlayOneShot(footstepClips[randomIndex]);
+                // RPC Ìò∏Ï∂ú
+                photonView.RPC("PlayFootstepRPC", RpcTarget.All, sourceTransform.position, footstepClips[randomIndex].name);
             }
 
             footstepTimer = footstepInterval;
         }
     }
 
-    // ¿Ωæ« ¿Áª˝ 
+    [PunRPC]
+    public void PlayFootstepRPC(Vector3 position, string clipName)
+    {
+        // Î™®Îì† ÌÅ¥ÎùºÏù¥Ïñ∏Ìä∏ÏóêÏÑú Ïã§Ìñâ
+        AudioClip clip = soundClips[clipName];
+
+        audioSource.transform.position = position;
+        audioSource.spatialBlend = 1.0f;
+        audioSource.minDistance = 5f;
+        audioSource.maxDistance = 20f;
+        audioSource.volume = 0.4f;
+        audioSource.rolloffMode = AudioRolloffMode.Logarithmic;
+        audioSource.PlayOneShot(clip);
+    }
+
+
+    [PunRPC]
     public void PlaySound(Transform target, float range, string clipKey)
     {
         Debug.Log($"Playing sound '{clipKey}' at {target.position}");
@@ -106,6 +121,7 @@ public class SoundManager : MonoBehaviour
         followTarget = null;
     }
 
+    [PunRPC]
     public void EmitSound(Vector3 pos, float range)
     {
         Collider[] hitMonsters = Physics.OverlapSphere(pos, range, mosterLayer);
@@ -139,6 +155,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    [PunRPC]
     public void RegisterSoundPosition(Vector3 pos)
     {
         Debug.Log("RegisterSoundPos");
@@ -166,6 +183,15 @@ public class SoundManager : MonoBehaviour
     {
         AudioClip clip = soundClips[name];
         audioSource.PlayOneShot(clip);
+    }
+
+    public AudioClip GetClip(string name)
+    {
+        if (soundClips.ContainsKey(name))
+        {
+            return soundClips[name];
+        }
+        return null;
     }
 
     private void Update()

@@ -32,15 +32,19 @@ public class GameSystem : MonoBehaviour
 
         if (IsSafeZone)
         {
-            Debug.Log("¾ÈÀüÇÑ °÷¿¡ µé¾î¿Ô´Ù.");
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ô´ï¿½.");
         }
         else
         {
-            Debug.Log("¾ÈÀüÇÑ °÷¿¡ ³ª°¬´Ù.");
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.");
         }
     }
 
     public void OnClickStart()
+    {
+        Invoke("LoadScene", 1f);
+    }
+    private void LoadScene()
     {
         SceneManager.LoadScene(1);
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Photon.Pun;
 
 public class FlashlightManager : MonoBehaviour
 {
@@ -27,6 +28,9 @@ public class FlashlightManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+
+        GameObject timerObject = GameObject.Find("FlashlightTimer");
+        timerText = timerObject?.GetComponent<TextMeshProUGUI>();
 
         remainingTime = flashlightDuration;
         UpdateTimerUI();
@@ -76,7 +80,8 @@ public class FlashlightManager : MonoBehaviour
     {
         int minutes = Mathf.FloorToInt(remainingTime / 60);
         int seconds = Mathf.FloorToInt(remainingTime % 60);
-        timerText.text = $"{minutes:00}:{seconds:00}";
+        if (timerText != null)
+            timerText.text = $"{minutes:00}:{seconds:00}";
     }
 
     public void AddBatteryTime(float amount)

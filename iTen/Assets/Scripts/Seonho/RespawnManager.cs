@@ -7,24 +7,24 @@ using StarterAssets;
 
 public class RespawnManager : MonoBehaviour
 {
+    public static RespawnManager Instance { get; private set; }
+
     public GameObject gameOverUI;
-    public Transform respawnPoint;
     public float respawnCountdown = 10f;
-    public FirstPersonController playerController; 
     public InventoryManager inventoryManager;
     public TextMeshProUGUI countdownText;
-    private Button respawnButton;
 
-    private void Start()
+    private bool isWaitingForInput = false;
+
+    private void Awake()
     {
-        gameOverUI.SetActive(false);
-        if (gameOverUI != null)
+        if (Instance == null)
         {
-            respawnButton = gameOverUI.GetComponentInChildren<Button>();
+            Instance = this;
         }
-        if (countdownText != null)
+        else
         {
-            countdownText.text = "";
+            Destroy(gameObject);
         }
     }
 
@@ -32,44 +32,30 @@ public class RespawnManager : MonoBehaviour
     {
         gameOverUI.SetActive(true);
 
-        if (playerController != null)
-        {
-            playerController.enabled = false;
-        }
-
-        if (respawnButton != null)
-        {
-            respawnButton.gameObject.SetActive(true);
-            respawnButton.interactable = true;
-            respawnButton.onClick.RemoveAllListeners();
-            respawnButton.onClick.AddListener(() => StartCoroutine(RespawnPlayer()));
-        }
-
         if (countdownText != null)
         {
-            countdownText.text = "";
+            countdownText.text = "Press F to Respawn";
+        }
+        isWaitingForInput = true;
+    }
+
+    private void Update()
+    {
+        if (isWaitingForInput && Input.GetKeyDown(KeyCode.F))
+        {
+            isWaitingForInput = false;
+            StartCoroutine(RespawnPlayer());
         }
     }
 
     private IEnumerator RespawnPlayer()
     {
-        if (respawnButton != null)
-        {
-            respawnButton.interactable = false;
-            respawnButton.gameObject.SetActive(false);
-        }
-
         if (inventoryManager != null)
         {
             foreach (Slot slot in inventoryManager.slots)
             {
                 slot.ClearSlot();
             }
-        }
-
-        if (playerController != null && respawnPoint != null)
-        {
-            playerController.transform.position = respawnPoint.position;
         }
 
         float countdown = respawnCountdown;
@@ -89,10 +75,5 @@ public class RespawnManager : MonoBehaviour
         }
 
         gameOverUI.SetActive(false);
-
-        if (playerController != null)
-        {
-            playerController.enabled = true;
-        }
     }
 }
