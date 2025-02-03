@@ -12,7 +12,7 @@ public enum MonsterState
 
 public class SoundMonster : MonoBehaviour
 {
-    private float detectionRadius = 20f;
+    private float detectionRadius = 5f;
     public LayerMask playerLayer;
 
     private Animator animator;
@@ -169,7 +169,7 @@ public class SoundMonster : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, 20f);
+        Gizmos.DrawWireSphere(transform.position, 10f);
     }
 
     private IEnumerator HandlePostAttack()
@@ -269,7 +269,7 @@ public class SoundMonster : MonoBehaviour
 
             int wallCount = DetectWallsBetween(transform.position, potentialPlayer.position);
 
-            float adjustRad = detectionRadius - wallCount * 5f;
+            float adjustRad = detectionRadius - wallCount * 3f;
             if (distanceToPlayer <= adjustRad)
             {
                 detectedPlayer = potentialPlayer;
