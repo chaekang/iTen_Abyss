@@ -71,7 +71,7 @@ public class MatchMaking : MonoBehaviourPunCallbacks
 
         if (roomText != null)
         {
-            roomText.text = $"{roomName} ({playerCount}/3)";
+            roomText.text = $"{roomName} ({playerCount}/2)";
         }
         else
         {
