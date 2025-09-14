@@ -1,6 +1,6 @@
 # 👁️ Abyss
 
-![abyss](screenshots/로고.png)
+<img src="screenshots/로고.png" alt="로고" width="500"/>
 
 ---
 
@@ -78,12 +78,11 @@
 ---
 
 ## 📸 실제 플레이 화면
-![abyss](screenshots/플레이화면1.png)
-
-![abyss](screenshots/플레이화면2.png)
-
-![abyss](screenshots/플레이화면3.png)
-
+<p>
+ <img src="screenshots/플레이화면1.png" alt="플레이화면1" width="400"/>
+ <img src="screenshots/플레이화면2.png" alt="플레이화면2" width="400"/>
+</p>
+<img src="screenshots/플레이화면3.png" alt="플레이화면3" width="400"/>
 
 ---
 
